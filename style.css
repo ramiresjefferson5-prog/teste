@@ -3226,338 +3226,211 @@ body.device-mobile-shell .app-page-modal .modal-body {
     font-size: 23px;
   }
 }
-/* =========================================================
-   FICHA GERAL DA OBRA — ERP RESPONSIVO
-   Escopo: modal "Informações Gerais da Obra".
-   Apenas apresentação visual; IDs, dados, chamadas e regras preservados.
-   ========================================================= */
 
-#modalResumoGeral .app-page-body-light {
-  background: #edf3f8 !important;
+
+
+/* ---------- Consulta da Base: ficha ERP refinada ---------- */
+#modalResumoGeral #corpoResumoGeral > .cbase-page {
+  width: min(100%, 1560px) !important;
+  max-width: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
-#modalResumoGeral #corpoResumoGeral {
-  background:
-    radial-gradient(circle at 12% 0%, rgba(0, 74, 153, 0.08), transparent 28%),
-    linear-gradient(180deg, #f6f9fc 0%, #edf3f8 100%) !important;
+.cbase-page {
+  color: #0f172a;
 }
 
-.erp-general-record-page {
-  padding: 22px 28px 30px !important;
-}
-
-.erp-record-hero {
+.cbase-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 390px);
+  gap: 16px;
   align-items: stretch;
   margin-bottom: 16px;
 }
 
-.erp-record-identity,
-.erp-record-value-panel,
-.erp-record-kpi,
-.erp-record-section,
-.erp-record-info-card {
-  border: 1px solid #d7e2ee;
+.cbase-hero-main,
+.cbase-hero-side,
+.cbase-kpis article,
+.cbase-section,
+.cbase-field-card {
   background: #ffffff;
-  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.055);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.045);
 }
 
-.erp-record-identity {
-  min-height: 190px;
+.cbase-hero-main {
+  min-height: 156px;
   border-radius: 22px;
   padding: 24px 26px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden;
-  position: relative;
+  background:
+    radial-gradient(circle at top right, rgba(0, 74, 153, 0.10), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
 }
 
-.erp-record-identity::after {
-  content: "";
-  position: absolute;
-  right: -110px;
-  top: -120px;
-  width: 320px;
-  height: 320px;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(0, 74, 153, 0.13), transparent 66%);
-  pointer-events: none;
-}
-
-.erp-record-eyebrow {
+.cbase-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  width: fit-content;
-  margin-bottom: 12px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  color: #004a99;
-  background: #eff6ff;
-  font-size: 0.68rem;
+  margin-bottom: 8px;
+  color: #526783;
+  font-size: 0.7rem;
   font-weight: 950;
-  letter-spacing: 0.075em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.erp-record-identity h2 {
+.cbase-eyebrow i {
+  color: #004a99;
+  font-size: 1rem;
+}
+
+.cbase-hero h2 {
   margin: 0;
   color: #002d5b;
-  font-size: clamp(1.85rem, 2.5vw, 3.15rem);
+  font-size: clamp(1.85rem, 2.25vw, 2.75rem);
   line-height: 0.98;
   font-weight: 950;
   letter-spacing: -0.055em;
-  position: relative;
-  z-index: 1;
 }
 
-.erp-record-identity p {
-  margin: 12px 0 0;
+.cbase-hero p {
+  margin: 10px 0 0;
   max-width: 980px;
-  color: #475569;
-  font-size: clamp(0.96rem, 1vw, 1.08rem);
-  font-weight: 800;
+  color: #334155;
+  font-size: clamp(0.95rem, 1vw, 1.08rem);
+  font-weight: 820;
   line-height: 1.35;
-  position: relative;
-  z-index: 1;
+  overflow-wrap: anywhere;
 }
 
-.erp-record-tags {
+.cbase-chip-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 18px;
-  position: relative;
-  z-index: 1;
+  margin-top: 16px;
 }
 
-.erp-record-tags span {
+.cbase-chip-row span {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   min-height: 32px;
-  padding: 7px 11px;
+  padding: 0 11px;
   border-radius: 999px;
-  color: #334155;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  font-size: 0.72rem;
-  font-weight: 950;
-  letter-spacing: 0.025em;
+  color: #35516f;
+  background: #f1f5f9;
+  border: 1px solid #dbe5f0;
+  font-size: 0.74rem;
+  font-weight: 920;
   text-transform: uppercase;
+  letter-spacing: 0.035em;
 }
 
-.erp-record-tags span i {
-  color: #64748b;
-  font-size: 0.62rem;
+.cbase-chip-row span i {
+  color: #004a99;
 }
 
-.erp-record-tags span.is-ok {
+.cbase-status.is-ok {
   color: #047857;
-  background: #ecfdf5;
+  background: #dcfce7;
   border-color: #bbf7d0;
 }
 
-.erp-record-tags span.is-primary {
+.cbase-status.is-primary {
   color: #004a99;
   background: #eff6ff;
   border-color: #bfdbfe;
 }
 
-.erp-record-tags span.is-waiting {
+.cbase-status.is-warning {
   color: #b45309;
   background: #fffbeb;
   border-color: #fde68a;
 }
 
-.erp-record-value-panel {
+.cbase-status.is-neutral {
+  color: #475569;
+  background: #f8fafc;
+}
+
+.cbase-status i {
+  font-size: 0.54rem;
+}
+
+.cbase-hero-side {
   border-radius: 22px;
   padding: 22px;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #ffffff;
   background:
-    radial-gradient(circle at top right, rgba(96, 165, 250, 0.35), transparent 34%),
-    linear-gradient(135deg, #002d5b 0%, #004a99 100%);
+    radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 32%),
+    linear-gradient(135deg, #002d5b 0%, #06457d 100%);
 }
 
-.erp-record-value-panel > span {
+.cbase-hero-side span {
   color: #bfdbfe;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 950;
-  letter-spacing: 0.085em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.erp-record-value-panel > strong {
-  display: block;
+.cbase-hero-side strong {
+  margin-top: 8px;
+  color: #ffffff;
+  font-size: clamp(1.6rem, 1.85vw, 2.45rem);
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.055em;
+}
+
+.cbase-hero-side small {
   margin-top: 10px;
-  color: #ffffff;
-  font-size: clamp(1.9rem, 2.4vw, 3rem);
-  line-height: 0.98;
-  font-weight: 950;
-  letter-spacing: -0.06em;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
-.erp-record-value-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.erp-record-value-grid div {
-  padding: 11px 12px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.11);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.erp-record-value-grid small {
-  display: block;
-  margin-bottom: 5px;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.erp-record-value-grid b {
-  display: block;
-  color: #ffffff;
-  font-size: 0.92rem;
-  font-weight: 950;
-  overflow-wrap: anywhere;
-}
-
-.erp-record-kpi-strip {
+.cbase-kpis {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.erp-record-kpi {
-  min-height: 96px;
+.cbase-kpis article {
+  min-height: 84px;
   border-radius: 18px;
-  padding: 16px;
+  padding: 15px 16px;
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 12px;
 }
 
-.erp-record-kpi > span {
-  width: 44px;
-  height: 44px;
-  border-radius: 15px;
+.cbase-kpis article > span {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
   color: #004a99;
   background: #eff6ff;
-  font-size: 1.08rem;
+  font-size: 1.05rem;
 }
 
-.erp-record-kpi small {
-  display: block;
-  margin-bottom: 6px;
-  color: #64748b;
-  font-size: 0.64rem;
-  font-weight: 950;
-  letter-spacing: 0.07em;
-  line-height: 1.1;
-  text-transform: uppercase;
-}
-
-.erp-record-kpi strong {
-  display: block;
-  color: #0f172a;
-  font-size: 1rem;
-  font-weight: 950;
-  line-height: 1.12;
-  overflow-wrap: anywhere;
-}
-
-.erp-record-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 390px;
-  gap: 16px;
-  align-items: start;
-}
-
-.erp-record-main,
-.erp-record-aside {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.erp-record-section {
-  border-radius: 20px;
-  padding: 18px;
-  overflow: hidden;
-}
-
-.erp-record-section-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  padding-bottom: 14px;
-  margin-bottom: 14px;
-  border-bottom: 1px solid #edf2f7;
-}
-
-.erp-record-section-head.compact {
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
-.erp-record-section-head span {
-  display: block;
-  margin-bottom: 4px;
-  color: #64748b;
-  font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.erp-record-section-head h3 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 1.02rem;
-  font-weight: 950;
-  letter-spacing: -0.02em;
-}
-
-.erp-record-info-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.erp-record-info-card {
-  min-height: 104px;
-  border-radius: 16px;
-  padding: 15px;
-  box-shadow: none;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-}
-
-.erp-record-info-card span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 10px;
+.cbase-kpis small,
+.cbase-field-card span,
+.cbase-section header span,
+.cbase-finance-list span,
+.cbase-timeline-item small {
   color: #64748b;
   font-size: 0.66rem;
   font-weight: 950;
@@ -3565,114 +3438,203 @@ body.device-mobile-shell .app-page-modal .modal-body {
   text-transform: uppercase;
 }
 
-.erp-record-info-card span i {
-  color: #004a99;
-  font-size: 0.9rem;
-}
-
-.erp-record-info-card strong {
+.cbase-kpis strong {
   display: block;
+  margin-top: 4px;
   color: #0f172a;
-  font-size: 0.98rem;
-  font-weight: 900;
-  line-height: 1.23;
+  font-size: 0.95rem;
+  font-weight: 950;
+  line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
-.erp-record-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.erp-record-timeline-item {
+.cbase-layout {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr);
-  gap: 10px;
-  align-items: center;
-  padding: 12px;
-  border-radius: 16px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 410px);
+  gap: 16px;
+  align-items: start;
 }
 
-.erp-record-timeline-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+.cbase-main,
+.cbase-aside {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.erp-record-timeline-item.is-active {
-  background: #eff6ff;
-  border-color: #bfdbfe;
+.cbase-aside {
+  position: sticky;
+  top: 0;
 }
 
-.erp-record-timeline-item.is-active .erp-record-timeline-icon {
-  color: #004a99;
-  background: #ffffff;
-  border-color: #bfdbfe;
+.cbase-section {
+  border-radius: 22px;
+  padding: 18px;
+  overflow: hidden;
 }
 
-.erp-record-timeline-item small {
-  display: block;
-  color: #64748b;
-  font-size: 0.64rem;
-  font-weight: 950;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+.cbase-section header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  padding-bottom: 13px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #edf2f7;
 }
 
-.erp-record-timeline-item strong {
-  display: block;
-  margin-top: 2px;
+.cbase-section header h3 {
+  margin: 3px 0 0;
   color: #0f172a;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.cbase-field-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.cbase-field-card {
+  min-height: 78px;
+  border-radius: 15px;
+  padding: 13px 14px;
+  box-shadow: none;
+}
+
+.cbase-field-card.is-wide {
+  grid-column: span 2;
+}
+
+.cbase-field-card.is-empty {
+  background: #fbfdff;
+}
+
+.cbase-field-card span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 7px;
+}
+
+.cbase-field-card span i {
+  color: #004a99;
+}
+
+.cbase-field-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 0.94rem;
+  font-weight: 920;
+  line-height: 1.22;
   overflow-wrap: anywhere;
 }
 
-.erp-record-finance-list {
-  display: flex;
-  flex-direction: column;
-  margin-top: 12px;
+.cbase-field-card.is-empty strong {
+  color: #94a3b8;
 }
 
-.erp-record-finance-list > div {
+.cbase-progress {
+  height: 13px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #dfe8f2;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.cbase-progress > div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #004a99 0%, #22c55e 100%);
+}
+
+.cbase-finance-list {
+  margin-top: 13px;
   display: flex;
+  flex-direction: column;
+}
+
+.cbase-finance-list > div {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 11px 0;
   border-bottom: 1px solid #edf2f7;
 }
 
-.erp-record-finance-list > div:last-child {
+.cbase-finance-list > div:last-child {
   border-bottom: 0;
 }
 
-.erp-record-finance-list span {
-  color: #64748b;
-  font-size: 0.82rem;
-  font-weight: 820;
-}
-
-.erp-record-finance-list strong {
+.cbase-finance-list strong {
   color: #0f172a;
-  font-size: 0.86rem;
+  font-size: 0.9rem;
   font-weight: 950;
   text-align: right;
 }
 
-.erp-record-finance-list strong.is-ok {
+.cbase-finance-list strong.is-main {
+  color: #002d5b;
+  font-size: 1rem;
+}
+
+.cbase-finance-list strong.is-ok {
   color: #059669;
 }
 
-.erp-record-note-panel p {
+.cbase-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.cbase-timeline-item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.cbase-timeline-item:last-child {
+  border-bottom: 0;
+}
+
+.cbase-timeline-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.cbase-timeline-item.is-active .cbase-timeline-icon {
+  color: #004a99;
+  background: #eff6ff;
+}
+
+.cbase-timeline-item strong {
+  display: block;
+  margin-top: 3px;
+  color: #0f172a;
+  font-size: 0.88rem;
+  font-weight: 920;
+  overflow-wrap: anywhere;
+}
+
+.cbase-note {
+  background:
+    radial-gradient(circle at top right, rgba(0, 74, 153, 0.08), transparent 32%),
+    #ffffff;
+}
+
+.cbase-note p {
   display: flex;
   align-items: flex-start;
   gap: 9px;
@@ -3683,285 +3645,163 @@ body.device-mobile-shell .app-page-modal .modal-body {
   line-height: 1.45;
 }
 
-.erp-record-note-panel p i {
+.cbase-note p i {
   color: #004a99;
   margin-top: 2px;
 }
 
-.erp-record-data-table-wrap {
-  overflow-x: auto;
+.cbase-table-wrap {
+  max-height: 320px;
+  overflow: auto;
   border: 1px solid #dbe5f0;
-  border-radius: 16px;
+  border-radius: 15px;
   background: #ffffff;
+  scrollbar-width: thin;
 }
 
-.erp-record-data-table {
+.cbase-table {
   width: 100%;
-  border-collapse: collapse;
-  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.erp-record-data-table th,
-.erp-record-data-table td {
-  padding: 12px 14px;
+.cbase-table th,
+.cbase-table td {
+  padding: 11px 12px;
   border-bottom: 1px solid #edf2f7;
   vertical-align: top;
 }
 
-.erp-record-data-table tr:last-child th,
-.erp-record-data-table tr:last-child td {
+.cbase-table tr:last-child th,
+.cbase-table tr:last-child td {
   border-bottom: 0;
 }
 
-.erp-record-data-table th {
+.cbase-table th {
   width: 260px;
-  color: #64748b;
-  background: #f8fafc;
-  font-size: 0.68rem;
+  color: #526783;
+  background: #fbfdff;
+  font-size: 0.7rem;
   font-weight: 950;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
-.erp-record-data-table td {
+.cbase-table td {
   color: #0f172a;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 820;
   overflow-wrap: anywhere;
 }
 
-.erp-record-empty-note {
+.cbase-empty-line {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 74px;
-  padding: 16px;
-  border-radius: 16px;
+  gap: 9px;
+  min-height: 58px;
+  padding: 14px;
+  border-radius: 15px;
   color: #64748b;
   background: #f8fafc;
   border: 1px dashed #cbd5e1;
-  font-size: 0.86rem;
-  font-weight: 850;
+  font-weight: 820;
 }
 
-.erp-record-empty-note i {
+.cbase-empty-line i {
   color: #004a99;
-  font-size: 1.1rem;
 }
 
-@media (min-width: 1600px) {
-  .erp-general-record-page {
-    padding-left: 34px !important;
-    padding-right: 34px !important;
+@media (max-width: 1399.98px) {
+  #modalResumoGeral #corpoResumoGeral > .cbase-page {
+    width: min(100%, 1320px) !important;
   }
 
-  .erp-record-layout {
-    grid-template-columns: minmax(0, 1fr) 430px;
-  }
-
-  .erp-record-info-grid {
+  .cbase-field-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .cbase-field-card.is-wide {
+    grid-column: span 2;
+  }
 }
 
-@media (min-width: 992px) and (max-width: 1320px) {
-  .erp-record-hero,
-  .erp-record-layout {
+@media (max-width: 1199.98px) {
+  .cbase-hero,
+  .cbase-layout {
     grid-template-columns: 1fr;
   }
 
-  .erp-record-kpi-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .erp-record-info-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .erp-record-aside {
+  .cbase-aside {
+    position: static;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: stretch;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cbase-note {
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 767.98px) {
-  #modalResumoGeral .app-page-body-light {
-    background: #edf3f8 !important;
+  #modalResumoGeral #corpoResumoGeral > .cbase-page {
+    width: 100% !important;
   }
 
-  .erp-general-record-page {
-    padding: 12px !important;
-  }
-
-  .erp-record-hero,
-  .erp-record-layout {
-    display: block;
-  }
-
-  .erp-record-identity,
-  .erp-record-value-panel,
-  .erp-record-kpi,
-  .erp-record-section,
-  .erp-record-info-card {
+  .cbase-hero-main,
+  .cbase-hero-side,
+  .cbase-section {
     border-radius: 18px;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.055);
   }
 
-  .erp-record-identity {
+  .cbase-hero-main {
     min-height: unset;
     padding: 18px;
-    margin-bottom: 12px;
   }
 
-  .erp-record-eyebrow {
-    font-size: 0.58rem;
-    padding: 6px 9px;
-  }
-
-  .erp-record-identity h2 {
+  .cbase-hero h2 {
     font-size: 1.55rem;
-    letter-spacing: -0.04em;
   }
 
-  .erp-record-identity p {
-    font-size: 0.88rem;
+  .cbase-hero p {
+    font-size: 0.9rem;
   }
 
-  .erp-record-tags {
-    gap: 6px;
-    margin-top: 14px;
+  .cbase-hero-side {
+    padding: 18px;
   }
 
-  .erp-record-tags span {
-    min-height: 28px;
-    padding: 6px 9px;
-    font-size: 0.58rem;
-    letter-spacing: 0.035em;
-  }
-
-  .erp-record-value-panel {
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-
-  .erp-record-value-panel > strong {
-    font-size: 1.65rem;
-  }
-
-  .erp-record-value-grid {
+  .cbase-kpis {
     grid-template-columns: 1fr;
-    margin-top: 14px;
   }
 
-  .erp-record-kpi-strip {
+  .cbase-kpis article {
+    min-height: 72px;
+  }
+
+  .cbase-field-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
   }
 
-  .erp-record-kpi {
-    min-height: 74px;
-    padding: 13px;
+  .cbase-field-card.is-wide {
+    grid-column: auto;
   }
 
-  .erp-record-kpi > span {
-    width: 38px;
-    height: 38px;
-    border-radius: 13px;
-    font-size: 0.98rem;
+  .cbase-aside {
+    display: flex;
   }
 
-  .erp-record-kpi small {
-    font-size: 0.58rem;
+  .cbase-table th,
+  .cbase-table td {
+    display: block;
+    width: 100%;
   }
 
-  .erp-record-kpi strong {
-    font-size: 0.92rem;
+  .cbase-table th {
+    border-bottom: 0;
+    padding-bottom: 4px;
   }
 
-  .erp-record-main,
-  .erp-record-aside {
-    gap: 12px;
-  }
-
-  .erp-record-section {
-    padding: 14px;
-    margin-bottom: 12px;
-  }
-
-  .erp-record-section-head {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 5px;
-    padding-bottom: 11px;
-    margin-bottom: 12px;
-  }
-
-  .erp-record-section-head span {
-    font-size: 0.58rem;
-    letter-spacing: 0.08em;
-  }
-
-  .erp-record-section-head h3 {
-    font-size: 0.98rem;
-  }
-
-  .erp-record-info-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .erp-record-info-card {
-    min-height: 82px;
-    padding: 13px;
-  }
-
-  .erp-record-info-card span {
-    font-size: 0.58rem;
-  }
-
-  .erp-record-info-card strong {
-    font-size: 0.92rem;
-  }
-
-  .erp-record-data-table-wrap {
-    margin-left: -14px;
-    margin-right: -14px;
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
-  }
-
-  .erp-record-data-table {
-    min-width: 520px;
-  }
-
-  .erp-record-data-table th {
-    width: 190px;
-    font-size: 0.58rem;
-  }
-
-  .erp-record-data-table td {
-    font-size: 0.8rem;
-  }
-
-  .erp-record-timeline-item {
-    grid-template-columns: 38px minmax(0, 1fr);
-    padding: 10px;
-  }
-
-  .erp-record-timeline-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 13px;
-  }
-
-  .erp-record-finance-list span,
-  .erp-record-finance-list strong,
-  .erp-record-note-panel p,
-  .erp-record-empty-note {
-    font-size: 0.8rem;
+  .cbase-table td {
+    padding-top: 4px;
   }
 }
