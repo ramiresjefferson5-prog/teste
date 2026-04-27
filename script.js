@@ -1563,90 +1563,244 @@ function setFilter(status) {
   function abrirResumoGeral() {
     const obra = document.getElementById('obra').value.trim();
     if (!obra) { notify("Informe a obra para consultar a base geral."); return; }
-    document.getElementById('corpoResumoGeral').innerHTML = `<div class="erp-page-loading"><div class="spinner-border text-primary" role="status"></div><p>Buscando dados na base GERAL...</p></div>`; modalResumoUI.show();
+
+    const corpo = document.getElementById('corpoResumoGeral');
+    corpo.innerHTML = `<div class="erp-page-loading"><div class="spinner-border text-primary" role="status"></div><p>Buscando dados na base GERAL...</p></div>`;
+    modalResumoUI.show();
 
     callServer('getResumoGeralObra', [obra], res => {
-      if (!res || !res.encontrado) { document.getElementById('corpoResumoGeral').innerHTML = `<div class="erp-page-empty"><i class="bi bi-search"></i><strong>Obra não localizada na base.</strong><span>Confira o número informado e tente novamente.</span></div>`; return; }
-      const lista = Array.isArray(res.dados) ? res.dados : []; const mapa = {}; lista.forEach(d => { mapa[String(d.label || "").trim().toUpperCase()] = d.valor || "-"; });
+      if (!res || !res.encontrado) {
+        corpo.innerHTML = `<div class="erp-page-empty"><i class="bi bi-search"></i><strong>Obra não localizada na base.</strong><span>Confira o número informado e tente novamente.</span></div>`;
+        return;
+      }
 
-      const total = parseMoneyFlexible(mapa["P. TOTAL"]); 
-      const recebido = parseMoneyFlexible(mapa["RECEB."]); 
-      const carteira = parseMoneyFlexible(mapa["A RECEB"] || mapa["EM CARTEIRA"]); 
+      const lista = Array.isArray(res.dados) ? res.dados : [];
+      const mapa = {};
+      lista.forEach(d => { mapa[String(d.label || "").trim().toUpperCase()] = d.valor || "-"; });
+
+      const obterCampo = (...labels) => {
+        for (const label of labels) {
+          const chave = String(label || "").trim().toUpperCase();
+          const valor = mapa[chave];
+          if (valor !== null && valor !== undefined && String(valor).trim() !== "" && String(valor).trim() !== "-") {
+            return valor;
+          }
+        }
+        return "-";
+      };
+
+      const exibirCampo = value => escapeHtml(String(value ?? "-").trim() || "-");
+      const isPreenchido = value => value !== null && value !== undefined && String(value).trim() !== "" && String(value).trim() !== "-";
+
+      const obraBase = obterCampo("OBRA") !== "-" ? obterCampo("OBRA") : obra;
+      const clienteBase = obterCampo("CLIENTE");
+      const itemBase = obterCampo("ITEM");
+      const categoriaBase = obterCampo("CATEGORIA");
+      const dataAbertura = obterCampo("DATA ABERTURA", "ABERTURA");
+      const dataFirmada = obterCampo("DATA FIRMADA", "FIRMADA");
+      const dataEnviada = obterCampo("DATA ENVIADA", "ENVIADA");
+      const dataFaturamento = obterCampo("DATA FATURAMENTO", "FATURAMENTO", "DATA FATURAM");
+      const ufBase = obterCampo("UF");
+      const etapaBase = obterCampo("ETAPA", "STATUS", "SITUAÇÃO", "SITUACAO");
+      const vendedorBase = obterCampo("VENDEDOR", "RESPONSÁVEL", "RESPONSAVEL");
+      const segmentoBase = obterCampo("SEGMENTO");
+      const complexidadeBase = obterCampo("COMPLEXIDADE");
+      const complementoBase = obterCampo("COMPL.", "COMPLEMENTO", "COMPL");
+      const nfBase = obterCampo("NF", "NFE", "NOTA FISCAL");
+
+      const total = parseMoneyFlexible(obterCampo("P. TOTAL", "VALOR TOTAL", "TOTAL", "VALOR"));
+      const recebido = parseMoneyFlexible(obterCampo("RECEB.", "RECEBIDO", "VALOR RECEBIDO"));
+      const carteira = parseMoneyFlexible(obterCampo("A RECEB", "A RECEBER", "EM CARTEIRA"));
       const percentualRecebido = total > 0 ? Math.min((recebido / total) * 100, 100) : 0;
 
-      const infoPrincipal = [ { icon: "bi-folder2-open", label: "Obra", valor: mapa["OBRA"] || obra }, { icon: "bi-building", label: "Cliente", valor: mapa["CLIENTE"] || "-" }, { icon: "bi-box-seam", label: "Item", valor: mapa["ITEM"] || "-" }, { icon: "bi-tags", label: "Categoria", valor: mapa["CATEGORIA"] || "-" } ];
-      const infoComplementar = [ { icon: "bi-calendar-event", label: "Data abertura", valor: mapa["DATA ABERTURA"] || "-" }, { icon: "bi-pen", label: "Data firmada", valor: mapa["DATA FIRMADA"] || "-" }, { icon: "bi-grid", label: "Compl.", valor: mapa["COMPL."] || "-" }, { icon: "bi-geo-alt", label: "UF", valor: mapa["UF"] || "-" } ];
-      const montarCards = (arr) => arr.map(d => `<article class="erp-info-card"><span><i class="bi ${d.icon}"></i>${d.label}</span><strong>${d.valor}</strong></article>`).join('');
+      const statusOperacional = isPreenchido(dataFaturamento)
+        ? "Faturada"
+        : (isPreenchido(dataFirmada)
+          ? "Firmada"
+          : (isPreenchido(dataEnviada) ? "Enviada" : "Base geral"));
+
+      const situacaoClass = isPreenchido(dataFaturamento)
+        ? "is-ok"
+        : (isPreenchido(dataFirmada) ? "is-primary" : "is-waiting");
+
+      const infoCadastro = [
+        { icon: "bi-folder2-open", label: "Obra", valor: obraBase },
+        { icon: "bi-building", label: "Cliente", valor: clienteBase },
+        { icon: "bi-box-seam", label: "Item", valor: itemBase },
+        { icon: "bi-tags", label: "Categoria", valor: categoriaBase },
+        { icon: "bi-grid", label: "Complemento", valor: complementoBase },
+        { icon: "bi-geo-alt", label: "UF", valor: ufBase }
+      ];
+
+      const infoComercial = [
+        { icon: "bi-person-badge", label: "Responsável", valor: vendedorBase },
+        { icon: "bi-diagram-3", label: "Segmento", valor: segmentoBase },
+        { icon: "bi-sliders", label: "Complexidade", valor: complexidadeBase },
+        { icon: "bi-flag", label: "Etapa", valor: etapaBase },
+        { icon: "bi-receipt", label: "NF", valor: nfBase },
+        { icon: "bi-calendar-check", label: "Data faturamento", valor: dataFaturamento }
+      ];
+
+      const linhaTempo = [
+        { icon: "bi-calendar-plus", label: "Abertura", valor: dataAbertura, ativo: isPreenchido(dataAbertura) },
+        { icon: "bi-send", label: "Enviada", valor: dataEnviada, ativo: isPreenchido(dataEnviada) },
+        { icon: "bi-pen", label: "Firmada", valor: dataFirmada, ativo: isPreenchido(dataFirmada) },
+        { icon: "bi-receipt-cutoff", label: "Faturamento", valor: dataFaturamento, ativo: isPreenchido(dataFaturamento) }
+      ];
+
+      const labelsPrioritarios = new Set([
+        "OBRA", "CLIENTE", "ITEM", "CATEGORIA", "P. TOTAL", "VALOR TOTAL", "TOTAL", "VALOR", "RECEB.", "RECEBIDO", "VALOR RECEBIDO",
+        "A RECEB", "A RECEBER", "EM CARTEIRA", "DATA ABERTURA", "ABERTURA", "DATA FIRMADA", "FIRMADA", "DATA ENVIADA", "ENVIADA",
+        "DATA FATURAMENTO", "FATURAMENTO", "DATA FATURAM", "UF", "ETAPA", "STATUS", "SITUAÇÃO", "SITUACAO", "VENDEDOR",
+        "RESPONSÁVEL", "RESPONSAVEL", "SEGMENTO", "COMPLEXIDADE", "COMPL.", "COMPLEMENTO", "COMPL", "NF", "NFE", "NOTA FISCAL"
+      ]);
+
+      const dadosAdicionais = lista
+        .filter(d => !labelsPrioritarios.has(String(d.label || "").trim().toUpperCase()))
+        .filter(d => isPreenchido(d.valor));
+
+      const montarCards = arr => arr.map(d => `
+        <article class="erp-record-info-card">
+          <span><i class="bi ${d.icon}"></i>${exibirCampo(d.label)}</span>
+          <strong>${exibirCampo(d.valor)}</strong>
+        </article>
+      `).join('');
+
+      const montarLinhaTempo = arr => arr.map(d => `
+        <div class="erp-record-timeline-item ${d.ativo ? "is-active" : ""}">
+          <span class="erp-record-timeline-icon"><i class="bi ${d.icon}"></i></span>
+          <div>
+            <small>${exibirCampo(d.label)}</small>
+            <strong>${exibirCampo(d.valor)}</strong>
+          </div>
+        </div>
+      `).join('');
+
+      const montarDadosAdicionais = () => {
+        if (!dadosAdicionais.length) {
+          return `<div class="erp-record-empty-note"><i class="bi bi-info-circle"></i><span>Não há campos adicionais preenchidos para esta obra na base geral.</span></div>`;
+        }
+
+        return `
+          <div class="erp-record-data-table-wrap">
+            <table class="erp-record-data-table">
+              <tbody>
+                ${dadosAdicionais.map(d => `
+                  <tr>
+                    <th>${exibirCampo(d.label)}</th>
+                    <td>${exibirCampo(d.valor)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      };
 
       const html = `
-        <div class="erp-page erp-general-page">
-          <section class="erp-command-panel">
-            <div class="erp-command-copy">
-              <span class="erp-command-kicker"><i class="bi bi-grid-1x2"></i> Base geral da obra</span>
-              <h2>${mapa["OBRA"] || obra}</h2>
-              <p>${mapa["CLIENTE"] || "Cliente não informado"} · ${mapa["ITEM"] || "Item não informado"}</p>
+        <div class="erp-page erp-general-page erp-general-record-page">
+          <section class="erp-record-hero">
+            <div class="erp-record-identity">
+              <span class="erp-record-eyebrow"><i class="bi bi-database-check"></i> Consulta geral do ERP</span>
+              <h2>Obra ${exibirCampo(obraBase)}</h2>
+              <p>${exibirCampo(clienteBase)}${itemBase !== "-" ? ` · ${exibirCampo(itemBase)}` : ""}</p>
+              <div class="erp-record-tags">
+                <span class="${situacaoClass}"><i class="bi bi-circle-fill"></i>${exibirCampo(statusOperacional)}</span>
+                <span><i class="bi bi-tags"></i>${exibirCampo(categoriaBase)}</span>
+                <span><i class="bi bi-geo-alt"></i>${exibirCampo(ufBase)}</span>
+              </div>
             </div>
-            <div class="erp-command-side">
-              <span>Valor total da obra</span>
-              <strong>${formatMoneyBR(total)}</strong>
-              <small>${percentualRecebido.toFixed(1)}% recebido</small>
-            </div>
+
+            <aside class="erp-record-value-panel">
+              <span>Valor de referência</span>
+              <strong>R$ ${formatMoneyBR(total)}</strong>
+              <div class="erp-record-value-grid">
+                <div><small>Recebido</small><b>R$ ${formatMoneyBR(recebido)}</b></div>
+                <div><small>A receber</small><b>R$ ${formatMoneyBR(carteira)}</b></div>
+              </div>
+            </aside>
           </section>
 
-          <section class="erp-kpi-strip">
-            <article class="erp-kpi-card">
-              <span class="erp-kpi-icon"><i class="bi bi-wallet2"></i></span>
-              <div><small>Total da obra</small><strong>${formatMoneyBR(total)}</strong></div>
+          <section class="erp-record-kpi-strip">
+            <article class="erp-record-kpi">
+              <span><i class="bi bi-calendar-event"></i></span>
+              <div><small>Abertura</small><strong>${exibirCampo(dataAbertura)}</strong></div>
             </article>
-            <article class="erp-kpi-card is-ok">
-              <span class="erp-kpi-icon"><i class="bi bi-arrow-down-circle"></i></span>
-              <div><small>Valor recebido</small><strong>${formatMoneyBR(recebido)}</strong></div>
+            <article class="erp-record-kpi">
+              <span><i class="bi bi-flag"></i></span>
+              <div><small>Situação</small><strong>${exibirCampo(statusOperacional)}</strong></div>
             </article>
-            <article class="erp-kpi-card">
-              <span class="erp-kpi-icon"><i class="bi bi-hourglass-split"></i></span>
-              <div><small>Valor a receber</small><strong>${formatMoneyBR(carteira)}</strong></div>
+            <article class="erp-record-kpi">
+              <span><i class="bi bi-person-badge"></i></span>
+              <div><small>Responsável</small><strong>${exibirCampo(vendedorBase)}</strong></div>
             </article>
-            <article class="erp-kpi-card">
-              <span class="erp-kpi-icon"><i class="bi bi-percent"></i></span>
+            <article class="erp-record-kpi">
+              <span><i class="bi bi-percent"></i></span>
               <div><small>Recebimento</small><strong>${percentualRecebido.toFixed(1)}%</strong></div>
             </article>
           </section>
 
-          <section class="erp-workspace-grid erp-general-grid">
-            <main class="erp-workspace-main">
-              <article class="erp-panel">
-                <div class="erp-panel-heading">
-                  <div><span>Cadastro</span><h3>Dados principais</h3></div>
+          <section class="erp-record-layout">
+            <main class="erp-record-main">
+              <article class="erp-record-section">
+                <div class="erp-record-section-head">
+                  <div><span>Ficha cadastral</span><h3>Dados principais da obra</h3></div>
                 </div>
-                <div class="erp-info-card-grid">${montarCards(infoPrincipal)}</div>
+                <div class="erp-record-info-grid">${montarCards(infoCadastro)}</div>
               </article>
 
-              <article class="erp-panel">
-                <div class="erp-panel-heading">
-                  <div><span>Complementos</span><h3>Informações operacionais</h3></div>
+              <article class="erp-record-section">
+                <div class="erp-record-section-head">
+                  <div><span>Comercial e operação</span><h3>Informações complementares</h3></div>
                 </div>
-                <div class="erp-info-card-grid">${montarCards(infoComplementar)}</div>
+                <div class="erp-record-info-grid">${montarCards(infoComercial)}</div>
+              </article>
+
+              <article class="erp-record-section">
+                <div class="erp-record-section-head">
+                  <div><span>Base ERP</span><h3>Demais campos disponíveis</h3></div>
+                </div>
+                ${montarDadosAdicionais()}
               </article>
             </main>
 
-            <aside class="erp-workspace-aside">
-              <article class="erp-panel erp-side-panel">
-                <div class="erp-panel-heading compact">
-                  <div><span>Visão financeira</span><h3>Recebimento da obra</h3></div>
+            <aside class="erp-record-aside">
+              <article class="erp-record-section erp-record-status-panel">
+                <div class="erp-record-section-head compact">
+                  <div><span>Acompanhamento</span><h3>Linha do tempo</h3></div>
+                </div>
+                <div class="erp-record-timeline">${montarLinhaTempo(linhaTempo)}</div>
+              </article>
+
+              <article class="erp-record-section erp-record-finance-panel">
+                <div class="erp-record-section-head compact">
+                  <div><span>Resumo</span><h3>Leitura financeira</h3></div>
                 </div>
                 <div class="erp-progress-track"><div class="erp-progress-fill" style="width:${percentualRecebido.toFixed(1)}%"></div></div>
-                <div class="erp-info-list">
-                  <div><span>Total</span><strong>${formatMoneyBR(total)}</strong></div>
-                  <div><span>Recebido</span><strong class="is-ok">${formatMoneyBR(recebido)}</strong></div>
-                  <div><span>A receber</span><strong>${formatMoneyBR(carteira)}</strong></div>
+                <div class="erp-record-finance-list">
+                  <div><span>Total da obra</span><strong>R$ ${formatMoneyBR(total)}</strong></div>
+                  <div><span>Valor recebido</span><strong class="is-ok">R$ ${formatMoneyBR(recebido)}</strong></div>
+                  <div><span>Valor a receber</span><strong>R$ ${formatMoneyBR(carteira)}</strong></div>
                   <div><span>Percentual recebido</span><strong>${percentualRecebido.toFixed(1)}%</strong></div>
                 </div>
+              </article>
+
+              <article class="erp-record-section erp-record-note-panel">
+                <div class="erp-record-section-head compact">
+                  <div><span>Observação</span><h3>Uso da informação</h3></div>
+                </div>
+                <p><i class="bi bi-shield-check"></i>Esta tela apenas organiza os dados retornados pela base geral do ERP. Nenhuma regra de cálculo ou consolidação foi alterada.</p>
               </article>
             </aside>
           </section>
         </div>`;
-      document.getElementById('tituloResumo').innerText = "Informações Gerais da Obra"; document.getElementById('corpoResumoGeral').innerHTML = html;
-    }, msg => { document.getElementById('corpoResumoGeral').innerHTML = `<div class="erp-page-empty is-error"><i class="bi bi-exclamation-triangle"></i><strong>Erro na busca</strong><span>${msg}</span></div>`; notify("Erro na busca: " + msg); });
+
+      document.getElementById('tituloResumo').innerText = "Informações Gerais da Obra";
+      corpo.innerHTML = html;
+    }, msg => {
+      corpo.innerHTML = `<div class="erp-page-empty is-error"><i class="bi bi-exclamation-triangle"></i><strong>Erro na busca</strong><span>${msg}</span></div>`;
+      notify("Erro na busca: " + msg);
+    });
   }
   function deletar() { 
     const obra = document.getElementById('obra').value.trim();
