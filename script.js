@@ -1576,26 +1576,28 @@ function setFilter(status) {
 
       const lista = Array.isArray(res.dados) ? res.dados : [];
       const mapa = {};
-      lista.forEach(d => { mapa[String(d.label || "").trim().toUpperCase()] = d.valor || "-"; });
+      lista.forEach(d => {
+        const chave = String(d.label || "").trim().toUpperCase();
+        if (chave && mapa[chave] === undefined) mapa[chave] = d.valor || "-";
+      });
 
       const obterCampo = (...labels) => {
         for (const label of labels) {
           const chave = String(label || "").trim().toUpperCase();
           const valor = mapa[chave];
-          if (valor !== null && valor !== undefined && String(valor).trim() !== "" && String(valor).trim() !== "-") {
-            return valor;
-          }
+          if (valor !== null && valor !== undefined && String(valor).trim() !== "" && String(valor).trim() !== "-") return valor;
         }
         return "-";
       };
 
-      const exibirCampo = value => escapeHtml(String(value ?? "-").trim() || "-");
       const isPreenchido = value => value !== null && value !== undefined && String(value).trim() !== "" && String(value).trim() !== "-";
+      const exibirCampo = value => escapeHtml(String(value ?? "-").trim() || "-");
+      const exibirMoney = value => `R$ ${formatMoneyBR(value)}`;
 
       const obraBase = obterCampo("OBRA") !== "-" ? obterCampo("OBRA") : obra;
-      const clienteBase = obterCampo("CLIENTE");
-      const itemBase = obterCampo("ITEM");
-      const categoriaBase = obterCampo("CATEGORIA");
+      const clienteBase = obterCampo("CLIENTE", "RAZÃO SOCIAL", "RAZAO SOCIAL");
+      const itemBase = obterCampo("ITEM", "DESCRIÇÃO", "DESCRICAO");
+      const categoriaBase = obterCampo("CATEGORIA", "CATEG.");
       const dataAbertura = obterCampo("DATA ABERTURA", "ABERTURA");
       const dataFirmada = obterCampo("DATA FIRMADA", "FIRMADA");
       const dataEnviada = obterCampo("DATA ENVIADA", "ENVIADA");
@@ -1606,7 +1608,9 @@ function setFilter(status) {
       const segmentoBase = obterCampo("SEGMENTO");
       const complexidadeBase = obterCampo("COMPLEXIDADE");
       const complementoBase = obterCampo("COMPL.", "COMPLEMENTO", "COMPL");
-      const nfBase = obterCampo("NF", "NFE", "NOTA FISCAL");
+      const nfBase = obterCampo("NF", "NFE", "NOTA FISCAL", "NOTA");
+      const cpmvBase = obterCampo("CPMV");
+      const prazoBase = obterCampo("PRAZO", "PZ", "PRAZ", "DIAS PRAZO");
 
       const total = parseMoneyFlexible(obterCampo("P. TOTAL", "VALOR TOTAL", "TOTAL", "VALOR"));
       const recebido = parseMoneyFlexible(obterCampo("RECEB.", "RECEBIDO", "VALOR RECEBIDO"));
@@ -1617,58 +1621,65 @@ function setFilter(status) {
         ? "Faturada"
         : (isPreenchido(dataFirmada)
           ? "Firmada"
-          : (isPreenchido(dataEnviada) ? "Enviada" : "Base geral"));
+          : (isPreenchido(dataEnviada)
+            ? "Enviada"
+            : (isPreenchido(etapaBase) ? etapaBase : "Base geral")));
 
-      const situacaoClass = isPreenchido(dataFaturamento)
+      const statusClasse = isPreenchido(dataFaturamento)
         ? "is-ok"
-        : (isPreenchido(dataFirmada) ? "is-primary" : "is-waiting");
+        : (isPreenchido(dataFirmada) ? "is-primary" : (isPreenchido(dataEnviada) ? "is-warning" : "is-neutral"));
 
-      const infoCadastro = [
+      const camposPrincipais = [
+        { icon: "bi-building", label: "Cliente", valor: clienteBase, destaque: true },
         { icon: "bi-folder2-open", label: "Obra", valor: obraBase },
-        { icon: "bi-building", label: "Cliente", valor: clienteBase },
         { icon: "bi-box-seam", label: "Item", valor: itemBase },
         { icon: "bi-tags", label: "Categoria", valor: categoriaBase },
-        { icon: "bi-grid", label: "Complemento", valor: complementoBase },
-        { icon: "bi-geo-alt", label: "UF", valor: ufBase }
+        { icon: "bi-person-badge", label: "Responsável", valor: vendedorBase },
+        { icon: "bi-geo-alt", label: "UF", valor: ufBase },
+        { icon: "bi-diagram-3", label: "Segmento", valor: segmentoBase },
+        { icon: "bi-sliders", label: "Complexidade", valor: complexidadeBase }
       ];
 
-      const infoComercial = [
-        { icon: "bi-person-badge", label: "Responsável", valor: vendedorBase },
-        { icon: "bi-diagram-3", label: "Segmento", valor: segmentoBase },
-        { icon: "bi-sliders", label: "Complexidade", valor: complexidadeBase },
+      const camposSituacao = [
+        { icon: "bi-calendar-plus", label: "Abertura", valor: dataAbertura },
+        { icon: "bi-send", label: "Enviada", valor: dataEnviada },
+        { icon: "bi-pen", label: "Firmada", valor: dataFirmada },
+        { icon: "bi-receipt-cutoff", label: "Faturamento", valor: dataFaturamento },
         { icon: "bi-flag", label: "Etapa", valor: etapaBase },
         { icon: "bi-receipt", label: "NF", valor: nfBase },
-        { icon: "bi-calendar-check", label: "Data faturamento", valor: dataFaturamento }
+        { icon: "bi-calendar2-week", label: "Prazo", valor: prazoBase },
+        { icon: "bi-grid", label: "Complemento", valor: complementoBase }
       ];
 
-      const linhaTempo = [
-        { icon: "bi-calendar-plus", label: "Abertura", valor: dataAbertura, ativo: isPreenchido(dataAbertura) },
-        { icon: "bi-send", label: "Enviada", valor: dataEnviada, ativo: isPreenchido(dataEnviada) },
-        { icon: "bi-pen", label: "Firmada", valor: dataFirmada, ativo: isPreenchido(dataFirmada) },
-        { icon: "bi-receipt-cutoff", label: "Faturamento", valor: dataFaturamento, ativo: isPreenchido(dataFaturamento) }
+      const camposFinanceiros = [
+        { label: "Valor total", valor: exibirMoney(total), classe: "is-main" },
+        { label: "Recebido", valor: exibirMoney(recebido), classe: "is-ok" },
+        { label: "A receber", valor: exibirMoney(carteira), classe: "" },
+        { label: "CPMV", valor: exibirCampo(cpmvBase), classe: "" }
       ];
 
-      const labelsPrioritarios = new Set([
-        "OBRA", "CLIENTE", "ITEM", "CATEGORIA", "P. TOTAL", "VALOR TOTAL", "TOTAL", "VALOR", "RECEB.", "RECEBIDO", "VALOR RECEBIDO",
-        "A RECEB", "A RECEBER", "EM CARTEIRA", "DATA ABERTURA", "ABERTURA", "DATA FIRMADA", "FIRMADA", "DATA ENVIADA", "ENVIADA",
-        "DATA FATURAMENTO", "FATURAMENTO", "DATA FATURAM", "UF", "ETAPA", "STATUS", "SITUAÇÃO", "SITUACAO", "VENDEDOR",
-        "RESPONSÁVEL", "RESPONSAVEL", "SEGMENTO", "COMPLEXIDADE", "COMPL.", "COMPLEMENTO", "COMPL", "NF", "NFE", "NOTA FISCAL"
+      const labelsUsados = new Set([
+        "OBRA", "CLIENTE", "RAZÃO SOCIAL", "RAZAO SOCIAL", "ITEM", "DESCRIÇÃO", "DESCRICAO", "CATEGORIA", "CATEG.",
+        "DATA ABERTURA", "ABERTURA", "DATA FIRMADA", "FIRMADA", "DATA ENVIADA", "ENVIADA", "DATA FATURAMENTO", "FATURAMENTO", "DATA FATURAM",
+        "UF", "ETAPA", "STATUS", "SITUAÇÃO", "SITUACAO", "VENDEDOR", "RESPONSÁVEL", "RESPONSAVEL", "SEGMENTO", "COMPLEXIDADE",
+        "COMPL.", "COMPLEMENTO", "COMPL", "NF", "NFE", "NOTA FISCAL", "NOTA", "CPMV", "PRAZO", "PZ", "PRAZ", "DIAS PRAZO",
+        "P. TOTAL", "VALOR TOTAL", "TOTAL", "VALOR", "RECEB.", "RECEBIDO", "VALOR RECEBIDO", "A RECEB", "A RECEBER", "EM CARTEIRA"
       ]);
 
       const dadosAdicionais = lista
-        .filter(d => !labelsPrioritarios.has(String(d.label || "").trim().toUpperCase()))
+        .filter(d => !labelsUsados.has(String(d.label || "").trim().toUpperCase()))
         .filter(d => isPreenchido(d.valor));
 
-      const montarCards = arr => arr.map(d => `
-        <article class="erp-record-info-card">
+      const montarCampo = d => `
+        <article class="cbase-field-card ${d.destaque ? "is-wide" : ""} ${!isPreenchido(d.valor) ? "is-empty" : ""}">
           <span><i class="bi ${d.icon}"></i>${exibirCampo(d.label)}</span>
           <strong>${exibirCampo(d.valor)}</strong>
         </article>
-      `).join('');
+      `;
 
-      const montarLinhaTempo = arr => arr.map(d => `
-        <div class="erp-record-timeline-item ${d.ativo ? "is-active" : ""}">
-          <span class="erp-record-timeline-icon"><i class="bi ${d.icon}"></i></span>
+      const montarLinhaTempo = () => camposSituacao.map(d => `
+        <div class="cbase-timeline-item ${isPreenchido(d.valor) ? "is-active" : ""}">
+          <span class="cbase-timeline-icon"><i class="bi ${d.icon}"></i></span>
           <div>
             <small>${exibirCampo(d.label)}</small>
             <strong>${exibirCampo(d.valor)}</strong>
@@ -1678,12 +1689,12 @@ function setFilter(status) {
 
       const montarDadosAdicionais = () => {
         if (!dadosAdicionais.length) {
-          return `<div class="erp-record-empty-note"><i class="bi bi-info-circle"></i><span>Não há campos adicionais preenchidos para esta obra na base geral.</span></div>`;
+          return `<div class="cbase-empty-line"><i class="bi bi-info-circle"></i><span>Nenhum campo adicional preenchido foi retornado pela base.</span></div>`;
         }
 
         return `
-          <div class="erp-record-data-table-wrap">
-            <table class="erp-record-data-table">
+          <div class="cbase-table-wrap">
+            <table class="cbase-table">
               <tbody>
                 ${dadosAdicionais.map(d => `
                   <tr>
@@ -1698,110 +1709,120 @@ function setFilter(status) {
       };
 
       const html = `
-        <div class="erp-page erp-general-page erp-general-record-page">
-          <section class="erp-record-hero">
-            <div class="erp-record-identity">
-              <span class="erp-record-eyebrow"><i class="bi bi-database-check"></i> Consulta geral do ERP</span>
+        <div class="cbase-page">
+          <section class="cbase-hero">
+            <div class="cbase-hero-main">
+              <span class="cbase-eyebrow"><i class="bi bi-database-check"></i> Consulta da base ERP</span>
               <h2>Obra ${exibirCampo(obraBase)}</h2>
-              <p>${exibirCampo(clienteBase)}${itemBase !== "-" ? ` · ${exibirCampo(itemBase)}` : ""}</p>
-              <div class="erp-record-tags">
-                <span class="${situacaoClass}"><i class="bi bi-circle-fill"></i>${exibirCampo(statusOperacional)}</span>
+              <p>${exibirCampo(clienteBase)}</p>
+              <div class="cbase-chip-row">
+                <span class="cbase-status ${statusClasse}"><i class="bi bi-circle-fill"></i>${exibirCampo(statusOperacional)}</span>
                 <span><i class="bi bi-tags"></i>${exibirCampo(categoriaBase)}</span>
                 <span><i class="bi bi-geo-alt"></i>${exibirCampo(ufBase)}</span>
               </div>
             </div>
 
-            <aside class="erp-record-value-panel">
+            <aside class="cbase-hero-side">
               <span>Valor de referência</span>
-              <strong>R$ ${formatMoneyBR(total)}</strong>
-              <div class="erp-record-value-grid">
-                <div><small>Recebido</small><b>R$ ${formatMoneyBR(recebido)}</b></div>
-                <div><small>A receber</small><b>R$ ${formatMoneyBR(carteira)}</b></div>
-              </div>
+              <strong>${exibirMoney(total)}</strong>
+              <small>${percentualRecebido.toFixed(1)}% recebido pela base</small>
             </aside>
           </section>
 
-          <section class="erp-record-kpi-strip">
-            <article class="erp-record-kpi">
+          <section class="cbase-kpis">
+            <article>
               <span><i class="bi bi-calendar-event"></i></span>
               <div><small>Abertura</small><strong>${exibirCampo(dataAbertura)}</strong></div>
             </article>
-            <article class="erp-record-kpi">
-              <span><i class="bi bi-flag"></i></span>
-              <div><small>Situação</small><strong>${exibirCampo(statusOperacional)}</strong></div>
-            </article>
-            <article class="erp-record-kpi">
+            <article>
               <span><i class="bi bi-person-badge"></i></span>
               <div><small>Responsável</small><strong>${exibirCampo(vendedorBase)}</strong></div>
             </article>
-            <article class="erp-record-kpi">
-              <span><i class="bi bi-percent"></i></span>
-              <div><small>Recebimento</small><strong>${percentualRecebido.toFixed(1)}%</strong></div>
+            <article>
+              <span><i class="bi bi-receipt-cutoff"></i></span>
+              <div><small>NF</small><strong>${exibirCampo(nfBase)}</strong></div>
+            </article>
+            <article>
+              <span><i class="bi bi-hourglass-split"></i></span>
+              <div><small>A receber</small><strong>${exibirMoney(carteira)}</strong></div>
             </article>
           </section>
 
-          <section class="erp-record-layout">
-            <main class="erp-record-main">
-              <article class="erp-record-section">
-                <div class="erp-record-section-head">
-                  <div><span>Ficha cadastral</span><h3>Dados principais da obra</h3></div>
+          <section class="cbase-layout">
+            <main class="cbase-main">
+              <article class="cbase-section">
+                <header>
+                  <span>Dados da proposta</span>
+                  <h3>Ficha principal da obra</h3>
+                </header>
+                <div class="cbase-field-grid">
+                  ${camposPrincipais.map(montarCampo).join('')}
                 </div>
-                <div class="erp-record-info-grid">${montarCards(infoCadastro)}</div>
               </article>
 
-              <article class="erp-record-section">
-                <div class="erp-record-section-head">
-                  <div><span>Comercial e operação</span><h3>Informações complementares</h3></div>
+              <article class="cbase-section">
+                <header>
+                  <span>Situação e datas</span>
+                  <h3>Acompanhamento do registro</h3>
+                </header>
+                <div class="cbase-field-grid">
+                  ${camposSituacao.map(montarCampo).join('')}
                 </div>
-                <div class="erp-record-info-grid">${montarCards(infoComercial)}</div>
               </article>
 
-              <article class="erp-record-section">
-                <div class="erp-record-section-head">
-                  <div><span>Base ERP</span><h3>Demais campos disponíveis</h3></div>
-                </div>
+              <article class="cbase-section">
+                <header>
+                  <span>Base ERP</span>
+                  <h3>Campos adicionais disponíveis</h3>
+                </header>
                 ${montarDadosAdicionais()}
               </article>
             </main>
 
-            <aside class="erp-record-aside">
-              <article class="erp-record-section erp-record-status-panel">
-                <div class="erp-record-section-head compact">
-                  <div><span>Acompanhamento</span><h3>Linha do tempo</h3></div>
-                </div>
-                <div class="erp-record-timeline">${montarLinhaTempo(linhaTempo)}</div>
-              </article>
-
-              <article class="erp-record-section erp-record-finance-panel">
-                <div class="erp-record-section-head compact">
-                  <div><span>Resumo</span><h3>Leitura financeira</h3></div>
-                </div>
-                <div class="erp-progress-track"><div class="erp-progress-fill" style="width:${percentualRecebido.toFixed(1)}%"></div></div>
-                <div class="erp-record-finance-list">
-                  <div><span>Total da obra</span><strong>R$ ${formatMoneyBR(total)}</strong></div>
-                  <div><span>Valor recebido</span><strong class="is-ok">R$ ${formatMoneyBR(recebido)}</strong></div>
-                  <div><span>Valor a receber</span><strong>R$ ${formatMoneyBR(carteira)}</strong></div>
-                  <div><span>Percentual recebido</span><strong>${percentualRecebido.toFixed(1)}%</strong></div>
+            <aside class="cbase-aside">
+              <article class="cbase-section cbase-finance">
+                <header>
+                  <span>Resumo financeiro</span>
+                  <h3>Leitura rápida</h3>
+                </header>
+                <div class="cbase-progress"><div style="width:${percentualRecebido.toFixed(1)}%"></div></div>
+                <div class="cbase-finance-list">
+                  ${camposFinanceiros.map(d => `
+                    <div>
+                      <span>${exibirCampo(d.label)}</span>
+                      <strong class="${d.classe}">${d.valor}</strong>
+                    </div>
+                  `).join('')}
                 </div>
               </article>
 
-              <article class="erp-record-section erp-record-note-panel">
-                <div class="erp-record-section-head compact">
-                  <div><span>Observação</span><h3>Uso da informação</h3></div>
-                </div>
-                <p><i class="bi bi-shield-check"></i>Esta tela apenas organiza os dados retornados pela base geral do ERP. Nenhuma regra de cálculo ou consolidação foi alterada.</p>
+              <article class="cbase-section cbase-timeline">
+                <header>
+                  <span>Linha do tempo</span>
+                  <h3>Eventos da obra</h3>
+                </header>
+                ${montarLinhaTempo()}
+              </article>
+
+              <article class="cbase-section cbase-note">
+                <header>
+                  <span>Observação</span>
+                  <h3>Consulta segura</h3>
+                </header>
+                <p><i class="bi bi-shield-check"></i>Esta tela reorganiza os dados retornados pela base geral. Nenhuma regra financeira, cálculo ou consolidação foi alterada.</p>
               </article>
             </aside>
           </section>
         </div>`;
 
-      document.getElementById('tituloResumo').innerText = "Informações Gerais da Obra";
+      document.getElementById('tituloResumo').innerText = `Resumo da Obra - ${obraBase}`;
       corpo.innerHTML = html;
     }, msg => {
       corpo.innerHTML = `<div class="erp-page-empty is-error"><i class="bi bi-exclamation-triangle"></i><strong>Erro na busca</strong><span>${msg}</span></div>`;
       notify("Erro na busca: " + msg);
     });
   }
+
   function deletar() { 
     const obra = document.getElementById('obra').value.trim();
     if (!obra) { notify("Nenhuma obra selecionada para exclusão."); return; }
