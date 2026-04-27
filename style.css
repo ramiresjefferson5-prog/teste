@@ -3806,328 +3806,426 @@ body.device-mobile-shell .app-page-modal .modal-body {
   }
 }
 
-/* ---------- Modal da aba Todas: consulta compacta da proposta ---------- */
-#modalResumoGeral #corpoResumoGeral > .proposta-modal-page {
-  width: min(100%, 1120px) !important;
-  max-width: 1120px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
+/* =========================================================
+   CONSULTA DA PROPOSTA — MODAL DA ABA TODAS
+   Escopo exclusivo do conteúdo gerado por abrirResumoPropostaConteudo.
+   ========================================================= */
+#modalResumoGeral #corpoResumoGeral > .proposta-consulta-page {
+  width: 100% !important;
+  max-width: none !important;
 }
 
-.proposta-modal-page {
-  color: #0f172a;
-  padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+.proposta-consulta-page {
+  min-height: 100%;
+  width: 100%;
+  padding: clamp(22px, 2vw, 30px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  box-sizing: border-box;
 }
 
-.proposta-modal-top {
+.proposta-consulta-hero,
+.proposta-consulta-value-row,
+.proposta-consulta-grid {
+  width: 100%;
+}
+
+.proposta-consulta-hero {
+  display: block;
+}
+
+.proposta-consulta-value-row {
+  display: block;
+}
+
+.proposta-consulta-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
   align-items: stretch;
 }
 
-.proposta-modal-summary,
-.proposta-modal-value,
-.proposta-modal-card,
-.proposta-modal-field {
-  border: 1px solid rgba(203, 213, 225, 0.86);
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.045);
+.proposta-hero-card,
+.proposta-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #d9e2ee;
+  border-radius: 22px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
 }
 
-.proposta-modal-summary {
-  min-height: 162px;
-  border-radius: 24px;
-  padding: 24px 26px;
-  background:
-    radial-gradient(circle at top right, rgba(0, 74, 153, 0.10), transparent 30%),
-    linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+.proposta-hero-card-main {
+  min-height: 210px;
+  padding: clamp(24px, 2.2vw, 40px);
+  border-left: 6px solid #2563eb;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 0;
+  gap: 18px;
 }
 
-.proposta-modal-kicker {
+.proposta-obra-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #eef2f7;
+  border: 1px solid #d8e2ee;
+  color: #355070;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.proposta-hero-card-main h2 {
+  margin: 0;
+  color: #0f274a;
+  font-size: clamp(1.8rem, 2.2vw, 2.55rem);
+  font-weight: 950;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.proposta-hero-location {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
-  color: #526783;
-  font-size: 0.7rem;
-  font-weight: 950;
+  color: #597293;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.proposta-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.proposta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #d8e2ee;
+  background: #f8fafc;
+  color: #355070;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+}
+
+.proposta-chip.is-success {
+  background: #ebfff5;
+  border-color: #9ce3bc;
+  color: #047857;
+}
+
+.proposta-chip.is-info {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.proposta-chip.is-danger {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #be123c;
+}
+
+.proposta-chip.is-primary {
+  background: #eef4ff;
+  border-color: #c7d7ff;
+  color: #1d4ed8;
+}
+
+.proposta-chip.is-neutral {
+  background: #f8fafc;
+  border-color: #dbe4ef;
+  color: #475569;
+}
+
+.proposta-hero-card-value {
+  min-height: 142px;
+  padding: 28px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.09), transparent 26%),
+    linear-gradient(135deg, #061638 0%, #071a46 55%, #0c1d47 100%);
+  border: 0;
+  box-shadow: 0 14px 30px rgba(6, 22, 56, 0.24);
+}
+
+.proposta-hero-card-value span {
+  color: #6eb0ff;
+  font-size: 0.76rem;
+  font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.proposta-modal-kicker i {
-  color: #004a99;
+.proposta-hero-card-value strong {
+  color: #ffffff;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.proposta-panel {
+  padding: 18px 20px 20px;
+}
+
+.proposta-panel-full {
+  width: 100%;
+}
+
+.proposta-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #e7edf5;
+}
+
+.proposta-panel-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #8aa0bf;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.proposta-panel-title i {
   font-size: 1rem;
 }
 
-.proposta-modal-summary h2 {
-  margin: 0;
-  color: #002d5b;
-  font-size: clamp(1.8rem, 2.15vw, 2.55rem);
-  line-height: 1;
-  font-weight: 950;
-  letter-spacing: -0.052em;
-  overflow-wrap: anywhere;
+.proposta-panel-body {
+  min-width: 0;
 }
 
-.proposta-modal-summary p {
-  margin: 10px 0 0;
-  color: #334155;
-  font-size: clamp(0.95rem, 1vw, 1.08rem);
-  font-weight: 820;
+.proposta-panel-body-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.proposta-field-block > span,
+.proposta-info-item small,
+.proposta-mini-card span,
+.proposta-note-box p strong:first-child {
+  color: #8aa0bf;
+}
+
+.proposta-field-block > span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.proposta-field-highlight {
+  min-height: 58px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid #e5ebf3;
+  background: #f7f9fc;
+  color: #0f274a;
+  font-size: 0.98rem;
+  font-weight: 850;
   line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
-.proposta-modal-chips {
+.proposta-info-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.proposta-modal-chips span {
+.proposta-info-item {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.proposta-info-icon {
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  min-height: 32px;
-  padding: 0 11px;
-  border-radius: 999px;
-  color: #35516f;
-  background: #f1f5f9;
-  border: 1px solid #dbe5f0;
-  font-size: 0.74rem;
-  font-weight: 920;
-  text-transform: uppercase;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef4ff;
+  border: 1px solid #d6e5ff;
+  color: #2563eb;
+  font-size: 1rem;
+}
+
+.proposta-info-item small {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.78rem;
+  font-weight: 900;
   letter-spacing: 0.035em;
-  max-width: 100%;
+  text-transform: uppercase;
 }
 
-.proposta-modal-chips span i {
-  color: #004a99;
+.proposta-info-item strong {
+  display: block;
+  color: #0f274a;
+  font-size: 0.98rem;
+  font-weight: 850;
+  line-height: 1.32;
+  overflow-wrap: anywhere;
 }
 
-.proposta-modal-status.is-ok {
-  color: #047857;
-  background: #dcfce7;
-  border-color: #bbf7d0;
+.proposta-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
-.proposta-modal-status.is-primary {
-  color: #004a99;
-  background: #eff6ff;
-  border-color: #bfdbfe;
-}
-
-.proposta-modal-status.is-warning {
-  color: #b45309;
-  background: #fffbeb;
-  border-color: #fde68a;
-}
-
-.proposta-modal-status.is-neutral {
-  color: #475569;
-  background: #f8fafc;
-}
-
-.proposta-modal-status i {
-  font-size: 0.54rem;
-}
-
-.proposta-modal-value {
-  border-radius: 24px;
-  padding: 24px;
-  color: #ffffff;
-  background:
-    radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 32%),
-    linear-gradient(135deg, #002d5b 0%, #06457d 100%);
+.proposta-mini-card {
+  min-height: 88px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid #e5ebf3;
+  background: #f7f9fc;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 162px;
-  min-width: 0;
+  gap: 8px;
 }
 
-.proposta-modal-value span {
-  color: #bfdbfe;
-  font-size: 0.7rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
+.proposta-mini-card span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.79rem;
+  font-weight: 900;
+  letter-spacing: 0.035em;
   text-transform: uppercase;
 }
 
-.proposta-modal-value strong {
-  margin-top: 9px;
-  color: #ffffff;
-  font-size: clamp(1.75rem, 2vw, 2.45rem);
-  line-height: 1;
-  font-weight: 950;
-  letter-spacing: -0.055em;
-  overflow-wrap: anywhere;
+.proposta-mini-card strong {
+  color: #0f274a;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.2;
 }
 
-.proposta-modal-card {
-  margin-top: 16px;
-  border-radius: 24px;
-  padding: 18px;
+.proposta-mini-card-single {
+  min-height: 104px;
+}
+
+.proposta-note-box {
+  padding: 18px 20px;
+  border-radius: 15px;
+  border: 1px solid #dfe7f1;
   background: #ffffff;
 }
 
-.proposta-modal-card header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 12px;
-  padding-bottom: 13px;
-  margin-bottom: 14px;
-  border-bottom: 1px solid #edf2f7;
+.proposta-note-box p {
+  margin: 0 0 12px;
+  color: #425b78;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
-.proposta-modal-card header span,
-.proposta-modal-field span {
-  color: #64748b;
-  font-size: 0.66rem;
+.proposta-note-box p:last-child {
+  margin-bottom: 0;
+}
+
+.proposta-note-box p strong {
+  color: #0f274a;
   font-weight: 950;
-  letter-spacing: 0.065em;
-  text-transform: uppercase;
-}
-
-.proposta-modal-card header h3 {
-  margin: 3px 0 0;
-  color: #0f172a;
-  font-size: 1rem;
-  font-weight: 950;
-  letter-spacing: -0.02em;
-}
-
-.proposta-modal-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.proposta-modal-field {
-  min-height: 78px;
-  border-radius: 16px;
-  padding: 13px 14px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-  box-shadow: none;
-  min-width: 0;
-}
-
-.proposta-modal-field.is-wide {
-  grid-column: span 2;
-}
-
-.proposta-modal-field span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 7px;
-}
-
-.proposta-modal-field span i {
-  color: #004a99;
-}
-
-.proposta-modal-field strong {
-  display: block;
-  color: #0f172a;
-  font-size: 0.94rem;
-  font-weight: 920;
-  line-height: 1.23;
-  overflow-wrap: anywhere;
-}
-
-.proposta-modal-empty {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 58px;
-  padding: 14px;
-  border-radius: 16px;
-  color: #64748b;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  font-weight: 820;
-}
-
-.proposta-modal-empty i {
-  color: #004a99;
 }
 
 @media (max-width: 991.98px) {
-  .proposta-modal-top {
+  .proposta-consulta-grid {
     grid-template-columns: 1fr;
-  }
-
-  .proposta-modal-value {
-    min-height: 118px;
-  }
-
-  .proposta-modal-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .proposta-modal-field.is-wide {
-    grid-column: span 2;
   }
 }
 
 @media (max-width: 767.98px) {
-  #modalResumoGeral #corpoResumoGeral > .proposta-modal-page {
-    width: 100% !important;
+  .proposta-consulta-page {
+    padding: 14px;
+    gap: 14px;
   }
 
-  .proposta-modal-page {
-    padding-bottom: max(18px, env(safe-area-inset-bottom, 0px));
+  .proposta-hero-card-main {
+    min-height: unset;
+    padding: 20px 18px;
+    border-left-width: 5px;
   }
 
-  .proposta-modal-summary,
-  .proposta-modal-value,
-  .proposta-modal-card {
+  .proposta-hero-card-main h2 {
+    font-size: 1.75rem;
+  }
+
+  .proposta-hero-location {
+    font-size: 0.92rem;
+  }
+
+  .proposta-chip {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .proposta-hero-card-value {
+    min-height: 118px;
+    padding: 22px 18px;
+  }
+
+  .proposta-hero-card-value strong {
+    font-size: 2.2rem;
+  }
+
+  .proposta-panel {
+    padding: 16px;
     border-radius: 18px;
   }
 
-  .proposta-modal-summary {
-    min-height: unset;
-    padding: 18px;
+  .proposta-panel-head {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
   }
 
-  .proposta-modal-summary h2 {
-    font-size: 1.52rem;
+  .proposta-panel-title {
+    font-size: 0.74rem;
+    gap: 8px;
   }
 
-  .proposta-modal-summary p {
-    font-size: 0.9rem;
-  }
-
-  .proposta-modal-value {
-    min-height: unset;
-    padding: 18px;
-  }
-
-  .proposta-modal-card {
-    padding: 15px;
-  }
-
-  .proposta-modal-card header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .proposta-modal-grid {
+  .proposta-mini-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  .proposta-modal-field.is-wide {
-    grid-column: auto;
+  .proposta-mini-card,
+  .proposta-mini-card-single,
+  .proposta-field-highlight,
+  .proposta-note-box {
+    padding: 14px;
+  }
+
+  .proposta-note-box p {
+    font-size: 0.92rem;
   }
 }
-
