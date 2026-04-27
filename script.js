@@ -1448,73 +1448,64 @@ function setFilter(status) {
       : '-';
 
     let html = `
-      <div class="finance-page-shell">
-        <section class="finance-page-hero">
-          <div class="finance-hero-copy">
-            <span class="finance-hero-eyebrow"><i class="bi bi-wallet2"></i> Painel financeiro da obra</span>
+      <div class="erp-page erp-finance-page">
+        <section class="erp-command-panel">
+          <div class="erp-command-copy">
+            <span class="erp-command-kicker"><i class="bi bi-wallet2"></i> Painel financeiro da obra</span>
             <h2>Resumo de CPMV e compras</h2>
-            <p>Leitura rápida do custo planejado, uso registrado, saldo disponível e participação dos itens de compra.</p>
+            <p>Visão operacional do custo planejado, uso registrado, saldo disponível e participação dos itens da obra.</p>
           </div>
-          <div class="finance-hero-score">
-            <span>Uso do CPMV</span>
+          <div class="erp-command-side ${saldoStatusClass}">
+            <span>Status do CPMV</span>
             <strong>${percCpmv.toFixed(1)}%</strong>
             <small>${formatMoneyBR(totalUsadoCpmv)} utilizado de ${formatMoneyBR(cpmv)}</small>
           </div>
         </section>
 
-        <section class="finance-kpi-board">
-          <article class="finance-kpi-card finance-kpi-card-primary">
-            <span class="finance-kpi-icon"><i class="bi bi-folder2-open"></i></span>
-            <div>
-              <small>CPMV planejado</small>
-              <strong>${formatMoneyBR(cpmv)}</strong>
-            </div>
+        <section class="erp-kpi-strip">
+          <article class="erp-kpi-card">
+            <span class="erp-kpi-icon"><i class="bi bi-briefcase"></i></span>
+            <div><small>CPMV planejado</small><strong>${formatMoneyBR(cpmv)}</strong></div>
           </article>
-          <article class="finance-kpi-card">
-            <span class="finance-kpi-icon"><i class="bi bi-graph-up-arrow"></i></span>
-            <div>
-              <small>CPMV já utilizado</small>
-              <strong>${formatMoneyBR(totalUsadoCpmv)}</strong>
-            </div>
+          <article class="erp-kpi-card">
+            <span class="erp-kpi-icon"><i class="bi bi-graph-up-arrow"></i></span>
+            <div><small>CPMV utilizado</small><strong>${formatMoneyBR(totalUsadoCpmv)}</strong></div>
           </article>
-          <article class="finance-kpi-card ${saldoCpmvBruto < 0 ? 'finance-kpi-card-alert' : 'finance-kpi-card-ok'}">
-            <span class="finance-kpi-icon"><i class="bi bi-pie-chart"></i></span>
-            <div>
-              <small>Saldo disponível no CPMV</small>
-              <strong>${formatMoneyBR(saldoCpmv)}</strong>
-            </div>
+          <article class="erp-kpi-card ${saldoCpmvBruto < 0 ? 'is-alert' : 'is-ok'}">
+            <span class="erp-kpi-icon"><i class="bi bi-pie-chart"></i></span>
+            <div><small>Saldo disponível</small><strong>${formatMoneyBR(saldoCpmv)}</strong></div>
+          </article>
+          <article class="erp-kpi-card">
+            <span class="erp-kpi-icon"><i class="bi bi-box-seam"></i></span>
+            <div><small>Itens monitorados</small><strong>${totalItensCompra}</strong></div>
           </article>
         </section>
 
-        <section class="finance-workspace">
-          <div class="finance-workspace-main">
-            <article class="finance-panel finance-panel-progress">
-              <div class="finance-panel-heading">
+        <section class="erp-workspace-grid">
+          <main class="erp-workspace-main">
+            <article class="erp-panel erp-panel-progress">
+              <div class="erp-panel-heading">
                 <div>
-                  <span class="finance-panel-kicker">Acompanhamento</span>
+                  <span>Controle de consumo</span>
                   <h3>Uso do custo planejado</h3>
                 </div>
                 <strong>${percCpmv.toFixed(1)}% utilizado</strong>
               </div>
-              <div class="finance-progress-bar finance-progress-bar-large"><div class="finance-progress-fill" style="width:${percCpmvLimitado}%"></div></div>
-              <div class="finance-progress-legend">
-                <span>0%</span>
-                <span>50%</span>
-                <span>100%</span>
-              </div>
+              <div class="erp-progress-track"><div class="erp-progress-fill" style="width:${percCpmvLimitado}%"></div></div>
+              <div class="erp-progress-legend"><span>0%</span><span>50%</span><span>100%</span></div>
             </article>
 
-            <article class="finance-panel finance-panel-table">
-              <div class="finance-panel-heading">
+            <article class="erp-panel erp-panel-table">
+              <div class="erp-panel-heading">
                 <div>
-                  <span class="finance-panel-kicker">Detalhamento</span>
-                  <h3>Itens financeiros registrados</h3>
+                  <span>Detalhamento financeiro</span>
+                  <h3>Itens registrados na obra</h3>
                 </div>
                 <strong>${totalItensCompra} itens</strong>
               </div>
-              <div class="finance-scroll-area resumo-modal-scroll">
-                <div class="finance-table-shell"><div class="table-responsive"><table class="table table-sm text-center align-middle">
-                  <thead><tr><th>Item</th><th>Status</th><th>Valor</th><th>% / CPMV</th><th>% / Compra Total</th></tr></thead>
+              <div class="erp-table-wrap">
+                <table class="erp-data-table">
+                  <thead><tr><th>Item</th><th>Status</th><th>Valor</th><th>% / CPMV</th><th>% / Compra total</th></tr></thead>
                   <tbody>
     `;
 
@@ -1523,48 +1514,43 @@ function setFilter(status) {
       const pCompra = totalUsadoCpmv > 0 ? ((reg.valor / totalUsadoCpmv) * 100).toFixed(1) : "0.0";
       const statusExibicao = isStatusDate(reg.status) ? formatDateDisplayBR(reg.status) : reg.status;
       const statusClass = reg.status === "OK" ? "is-ok" : (reg.status === "?" ? "is-alert" : (isStatusDate(reg.status) ? "is-date" : ""));
-      html += `<tr><td class="finance-item-name">${reg.item}</td><td><span class="finance-status-badge ${statusClass}">${statusExibicao}</span></td><td>${formatMoneyBR(reg.valor)}</td><td class="finance-percent-main">${pTotal}%</td><td class="finance-percent-sub">${pCompra}%</td></tr>`;
+      html += `<tr><td class="erp-td-strong">${reg.item}</td><td><span class="erp-status-badge ${statusClass}">${statusExibicao}</span></td><td>${formatMoneyBR(reg.valor)}</td><td class="erp-percent">${pTotal}%</td><td class="erp-percent muted">${pCompra}%</td></tr>`;
     });
 
-    if (itensFinanceiros.length === 0) html += `<tr><td colspan="5" class="finance-empty">Nenhum item financeiro registrado.</td></tr>`;
+    if (itensFinanceiros.length === 0) html += `<tr><td colspan="5" class="erp-empty-row">Nenhum item financeiro registrado.</td></tr>`;
 
-    html += `</tbody><tfoot><tr><td colspan="2">Total</td><td>${formatMoneyBR(totalUsadoCpmv)}</td><td>${percCpmv.toFixed(1)}%</td><td>${itensFinanceiros.length > 0 ? '100%' : '0%'}</td></tr></tfoot></table></div></div>
+    html += `</tbody><tfoot><tr><td colspan="2">Total de compras</td><td>${formatMoneyBR(totalUsadoCpmv)}</td><td>${percCpmv.toFixed(1)}%</td><td>${itensFinanceiros.length > 0 ? '100%' : '0%'}</td></tr></tfoot>
+                </table>
               </div>
             </article>
-          </div>
+          </main>
 
-          <aside class="finance-workspace-side">
-            <article class="finance-panel finance-panel-side">
-              <div class="finance-panel-heading compact">
-                <div>
-                  <span class="finance-panel-kicker">Análise CPMV</span>
-                  <h3>${percCpmv.toFixed(1)}% usado</h3>
-                </div>
+          <aside class="erp-workspace-aside">
+            <article class="erp-panel erp-side-panel">
+              <div class="erp-panel-heading compact">
+                <div><span>Análise CPMV</span><h3>${percCpmv.toFixed(1)}% usado</h3></div>
               </div>
-              <div class="finance-kpi-list">
-                <div class="finance-kpi-row"><span class="finance-kpi-name">Uso registrado</span><span class="finance-kpi-data">${formatMoneyBR(totalUsadoCpmv)}</span></div>
-                <div class="finance-kpi-row"><span class="finance-kpi-name">Participação no CPMV</span><span class="finance-kpi-data">${percCpmv.toFixed(1)}%</span></div>
-                <div class="finance-kpi-row"><span class="finance-kpi-name">Saldo disponível</span><span class="finance-kpi-data ${saldoStatusClass}">${formatMoneyBR(saldoCpmvBruto)}</span></div>
-                <div class="finance-kpi-row"><span class="finance-kpi-name">Saldo percentual</span><span class="finance-kpi-data ${saldoStatusClass}">${percSaldoCpmv.toFixed(1)}%</span></div>
+              <div class="erp-info-list">
+                <div><span>Uso registrado</span><strong>${formatMoneyBR(totalUsadoCpmv)}</strong></div>
+                <div><span>Participação no CPMV</span><strong>${percCpmv.toFixed(1)}%</strong></div>
+                <div><span>Saldo disponível</span><strong class="${saldoStatusClass}">${formatMoneyBR(saldoCpmvBruto)}</strong></div>
+                <div><span>Saldo percentual</span><strong class="${saldoStatusClass}">${percSaldoCpmv.toFixed(1)}%</strong></div>
               </div>
             </article>
 
-            <article class="finance-panel finance-panel-side">
-              <div class="finance-panel-heading compact">
-                <div>
-                  <span class="finance-panel-kicker">Itens de compra</span>
-                  <h3>${totalItensCompra} itens</h3>
-                </div>
+            <article class="erp-panel erp-side-panel">
+              <div class="erp-panel-heading compact">
+                <div><span>Itens de compra</span><h3>${totalItensCompra} itens</h3></div>
               </div>
-              <div class="finance-kpi-list">
-                <div class="finance-kpi-row"><span class="finance-kpi-name">Base monitorada</span><span class="finance-kpi-data">${totalItensCompra} itens</span></div>
-                <div class="finance-kpi-row"><span class="finance-kpi-name">Concluídos</span><span class="finance-kpi-data is-ok">${itensOk} · ${percItensOk.toFixed(1)}%</span></div>
-                <div class="finance-kpi-row"><span class="finance-kpi-name">Pendentes</span><span class="finance-kpi-data ${itensFalta > 0 ? 'is-alert' : 'is-ok'}">${itensFalta} · ${percItensFalta.toFixed(1)}%</span></div>
+              <div class="erp-info-list">
+                <div><span>Base monitorada</span><strong>${totalItensCompra} itens</strong></div>
+                <div><span>Concluídos</span><strong class="is-ok">${itensOk} · ${percItensOk.toFixed(1)}%</strong></div>
+                <div><span>Pendentes</span><strong class="${itensFalta > 0 ? 'is-alert' : 'is-ok'}">${itensFalta} · ${percItensFalta.toFixed(1)}%</strong></div>
               </div>
             </article>
 
-            <article class="finance-panel finance-panel-side finance-panel-reading">
-              <span class="finance-panel-kicker">Leitura crítica</span>
+            <article class="erp-panel erp-reading-panel">
+              <span class="erp-panel-mini-title">Leitura crítica</span>
               <p><i class="bi bi-activity"></i> <span>${leituraCritica}</span></p>
               <strong>${leituraPercentual}</strong>
             </article>
@@ -1574,30 +1560,94 @@ function setFilter(status) {
 
     document.getElementById('tituloResumo').innerText = "Resumo Financeiro da Obra"; document.getElementById('corpoResumoGeral').innerHTML = html; modalResumoUI.show();
   }
-
   function abrirResumoGeral() {
     const obra = document.getElementById('obra').value.trim();
     if (!obra) { notify("Informe a obra para consultar a base geral."); return; }
-    document.getElementById('corpoResumoGeral').innerHTML = `<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div><p class="mt-3 fw-bold text-muted">Buscando dados na base GERAL...</p></div>`; modalResumoUI.show();
+    document.getElementById('corpoResumoGeral').innerHTML = `<div class="erp-page-loading"><div class="spinner-border text-primary" role="status"></div><p>Buscando dados na base GERAL...</p></div>`; modalResumoUI.show();
 
     callServer('getResumoGeralObra', [obra], res => {
-      if (!res || !res.encontrado) { document.getElementById('corpoResumoGeral').innerHTML = `<p class="text-center text-muted fw-bold py-5"><i class="bi bi-search d-block mb-2" style="font-size: 2rem;"></i>Obra não localizada na base.</p>`; return; }
+      if (!res || !res.encontrado) { document.getElementById('corpoResumoGeral').innerHTML = `<div class="erp-page-empty"><i class="bi bi-search"></i><strong>Obra não localizada na base.</strong><span>Confira o número informado e tente novamente.</span></div>`; return; }
       const lista = Array.isArray(res.dados) ? res.dados : []; const mapa = {}; lista.forEach(d => { mapa[String(d.label || "").trim().toUpperCase()] = d.valor || "-"; });
-      
+
       const total = parseMoneyFlexible(mapa["P. TOTAL"]); 
       const recebido = parseMoneyFlexible(mapa["RECEB."]); 
       const carteira = parseMoneyFlexible(mapa["A RECEB"] || mapa["EM CARTEIRA"]); 
       const percentualRecebido = total > 0 ? Math.min((recebido / total) * 100, 100) : 0;
-      
+
       const infoPrincipal = [ { icon: "bi-folder2-open", label: "Obra", valor: mapa["OBRA"] || obra }, { icon: "bi-building", label: "Cliente", valor: mapa["CLIENTE"] || "-" }, { icon: "bi-box-seam", label: "Item", valor: mapa["ITEM"] || "-" }, { icon: "bi-tags", label: "Categoria", valor: mapa["CATEGORIA"] || "-" } ];
       const infoComplementar = [ { icon: "bi-calendar-event", label: "Data abertura", valor: mapa["DATA ABERTURA"] || "-" }, { icon: "bi-pen", label: "Data firmada", valor: mapa["DATA FIRMADA"] || "-" }, { icon: "bi-grid", label: "Compl.", valor: mapa["COMPL."] || "-" }, { icon: "bi-geo-alt", label: "UF", valor: mapa["UF"] || "-" } ];
-      const montarCards = (arr) => arr.map(d => `<div class="geral-card"><div class="geral-card-label"><i class="bi ${d.icon} me-1"></i>${d.label}</div><div class="geral-card-value">${d.valor}</div></div>`).join('');
+      const montarCards = (arr) => arr.map(d => `<article class="erp-info-card"><span><i class="bi ${d.icon}"></i>${d.label}</span><strong>${d.valor}</strong></article>`).join('');
 
-      const html = `<div class="resumo-modal-scroll"><div class="geral-shell"><section class="geral-section"><h6 class="geral-section-title"><i class="bi bi-layout-text-window-reverse"></i> Dados principais</h6><div class="geral-grid">${montarCards(infoPrincipal)}</div></section><section class="geral-section"><h6 class="geral-section-title"><i class="bi bi-diagram-3"></i> Informações complementares</h6><div class="geral-grid">${montarCards(infoComplementar)}</div></section><section class="geral-section"><h6 class="geral-section-title"><i class="bi bi-graph-up-arrow"></i> Visão financeira</h6><div class="geral-card geral-total-card"><div class="geral-card-label"><i class="bi bi-wallet2 me-1"></i>Valor total da obra</div><div class="geral-card-value money">${formatMoneyBR(total)}</div><div class="geral-card-sub">Base geral consolidada</div><div class="geral-progress-track"><div class="geral-progress-bar" style="width:${percentualRecebido.toFixed(1)}%"></div></div></div><div class="geral-finance-grid"><div class="geral-card"><div class="geral-card-label"><i class="bi bi-arrow-down-circle me-1"></i>Valor recebido</div><div class="geral-card-value money">${formatMoneyBR(recebido)}</div><div class="geral-card-sub">${percentualRecebido.toFixed(1)}% do total</div></div><div class="geral-card"><div class="geral-card-label"><i class="bi bi-hourglass-split me-1"></i>Valor a receber</div><div class="geral-card-value money">${formatMoneyBR(carteira)}</div><div class="geral-card-sub">${total > 0 ? Math.max(0, 100 - percentualRecebido).toFixed(1) : "0.0"}% do total</div></div></div></section></div></div>`;
-      document.getElementById('tituloResumo').innerText = "Dados da Base Geral"; document.getElementById('corpoResumoGeral').innerHTML = html;
-    }, msg => { document.getElementById('corpoResumoGeral').innerHTML = `<p class="text-center text-danger fw-bold py-5">Erro na busca: ${msg}</p>`; notify("Erro na busca: " + msg); });
+      const html = `
+        <div class="erp-page erp-general-page">
+          <section class="erp-command-panel">
+            <div class="erp-command-copy">
+              <span class="erp-command-kicker"><i class="bi bi-grid-1x2"></i> Base geral da obra</span>
+              <h2>${mapa["OBRA"] || obra}</h2>
+              <p>${mapa["CLIENTE"] || "Cliente não informado"} · ${mapa["ITEM"] || "Item não informado"}</p>
+            </div>
+            <div class="erp-command-side">
+              <span>Valor total da obra</span>
+              <strong>${formatMoneyBR(total)}</strong>
+              <small>${percentualRecebido.toFixed(1)}% recebido</small>
+            </div>
+          </section>
+
+          <section class="erp-kpi-strip">
+            <article class="erp-kpi-card">
+              <span class="erp-kpi-icon"><i class="bi bi-wallet2"></i></span>
+              <div><small>Total da obra</small><strong>${formatMoneyBR(total)}</strong></div>
+            </article>
+            <article class="erp-kpi-card is-ok">
+              <span class="erp-kpi-icon"><i class="bi bi-arrow-down-circle"></i></span>
+              <div><small>Valor recebido</small><strong>${formatMoneyBR(recebido)}</strong></div>
+            </article>
+            <article class="erp-kpi-card">
+              <span class="erp-kpi-icon"><i class="bi bi-hourglass-split"></i></span>
+              <div><small>Valor a receber</small><strong>${formatMoneyBR(carteira)}</strong></div>
+            </article>
+            <article class="erp-kpi-card">
+              <span class="erp-kpi-icon"><i class="bi bi-percent"></i></span>
+              <div><small>Recebimento</small><strong>${percentualRecebido.toFixed(1)}%</strong></div>
+            </article>
+          </section>
+
+          <section class="erp-workspace-grid erp-general-grid">
+            <main class="erp-workspace-main">
+              <article class="erp-panel">
+                <div class="erp-panel-heading">
+                  <div><span>Cadastro</span><h3>Dados principais</h3></div>
+                </div>
+                <div class="erp-info-card-grid">${montarCards(infoPrincipal)}</div>
+              </article>
+
+              <article class="erp-panel">
+                <div class="erp-panel-heading">
+                  <div><span>Complementos</span><h3>Informações operacionais</h3></div>
+                </div>
+                <div class="erp-info-card-grid">${montarCards(infoComplementar)}</div>
+              </article>
+            </main>
+
+            <aside class="erp-workspace-aside">
+              <article class="erp-panel erp-side-panel">
+                <div class="erp-panel-heading compact">
+                  <div><span>Visão financeira</span><h3>Recebimento da obra</h3></div>
+                </div>
+                <div class="erp-progress-track"><div class="erp-progress-fill" style="width:${percentualRecebido.toFixed(1)}%"></div></div>
+                <div class="erp-info-list">
+                  <div><span>Total</span><strong>${formatMoneyBR(total)}</strong></div>
+                  <div><span>Recebido</span><strong class="is-ok">${formatMoneyBR(recebido)}</strong></div>
+                  <div><span>A receber</span><strong>${formatMoneyBR(carteira)}</strong></div>
+                  <div><span>Percentual recebido</span><strong>${percentualRecebido.toFixed(1)}%</strong></div>
+                </div>
+              </article>
+            </aside>
+          </section>
+        </div>`;
+      document.getElementById('tituloResumo').innerText = "Informações Gerais da Obra"; document.getElementById('corpoResumoGeral').innerHTML = html;
+    }, msg => { document.getElementById('corpoResumoGeral').innerHTML = `<div class="erp-page-empty is-error"><i class="bi bi-exclamation-triangle"></i><strong>Erro na busca</strong><span>${msg}</span></div>`; notify("Erro na busca: " + msg); });
   }
-
   function deletar() { 
     const obra = document.getElementById('obra').value.trim();
     if (!obra) { notify("Nenhuma obra selecionada para exclusão."); return; }
