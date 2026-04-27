@@ -16,6 +16,68 @@ const OBRAS_2025_AUTORIZADAS = new Set([
   "25187"
 ]);
 
+
+const FATURAMENTO_FINANCEIRO_2026 = Object.freeze({
+  "721": { data: "08/01/2026", valor: 830929, cliente: "AQUALCULTURA FORTALE" },
+  "722": { data: "12/01/2026", valor: 10000, cliente: "TAS BOMBAS" },
+  "725": { data: "13/01/2026", valor: 5864.60, cliente: "AQUALCULTURA FORTALE" },
+  "726": { data: "26/01/2026", valor: 2861.40, cliente: "AQUISA PARAIPABA" },
+  "727": { data: "26/01/2026", valor: 5047.69, cliente: "AQUISA PARAIPABA" },
+  "728": { data: "26/01/2026", valor: 10000, cliente: "TAS BOMBAS" },
+  "729": { data: "27/01/2026", valor: 13049.30, cliente: "SAMARIA" },
+  "731": { data: "27/01/2026", valor: 70000, cliente: "HYPEMIDIA LTDA" },
+
+  "734": { data: "03/02/2026", valor: 17500, cliente: "HYPEMIDIA LTDA" },
+  "735": { data: "03/02/2026", valor: 6961.45, cliente: "SAMARIA" },
+  "736": { data: "03/02/2026", valor: 1466.15, cliente: "AQUALCULTURA FORTALE" },
+  "737": { data: "03/02/2026", valor: 7572.60, cliente: "SAMARIA CAMAROES" },
+  "739": { data: "03/02/2026", valor: 520.25, cliente: "SAMARIA" },
+  "741": { data: "11/02/2026", valor: 7284.39, cliente: "AQUISA BEBERIBE" },
+  "742": { data: "13/02/2026", valor: 3050.40, cliente: "AQUISA PARAIPABA" },
+  "743": { data: "13/02/2026", valor: 350.33, cliente: "CONSTRUTORA SAMARIA" },
+  "744": { data: "25/02/2026", valor: 9915.41, cliente: "CAMAR RN MARICULTURA" },
+  "746": { data: "26/02/2026", valor: 10151.44, cliente: "TECNARAO TEC" },
+  "747": { data: "27/02/2026", valor: 15629.40, cliente: "LARVIFORT" },
+  "748": { data: "27/02/2026", valor: 5240, cliente: "SAMARIA CAMAROES" },
+  "749": { data: "27/02/2026", valor: 1133.48, cliente: "NORSAL" },
+  "750": { data: "27/02/2026", valor: 3437.71, cliente: "NORSAL" },
+  "751": { data: "27/02/2026", valor: 2583.31, cliente: "NORSAL" },
+
+  "752": { data: "04/03/2026", valor: 165.20, cliente: "AQUALCULTURA FORTALE" },
+  "753": { data: "04/03/2026", valor: 176.56, cliente: "AQUALCULTURA FORTALE" },
+  "754": { data: "04/03/2026", valor: 9030.45, cliente: "AQUALCULTURA FORTALE" },
+  "755": { data: "04/03/2026", valor: 4692.71, cliente: "AQUALCULTURA FORTALE" },
+  "756": { data: "04/03/2026", valor: 32886.47, cliente: "AQUALCULTURA FORTALE" },
+  "757": { data: "04/03/2026", valor: 15057.90, cliente: "AQUATEC AQUACULTURA" },
+  "758": { data: "04/03/2026", valor: 18316.80, cliente: "AQUATEC AQUACULTURA" },
+  "759": { data: "04/03/2026", valor: 269614.60, cliente: "SAMARIA CAMAROES" },
+  "760": { data: "04/03/2026", valor: 78000.90, cliente: "AQUISA PARAIPABA" },
+  "761": { data: "04/03/2026", valor: 5042.11, cliente: "NORSAL" },
+  "762": { data: "04/03/2026", valor: 4816.30, cliente: "NORSAL" },
+  "767": { data: "11/03/2026", valor: 12000.03, cliente: "AQUISA BEBERIBE" },
+  "768": { data: "18/03/2026", valor: 15500.92, cliente: "SAMARIA CAMAROES" },
+  "769": { data: "18/03/2026", valor: 12256.60, cliente: "SAMARIA CAMAROES" },
+  "770": { data: "20/03/2026", valor: 18443.30, cliente: "AQUISA PARAIPABA" },
+  "771": { data: "26/03/2026", valor: 10421.44, cliente: "VARICRED DO NORDESTE" },
+  "774": { data: "30/03/2026", valor: 3457.26, cliente: "AGROCOURA AGROPECUÁR" },
+  "775": { data: "31/03/2026", valor: 61081.87, cliente: "AQUISA PARAIPABA" },
+
+  "776": { data: "01/04/2026", valor: 404421, cliente: "SAMARIA CAMAROES LTD" },
+  "777": { data: "01/04/2026", valor: 17500.15, cliente: "SAMARIA CAMAROES LTD" },
+  "778": { data: "08/04/2026", valor: 2360, cliente: "SAMARIA CAMAROES LTD" },
+  "779": { data: "08/04/2026", valor: 12790, cliente: "SAMARIA CAMAROES LTD" },
+  "780": { data: "10/04/2026", valor: 1501.05, cliente: "CAMAR RN MARICULTURA" },
+  "781": { data: "10/04/2026", valor: 5240, cliente: "SAMARIA CAMAROES" },
+  "785": { data: "14/04/2026", valor: 50475.33, cliente: "MUCUJO CARCINICULTUR" },
+  "786": { data: "17/04/2026", valor: 4167.90, cliente: "AFONSO FRANCA CONSTR" },
+  "787": { data: "17/04/2026", valor: 1374.30, cliente: "AFONSO FRANCA CONSTR" },
+  "788": { data: "23/04/2026", valor: 27000, cliente: "SAMARIA CAMAROES LTD" },
+  "789": { data: "23/04/2026", valor: 85730, cliente: "OESTE VERDE PREMOLDA" },
+  "790": { data: "24/04/2026", valor: 4109.14, cliente: "AQUISA PARAIPABA" },
+  "791": { data: "24/04/2026", valor: 3293.06, cliente: "AQUISA PARAIPABA" },
+  "792": { data: "24/04/2026", valor: 4646.25, cliente: "SANTA MARIA AQUACULT" }
+});
+
 function getSafeId(str) {
   if (!str) return "";
   return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '_');
@@ -140,6 +202,12 @@ function normalizeNF(value) {
   return normalizeDigits(value);
 }
 
+function getFaturamentoFinanceiroPorNF(value) {
+  const nfNormalizada = normalizeNF(value);
+  if (!nfNormalizada) return null;
+  return FATURAMENTO_FINANCEIRO_2026[nfNormalizada] || null;
+}
+
 function extractObraPermitida(value) {
   const txt = String(value || '').trim();
   if (!txt) return null;
@@ -174,7 +242,8 @@ function isLinhaFinanceiramenteValida(erp) {
 
   const nfNormalizada = normalizeNF(erp.nf);
   const temNF = nfNormalizada !== '';
-  const temFaturamento = Boolean(erp.data_faturam || erp.data_faturamento);
+  const faturamentoFinanceiro = getFaturamentoFinanceiroPorNF(erp.nf);
+  const temFaturamento = Boolean(faturamentoFinanceiro || erp.data_faturam || erp.data_faturamento);
 
   return temNF && temFaturamento;
 }
@@ -232,8 +301,8 @@ function parseDataUniversal(value) {
   return null;
 }
 
-function atualizarMaiorDataFaturamento(bloco, erp) {
-  const valorOriginal = pickFirstNonEmpty(erp.data_faturam, erp.data_faturamento);
+function atualizarMaiorDataFaturamento(bloco, erp, dataFaturamentoPreferencial) {
+  const valorOriginal = pickFirstNonEmpty(dataFaturamentoPreferencial, erp.data_faturam, erp.data_faturamento);
   const dataNormalizada = parseDataUniversal(String(valorOriginal || '').trim());
   if (!dataNormalizada) return;
 
@@ -389,6 +458,11 @@ function consolidarGrupoObra(grupo) {
   linhasSelecionadas.forEach(item => {
     const erp = item.erp;
     const nfNormalizada = normalizeNF(erp.nf);
+    const faturamentoFinanceiro = item.faturamentoFinanceiro || getFaturamentoFinanceiroPorNF(erp.nf);
+    const dataFaturamentoPreferencial = faturamentoFinanceiro ? faturamentoFinanceiro.data : "";
+    const valorDocumento = faturamentoFinanceiro
+      ? parseMoneyFlexible(faturamentoFinanceiro.valor)
+      : parseMoneyFlexible(item.valorNF || 0);
     const chaveValor = nfNormalizada ? `NF:${nfNormalizada}` : `LINHA:${item.sourceIndex}`;
 
     if (!bloco.chavesValorContabilizadas.has(chaveValor)) {
@@ -411,13 +485,13 @@ function consolidarGrupoObra(grupo) {
     bloco.linha[29] = pickFirstNonEmpty(bloco.linha[29], erp.nf);
     bloco.linha[30] = pickFirstNonEmpty(bloco.linha[30], erp.data_frustrada);
     bloco.linha[31] = pickFirstNonEmpty(bloco.linha[31], erp.data_enviada);
-    atualizarMaiorDataFaturamento(bloco, erp);
+    atualizarMaiorDataFaturamento(bloco, erp, dataFaturamentoPreferencial);
 
-    const dataFaturamentoOriginal = pickFirstNonEmpty(erp.data_faturam, erp.data_faturamento);
+    const dataFaturamentoOriginal = pickFirstNonEmpty(dataFaturamentoPreferencial, erp.data_faturam, erp.data_faturamento);
     const dataFaturamentoIso = formatDateToISO(dataFaturamentoOriginal);
     const mesReferencia = getMonthKeyFromValue(dataFaturamentoOriginal);
 
-    if (nfNormalizada && dataFaturamentoIso && parseMoneyFlexible(item.valorNF || 0) > 0) {
+    if (nfNormalizada && dataFaturamentoIso && valorDocumento > 0) {
       if (!bloco.documentosConcluidos.has(chaveValor)) {
         bloco.documentosConcluidos.set(chaveValor, {
           chave: chaveValor,
@@ -425,14 +499,14 @@ function consolidarGrupoObra(grupo) {
           dataFaturamentoIso,
           dataFaturamentoOriginal,
           mesReferencia,
-          valor: parseMoneyFlexible(item.valorNF || 0),
+          valor: valorDocumento,
           itens: new Set(),
           categorias: new Set()
         });
       }
 
       const detalheDoc = bloco.documentosConcluidos.get(chaveValor);
-      detalheDoc.valor = Math.max(detalheDoc.valor, parseMoneyFlexible(item.valorNF || 0));
+      detalheDoc.valor = faturamentoFinanceiro ? valorDocumento : Math.max(detalheDoc.valor, valorDocumento);
       addUnique(detalheDoc.itens, erp.item);
       addUnique(detalheDoc.categorias, erp.categoria);
 
@@ -492,8 +566,9 @@ const motorBackend = {
           const obraInfo = extractObraPermitida(erp.obra);
           if (!obraInfo) return;
 
+          const faturamentoFinanceiro = getFaturamentoFinanceiroPorNF(erp.nf);
           const valorObra = getValorFinanceiroObra(erp);
-          const valorNF = getValorFinanceiroNF(erp);
+          const valorNF = faturamentoFinanceiro ? parseMoneyFlexible(faturamentoFinanceiro.valor) : getValorFinanceiroNF(erp);
           const valorContabil = isLinhaFinanceiramenteValida(erp) && valorNF !== null
             ? valorNF
             : valorObra;
@@ -504,7 +579,7 @@ const motorBackend = {
 
           if (erp.data_frustrada) {
             statusProposta = "FRUSTRADAS";
-          } else if (etapaUp.includes('CONCLU') || erp.data_faturam || erp.data_faturamento) {
+          } else if (faturamentoFinanceiro || etapaUp.includes('CONCLU') || erp.data_faturam || erp.data_faturamento) {
             statusProposta = "CONCLUIDAS";
           } else if (etapaUp.includes('ENTREGUE')) {
             statusProposta = "ENTREGUES";
@@ -523,6 +598,7 @@ const motorBackend = {
             valorObra,
             valorNF,
             valorContabil,
+            faturamentoFinanceiro,
             statusProposta,
             obraExibicao: obraInfo.obraExibicao,
             sourceIndex
