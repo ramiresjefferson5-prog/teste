@@ -1439,41 +1439,83 @@ function setFilter(status) {
     let itemMaior = null;
     if (itensFinanceiros.length > 0) itemMaior = itensFinanceiros.reduce((a, b) => a.valor >= b.valor ? a : b);
 
+    const saldoStatusClass = saldoCpmvBruto < 0 ? 'is-alert' : 'is-ok';
+    const leituraCritica = itemMaior
+      ? `maior peso atual em <strong>${itemMaior.item}</strong>`
+      : 'nenhum item com custo lançado';
+    const leituraPercentual = itemMaior && totalUsadoCpmv > 0
+      ? `${((itemMaior.valor / totalUsadoCpmv) * 100).toFixed(1)}% da compra total`
+      : '-';
+
     let html = `
-      <div class="resumo-modal-shell">
-        <div class="finance-headline">
-          <div class="finance-headline-item"><span class="finance-headline-icon"><i class="bi bi-wallet2"></i></span><div><div class="finance-headline-label">CPMV Planejado</div><div class="finance-headline-value">${formatMoneyBR(cpmv)}</div></div></div>
-          <div class="finance-headline-item"><span class="finance-headline-icon"><i class="bi bi-graph-up-arrow"></i></span><div><div class="finance-headline-label">CPMV já utilizado</div><div class="finance-headline-value">${formatMoneyBR(totalUsadoCpmv)}</div></div></div>
-          <div class="finance-headline-item"><span class="finance-headline-icon fin-green"><i class="bi bi-pie-chart"></i></span><div><div class="finance-headline-label">Saldo disponível no CPMV</div><div class="finance-headline-value">${formatMoneyBR(saldoCpmv)}</div></div></div>
-        </div>
-        <div class="finance-progress-wrap">
-          <div class="finance-progress-top"><span><i class="bi bi-bar-chart-line me-1"></i><span class="finance-progress-main">Uso do custo planejado</span></span><span>${percCpmv.toFixed(1)}% utilizado</span></div>
-          <div class="finance-progress-bar"><div class="finance-progress-fill" style="width:${percCpmvLimitado}%"></div></div>
-        </div>
-        <div class="finance-insight-grid">
-          <div class="finance-insight-card">
-            <div class="finance-insight-card-top"><div class="finance-insight-card-label">Análise CPMV</div><div class="finance-insight-card-value">${percCpmv.toFixed(1)}% usado</div></div>
-            <div class="finance-kpi-list">
-              <div class="finance-kpi-row"><span class="finance-kpi-name">Uso registrado</span><span class="finance-kpi-data">${formatMoneyBR(totalUsadoCpmv)}</span></div>
-              <div class="finance-kpi-row"><span class="finance-kpi-name">Participação no CPMV</span><span class="finance-kpi-data">${percCpmv.toFixed(1)}%</span></div>
-              <div class="finance-kpi-row"><span class="finance-kpi-name">Saldo disponível</span><span class="finance-kpi-data ${saldoCpmvBruto < 0 ? 'is-alert' : 'is-ok'}">${formatMoneyBR(saldoCpmvBruto)}</span></div>
-              <div class="finance-kpi-row"><span class="finance-kpi-name">Saldo percentual</span><span class="finance-kpi-data ${saldoCpmvBruto < 0 ? 'is-alert' : 'is-ok'}">${percSaldoCpmv.toFixed(1)}%</span></div>
-            </div>
+      <div class="finance-page-shell">
+        <section class="finance-page-hero">
+          <div class="finance-hero-copy">
+            <span class="finance-hero-eyebrow"><i class="bi bi-wallet2"></i> Painel financeiro da obra</span>
+            <h2>Resumo de CPMV e compras</h2>
+            <p>Leitura rápida do custo planejado, uso registrado, saldo disponível e participação dos itens de compra.</p>
           </div>
-          <div class="finance-insight-card">
-            <div class="finance-insight-card-top"><div class="finance-insight-card-label">Itens de compra</div><div class="finance-insight-card-value">${totalItensCompra} items</div></div>
-            <div class="finance-kpi-list">
-              <div class="finance-kpi-row"><span class="finance-kpi-name">Base monitorada</span><span class="finance-kpi-data">${totalItensCompra} items</span></div>
-              <div class="finance-kpi-row"><span class="finance-kpi-name">Concluídos</span><span class="finance-kpi-data is-ok">${itensOk} · ${percItensOk.toFixed(1)}%</span></div>
-              <div class="finance-kpi-row"><span class="finance-kpi-name">Pendentes</span><span class="finance-kpi-data ${itensFalta > 0 ? 'is-alert' : 'is-ok'}">${itensFalta} · ${percItensFalta.toFixed(1)}%</span></div>
-            </div>
+          <div class="finance-hero-score">
+            <span>Uso do CPMV</span>
+            <strong>${percCpmv.toFixed(1)}%</strong>
+            <small>${formatMoneyBR(totalUsadoCpmv)} utilizado de ${formatMoneyBR(cpmv)}</small>
           </div>
-        </div>
-        <div class="finance-insight"><span><i class="bi bi-activity me-1"></i><strong>Leitura crítica:</strong> ${itemMaior ? `maior peso atual em <strong>${itemMaior.item}</strong>` : 'nenhum item com custo lançado'}</span><span>${itemMaior && totalUsadoCpmv > 0 ? `${((itemMaior.valor / totalUsadoCpmv) * 100).toFixed(1)}% da compra total` : '-'}</span></div>
-        <div class="finance-scroll-area resumo-modal-scroll">
-          <div class="finance-table-shell"><div class="table-responsive"><table class="table table-sm text-center align-middle">
-            <thead><tr><th>Item</th><th>Status</th><th>Valor</th><th>% / CPMV</th><th>% / Compra Total</th></tr></thead>
-            <tbody>
+        </section>
+
+        <section class="finance-kpi-board">
+          <article class="finance-kpi-card finance-kpi-card-primary">
+            <span class="finance-kpi-icon"><i class="bi bi-folder2-open"></i></span>
+            <div>
+              <small>CPMV planejado</small>
+              <strong>${formatMoneyBR(cpmv)}</strong>
+            </div>
+          </article>
+          <article class="finance-kpi-card">
+            <span class="finance-kpi-icon"><i class="bi bi-graph-up-arrow"></i></span>
+            <div>
+              <small>CPMV já utilizado</small>
+              <strong>${formatMoneyBR(totalUsadoCpmv)}</strong>
+            </div>
+          </article>
+          <article class="finance-kpi-card ${saldoCpmvBruto < 0 ? 'finance-kpi-card-alert' : 'finance-kpi-card-ok'}">
+            <span class="finance-kpi-icon"><i class="bi bi-pie-chart"></i></span>
+            <div>
+              <small>Saldo disponível no CPMV</small>
+              <strong>${formatMoneyBR(saldoCpmv)}</strong>
+            </div>
+          </article>
+        </section>
+
+        <section class="finance-workspace">
+          <div class="finance-workspace-main">
+            <article class="finance-panel finance-panel-progress">
+              <div class="finance-panel-heading">
+                <div>
+                  <span class="finance-panel-kicker">Acompanhamento</span>
+                  <h3>Uso do custo planejado</h3>
+                </div>
+                <strong>${percCpmv.toFixed(1)}% utilizado</strong>
+              </div>
+              <div class="finance-progress-bar finance-progress-bar-large"><div class="finance-progress-fill" style="width:${percCpmvLimitado}%"></div></div>
+              <div class="finance-progress-legend">
+                <span>0%</span>
+                <span>50%</span>
+                <span>100%</span>
+              </div>
+            </article>
+
+            <article class="finance-panel finance-panel-table">
+              <div class="finance-panel-heading">
+                <div>
+                  <span class="finance-panel-kicker">Detalhamento</span>
+                  <h3>Itens financeiros registrados</h3>
+                </div>
+                <strong>${totalItensCompra} itens</strong>
+              </div>
+              <div class="finance-scroll-area resumo-modal-scroll">
+                <div class="finance-table-shell"><div class="table-responsive"><table class="table table-sm text-center align-middle">
+                  <thead><tr><th>Item</th><th>Status</th><th>Valor</th><th>% / CPMV</th><th>% / Compra Total</th></tr></thead>
+                  <tbody>
     `;
 
     itensFinanceiros.forEach(reg => {
@@ -1486,7 +1528,49 @@ function setFilter(status) {
 
     if (itensFinanceiros.length === 0) html += `<tr><td colspan="5" class="finance-empty">Nenhum item financeiro registrado.</td></tr>`;
 
-    html += `</tbody><tfoot><tr><td colspan="2">Total</td><td>${formatMoneyBR(totalUsadoCpmv)}</td><td>${percCpmv.toFixed(1)}%</td><td>${itensFinanceiros.length > 0 ? '100%' : '0%'}</td></tr></tfoot></table></div></div></div></div>`;
+    html += `</tbody><tfoot><tr><td colspan="2">Total</td><td>${formatMoneyBR(totalUsadoCpmv)}</td><td>${percCpmv.toFixed(1)}%</td><td>${itensFinanceiros.length > 0 ? '100%' : '0%'}</td></tr></tfoot></table></div></div>
+              </div>
+            </article>
+          </div>
+
+          <aside class="finance-workspace-side">
+            <article class="finance-panel finance-panel-side">
+              <div class="finance-panel-heading compact">
+                <div>
+                  <span class="finance-panel-kicker">Análise CPMV</span>
+                  <h3>${percCpmv.toFixed(1)}% usado</h3>
+                </div>
+              </div>
+              <div class="finance-kpi-list">
+                <div class="finance-kpi-row"><span class="finance-kpi-name">Uso registrado</span><span class="finance-kpi-data">${formatMoneyBR(totalUsadoCpmv)}</span></div>
+                <div class="finance-kpi-row"><span class="finance-kpi-name">Participação no CPMV</span><span class="finance-kpi-data">${percCpmv.toFixed(1)}%</span></div>
+                <div class="finance-kpi-row"><span class="finance-kpi-name">Saldo disponível</span><span class="finance-kpi-data ${saldoStatusClass}">${formatMoneyBR(saldoCpmvBruto)}</span></div>
+                <div class="finance-kpi-row"><span class="finance-kpi-name">Saldo percentual</span><span class="finance-kpi-data ${saldoStatusClass}">${percSaldoCpmv.toFixed(1)}%</span></div>
+              </div>
+            </article>
+
+            <article class="finance-panel finance-panel-side">
+              <div class="finance-panel-heading compact">
+                <div>
+                  <span class="finance-panel-kicker">Itens de compra</span>
+                  <h3>${totalItensCompra} itens</h3>
+                </div>
+              </div>
+              <div class="finance-kpi-list">
+                <div class="finance-kpi-row"><span class="finance-kpi-name">Base monitorada</span><span class="finance-kpi-data">${totalItensCompra} itens</span></div>
+                <div class="finance-kpi-row"><span class="finance-kpi-name">Concluídos</span><span class="finance-kpi-data is-ok">${itensOk} · ${percItensOk.toFixed(1)}%</span></div>
+                <div class="finance-kpi-row"><span class="finance-kpi-name">Pendentes</span><span class="finance-kpi-data ${itensFalta > 0 ? 'is-alert' : 'is-ok'}">${itensFalta} · ${percItensFalta.toFixed(1)}%</span></div>
+              </div>
+            </article>
+
+            <article class="finance-panel finance-panel-side finance-panel-reading">
+              <span class="finance-panel-kicker">Leitura crítica</span>
+              <p><i class="bi bi-activity"></i> <span>${leituraCritica}</span></p>
+              <strong>${leituraPercentual}</strong>
+            </article>
+          </aside>
+        </section>
+      </div>`;
 
     document.getElementById('tituloResumo').innerText = "Resumo Financeiro da Obra"; document.getElementById('corpoResumoGeral').innerHTML = html; modalResumoUI.show();
   }
