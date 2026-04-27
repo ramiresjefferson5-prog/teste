@@ -785,76 +785,85 @@ function setFilter(status) {
     const uf = r[COLS.UF] || "-";
     const etapa = r[COLS.ETAPA] || "-";
     const responsavel = r[COLS.RESPONSAVEL] || "-";
+    const itemGeral = r[COLS.ITEM_GERAL] || "-";
+    const dataAbertura = formatDateDisplayBR(r[COLS.DATA_ABERTURA]) || "-";
 
     const isPreenchido = value => value !== null && value !== undefined && String(value).trim() !== "" && String(value).trim() !== "-";
     const exibirCampo = value => escapeHtml(String(value ?? "-").trim() || "-");
+
     const statusClasse = status === 'CONCLUIDAS' || status === 'ENTREGUES'
       ? "is-ok"
       : (status === 'ENVIADAS'
         ? "is-warning"
         : (status === 'FRUSTRADAS' ? "is-neutral" : "is-primary"));
 
-    const infoEssencial = [
-      { icon: "bi-box-seam", label: "Item", valor: r[COLS.ITEM_GERAL] || "-", destaque: true },
+    const camposDetalhe = [
+      { icon: "bi-box-seam", label: "Item", valor: itemGeral, destaque: true },
       { icon: "bi-person", label: "Responsável", valor: responsavel },
-      { icon: "bi-calendar-event", label: "Abertura", valor: formatDateDisplayBR(r[COLS.DATA_ABERTURA]) || "-" },
+      { icon: "bi-calendar-event", label: "Abertura", valor: dataAbertura },
       { icon: "bi-diagram-3", label: "Etapa", valor: etapa }
     ];
 
     if (status === 'ENVIADAS') {
-       infoEssencial.push({ icon: "bi-send", label: "Envio", valor: formatDateDisplayBR(r[COLS.DATA_ENVIADA]) || "-" });
+      camposDetalhe.push({ icon: "bi-send", label: "Envio", valor: formatDateDisplayBR(r[COLS.DATA_ENVIADA]) || "-" });
     } else if (status === 'FRUSTRADAS') {
-       infoEssencial.push({ icon: "bi-calendar-x", label: "Frustração", valor: formatDateDisplayBR(r[COLS.DATA_FRUSTRADA]) || "-" });
+      camposDetalhe.push({ icon: "bi-calendar-x", label: "Frustração", valor: formatDateDisplayBR(r[COLS.DATA_FRUSTRADA]) || "-" });
     } else if (status === 'CONCLUIDAS' || status === 'ENTREGUES') {
-       infoEssencial.push({ icon: "bi-calendar-check", label: "Faturamento", valor: formatDateDisplayBR(r[COLS.DATA_FATURAMENTO]) || "-" });
-       infoEssencial.push({ icon: "bi-receipt", label: "NF", valor: r[COLS.NF] || "-" });
+      camposDetalhe.push({ icon: "bi-calendar-check", label: "Faturamento", valor: formatDateDisplayBR(r[COLS.DATA_FATURAMENTO]) || "-" });
+      camposDetalhe.push({ icon: "bi-receipt", label: "NF", valor: r[COLS.NF] || "-" });
     }
 
     const observacao = String(r[COLS.OBS] || "").trim();
     if (observacao) {
-      infoEssencial.push({ icon: "bi-chat-left-text", label: "Observação", valor: observacao, destaque: true });
+      camposDetalhe.push({ icon: "bi-chat-left-text", label: "Observação", valor: observacao, destaque: true });
     }
 
-    const montarCards = (arr) => {
-      const cards = arr
-        .filter(d => isPreenchido(d.valor))
-        .map(d => `
-          <article class="cbase-field-card ${d.destaque ? "is-wide" : ""}">
-            <span><i class="bi ${d.icon}"></i>${exibirCampo(d.label)}</span>
-            <strong>${exibirCampo(d.valor)}</strong>
+    const montarCampos = () => {
+      const cards = camposDetalhe
+        .filter(campo => isPreenchido(campo.valor))
+        .map(campo => `
+          <article class="proposta-modal-field ${campo.destaque ? "is-wide" : ""}">
+            <span><i class="bi ${campo.icon}"></i>${exibirCampo(campo.label)}</span>
+            <strong>${exibirCampo(campo.valor)}</strong>
           </article>
-        `).join('');
+        `)
+        .join('');
 
-      return cards || `<div class="cbase-empty-line"><i class="bi bi-info-circle"></i>Nenhuma informação complementar disponível.</div>`;
+      return cards || `
+        <div class="proposta-modal-empty">
+          <i class="bi bi-info-circle"></i>
+          <span>Nenhuma informação complementar disponível.</span>
+        </div>
+      `;
     };
 
     const html = `
-      <div class="cbase-page">
-        <section class="cbase-hero">
-          <div class="cbase-hero-main">
-            <span class="cbase-eyebrow"><i class="bi bi-layout-text-window-reverse"></i> Consulta da proposta</span>
+      <div class="proposta-modal-page">
+        <section class="proposta-modal-top">
+          <div class="proposta-modal-summary">
+            <span class="proposta-modal-kicker"><i class="bi bi-layout-text-window-reverse"></i> Consulta da proposta</span>
             <h2>Obra ${exibirCampo(obra)}</h2>
             <p>${exibirCampo(cliente)}</p>
-            <div class="cbase-chip-row">
-              <span class="cbase-status ${statusClasse}"><i class="bi bi-circle-fill"></i>${exibirCampo(status)}</span>
+            <div class="proposta-modal-chips">
+              <span class="proposta-modal-status ${statusClasse}"><i class="bi bi-circle-fill"></i>${exibirCampo(status)}</span>
               ${isPreenchido(categoria) ? `<span><i class="bi bi-tags"></i>${exibirCampo(categoria)}</span>` : ""}
               ${isPreenchido(uf) ? `<span><i class="bi bi-geo-alt"></i>${exibirCampo(uf)}</span>` : ""}
             </div>
           </div>
 
-          <aside class="cbase-hero-side">
+          <aside class="proposta-modal-value">
             <span>Valor da proposta</span>
             <strong>R$ ${formatMoneyBR(valor)}</strong>
           </aside>
         </section>
 
-        <section class="cbase-section">
+        <section class="proposta-modal-card">
           <header>
-            <span>Resumo essencial</span>
-            <h3>Informações necessárias</h3>
+            <span>Dados essenciais</span>
+            <h3>Informações da obra</h3>
           </header>
-          <div class="cbase-field-grid">
-            ${montarCards(infoEssencial)}
+          <div class="proposta-modal-grid">
+            ${montarCampos()}
           </div>
         </section>
       </div>
