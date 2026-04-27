@@ -3144,4 +3144,86 @@ body.device-mobile-shell .app-page-modal .modal-body {
   }
 }
 
+/* =========================================================
+   AJUSTE CIRÚRGICO — BOTÃO FECHAR DOS MODAIS
+   Mantém o mesmo botão/Bootstrap, mas remove o "X" grande do btn-close
+   e cria um fechamento compacto, proporcional e consistente.
+   ========================================================= */
+.app-page-modal .btn-close.app-page-close,
+#modalObra.app-page-modal .btn-close.app-page-close,
+#modalResumoGeral.app-page-modal .btn-close.app-page-close,
+#modalCompraItem.app-page-modal .btn-close.app-page-close,
+#modalPendenciaItem.app-page-modal .btn-close.app-page-close,
+#modalExtracaoRelatorio.app-page-modal .btn-close.app-page-close {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  border: 1px solid #dbe5ef !important;
+  background-color: #f6f9fc !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+  position: relative !important;
+  flex: 0 0 34px !important;
+}
+
+.app-page-modal .btn-close.app-page-close::before,
+#modalObra.app-page-modal .btn-close.app-page-close::before,
+#modalResumoGeral.app-page-modal .btn-close.app-page-close::before,
+#modalCompraItem.app-page-modal .btn-close.app-page-close::before,
+#modalPendenciaItem.app-page-modal .btn-close.app-page-close::before,
+#modalExtracaoRelatorio.app-page-modal .btn-close.app-page-close::before {
+  content: "×";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.app-page-modal .btn-close.app-page-close:hover,
+#modalObra.app-page-modal .btn-close.app-page-close:hover,
+#modalResumoGeral.app-page-modal .btn-close.app-page-close:hover,
+#modalCompraItem.app-page-modal .btn-close.app-page-close:hover,
+#modalPendenciaItem.app-page-modal .btn-close.app-page-close:hover,
+#modalExtracaoRelatorio.app-page-modal .btn-close.app-page-close:hover {
+  background-color: #eaf1f8 !important;
+  border-color: #cbd9e8 !important;
+  transform: none !important;
+}
+
+@media (max-width: 767.98px) {
+  .app-page-modal .btn-close.app-page-close,
+  #modalObra.app-page-modal .btn-close.app-page-close,
+  #modalResumoGeral.app-page-modal .btn-close.app-page-close,
+  #modalCompraItem.app-page-modal .btn-close.app-page-close,
+  #modalPendenciaItem.app-page-modal .btn-close.app-page-close,
+  #modalExtracaoRelatorio.app-page-modal .btn-close.app-page-close {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    flex-basis: 36px !important;
+    border-radius: 12px !important;
+  }
+
+  .app-page-modal .btn-close.app-page-close::before,
+  #modalObra.app-page-modal .btn-close.app-page-close::before,
+  #modalResumoGeral.app-page-modal .btn-close.app-page-close::before,
+  #modalCompraItem.app-page-modal .btn-close.app-page-close::before,
+  #modalPendenciaItem.app-page-modal .btn-close.app-page-close::before,
+  #modalExtracaoRelatorio.app-page-modal .btn-close.app-page-close::before {
+    font-size: 23px;
+  }
+}
 
