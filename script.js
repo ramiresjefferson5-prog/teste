@@ -780,20 +780,25 @@ function setFilter(status) {
     const obra = r[COLS.OBRA] || "";
     const status = r[COLS.STATUS_PROPOSTA] || "-";
     const valor = parseMoneyFlexible(r[COLS.VALOR]);
-    
+    const cliente = r[COLS.CLIENTE] || "-";
+    const categoria = r[COLS.CATEGORIA_GERAL] || "-";
+    const uf = r[COLS.UF] || "-";
+    const etapa = r[COLS.ETAPA] || "-";
+    const responsavel = r[COLS.RESPONSAVEL] || "-";
+
     const infoPrincipal = [
       { icon: "bi-folder2-open", label: "Obra", valor: obra },
-      { icon: "bi-building", label: "Cliente", valor: r[COLS.CLIENTE] || "-" },
+      { icon: "bi-building", label: "Cliente", valor: cliente, destaque: true },
       { icon: "bi-box-seam", label: "Item", valor: r[COLS.ITEM_GERAL] || "-" },
-      { icon: "bi-tags", label: "Categoria", valor: r[COLS.CATEGORIA_GERAL] || "-" },
-      { icon: "bi-person", label: "Responsável", valor: r[COLS.RESPONSAVEL] || "-" },
+      { icon: "bi-tags", label: "Categoria", valor: categoria },
+      { icon: "bi-person", label: "Responsável", valor: responsavel },
       { icon: "bi-bar-chart", label: "Complexidade", valor: r[COLS.COMPLEXIDADE] || "-" }
     ];
 
     const infoComplementar = [
       { icon: "bi-calendar-event", label: "Data Abertura", valor: formatDateDisplayBR(r[COLS.DATA_ABERTURA]) || "-" },
-      { icon: "bi-geo-alt", label: "UF", valor: r[COLS.UF] || "-" },
-      { icon: "bi-diagram-3", label: "Etapa", valor: r[COLS.ETAPA] || "-" }
+      { icon: "bi-geo-alt", label: "UF", valor: uf },
+      { icon: "bi-diagram-3", label: "Etapa", valor: etapa }
     ];
 
     if (status === 'ENVIADAS') {
@@ -805,31 +810,124 @@ function setFilter(status) {
        infoComplementar.push({ icon: "bi-receipt", label: "NF", valor: r[COLS.NF] || "-" });
     }
 
-    const montarCards = (arr) => arr.map(d => `<div class="geral-card"><div class="geral-card-label"><i class="bi ${d.icon} me-1"></i>${d.label}</div><div class="geral-card-value">${d.valor}</div></div>`).join('');
+    const isPreenchido = value => value !== null && value !== undefined && String(value).trim() !== "" && String(value).trim() !== "-";
+    const exibirCampo = value => escapeHtml(String(value ?? "-").trim() || "-");
+    const statusClasse = status === 'CONCLUIDAS' || status === 'ENTREGUES'
+      ? "is-ok"
+      : (status === 'ENVIADAS'
+        ? "is-warning"
+        : (status === 'FRUSTRADAS' ? "is-neutral" : "is-primary"));
+
+    const montarCards = (arr) => arr.map(d => `
+      <article class="cbase-field-card ${d.destaque ? "is-wide" : ""} ${!isPreenchido(d.valor) ? "is-empty" : ""}">
+        <span><i class="bi ${d.icon}"></i>${exibirCampo(d.label)}</span>
+        <strong>${exibirCampo(d.valor)}</strong>
+      </article>
+    `).join('');
+
+    const montarLinhaTempo = () => infoComplementar.map(d => `
+      <div class="cbase-timeline-item ${isPreenchido(d.valor) ? "is-active" : ""}">
+        <span class="cbase-timeline-icon"><i class="bi ${d.icon}"></i></span>
+        <div>
+          <small>${exibirCampo(d.label)}</small>
+          <strong>${exibirCampo(d.valor)}</strong>
+        </div>
+      </div>
+    `).join('');
 
     const html = `
-      <div class="resumo-modal-scroll">
-        <div class="geral-shell">
-          <section class="geral-section">
-            <h6 class="geral-section-title"><i class="bi bi-layout-text-window-reverse"></i> Dados da Proposta (${status})</h6>
-            <div class="geral-grid">
-              ${montarCards(infoPrincipal)}
+      <div class="cbase-page">
+        <section class="cbase-hero">
+          <div class="cbase-hero-main">
+            <span class="cbase-eyebrow"><i class="bi bi-layout-text-window-reverse"></i> Consulta da proposta</span>
+            <h2>Obra ${exibirCampo(obra)}</h2>
+            <p>${exibirCampo(cliente)}</p>
+            <div class="cbase-chip-row">
+              <span class="cbase-status ${statusClasse}"><i class="bi bi-circle-fill"></i>${exibirCampo(status)}</span>
+              <span><i class="bi bi-tags"></i>${exibirCampo(categoria)}</span>
+              <span><i class="bi bi-geo-alt"></i>${exibirCampo(uf)}</span>
             </div>
-          </section>
-          <section class="geral-section">
-            <h6 class="geral-section-title"><i class="bi bi-info-circle"></i> Situação e Datas</h6>
-            <div class="geral-grid">
-              ${montarCards(infoComplementar)}
-            </div>
-          </section>
-          <section class="geral-section">
-            <h6 class="geral-section-title"><i class="bi bi-wallet2"></i> Visão Financeira</h6>
-            <div class="geral-card geral-total-card">
-              <div class="geral-card-label"><i class="bi bi-currency-dollar me-1"></i>Valor da Proposta</div>
-              <div class="geral-card-value money">${formatMoneyBR(valor)}</div>
-            </div>
-          </section>
-        </div>
+          </div>
+
+          <aside class="cbase-hero-side">
+            <span>Valor da proposta</span>
+            <strong>R$ ${formatMoneyBR(valor)}</strong>
+            <small>Resumo da visualização atual da carteira</small>
+          </aside>
+        </section>
+
+        <section class="cbase-kpis">
+          <article>
+            <span><i class="bi bi-calendar-event"></i></span>
+            <div><small>Abertura</small><strong>${exibirCampo(formatDateDisplayBR(r[COLS.DATA_ABERTURA]) || "-")}</strong></div>
+          </article>
+          <article>
+            <span><i class="bi bi-person-badge"></i></span>
+            <div><small>Responsável</small><strong>${exibirCampo(responsavel)}</strong></div>
+          </article>
+          <article>
+            <span><i class="bi bi-diagram-3"></i></span>
+            <div><small>Etapa</small><strong>${exibirCampo(etapa)}</strong></div>
+          </article>
+          <article>
+            <span><i class="bi bi-wallet2"></i></span>
+            <div><small>Valor</small><strong>R$ ${formatMoneyBR(valor)}</strong></div>
+          </article>
+        </section>
+
+        <section class="cbase-layout">
+          <main class="cbase-main">
+            <article class="cbase-section">
+              <header>
+                <span>Dados da proposta</span>
+                <h3>Ficha principal da obra</h3>
+              </header>
+              <div class="cbase-field-grid">
+                ${montarCards(infoPrincipal)}
+              </div>
+            </article>
+
+            <article class="cbase-section">
+              <header>
+                <span>Situação e datas</span>
+                <h3>Acompanhamento do registro</h3>
+              </header>
+              <div class="cbase-field-grid">
+                ${montarCards(infoComplementar)}
+              </div>
+            </article>
+          </main>
+
+          <aside class="cbase-aside">
+            <article class="cbase-section cbase-finance">
+              <header>
+                <span>Visão financeira</span>
+                <h3>Leitura rápida</h3>
+              </header>
+              <div class="cbase-finance-list">
+                <div><span>Valor da proposta</span><strong class="is-main">R$ ${formatMoneyBR(valor)}</strong></div>
+                <div><span>Status</span><strong>${exibirCampo(status)}</strong></div>
+                <div><span>Categoria</span><strong>${exibirCampo(categoria)}</strong></div>
+              </div>
+            </article>
+
+            <article class="cbase-section cbase-timeline">
+              <header>
+                <span>Linha do tempo</span>
+                <h3>Eventos da obra</h3>
+              </header>
+              ${montarLinhaTempo()}
+            </article>
+
+            <article class="cbase-section cbase-note">
+              <header>
+                <span>Observação</span>
+                <h3>Consulta segura</h3>
+              </header>
+              <p><i class="bi bi-shield-check"></i>Esta tela usa os mesmos dados já carregados na carteira. Nenhuma regra financeira, filtro, status ou consolidação foi alterada.</p>
+            </article>
+          </aside>
+        </section>
       </div>
     `;
 
