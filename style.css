@@ -663,3 +663,468 @@ body.device-mobile-shell .modal-top-action i {
     min-width: 74px;
   }
 }
+
+
+/* =========================================================
+   MODAIS COMO SUBPÁGINAS FULLSCREEN
+   Ajuste visual isolado: preserva IDs, funções, campos e fluxos atuais.
+   ========================================================= */
+
+.app-page-modal {
+  padding: 0 !important;
+}
+
+.app-page-modal .app-page-dialog {
+  width: 100vw !important;
+  max-width: none !important;
+  height: var(--app-vh, 100dvh);
+  min-height: var(--app-vh, 100dvh);
+  margin: 0 !important;
+  display: flex;
+  align-items: stretch;
+  pointer-events: none;
+}
+
+.app-page-modal .app-page-content {
+  width: 100vw;
+  height: var(--app-vh, 100dvh);
+  max-height: var(--app-vh, 100dvh) !important;
+  border-radius: 0 !important;
+  background: #f4f7fb;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+  box-shadow: none !important;
+}
+
+.app-page-modal .app-page-header {
+  flex: 0 0 auto;
+  min-height: 76px;
+  padding: max(16px, var(--safe-top)) max(24px, var(--safe-right)) 16px max(24px, var(--safe-left));
+  border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 3;
+}
+
+.app-page-modal .app-page-header-danger {
+  background:
+    radial-gradient(circle at top left, rgba(239, 68, 68, 0.08), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #fff8f8 100%);
+}
+
+.app-page-title-wrap {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.app-page-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.app-page-kicker i {
+  font-size: 0.95rem;
+  color: var(--secondary);
+}
+
+.app-page-title-wrap h5,
+.app-page-title-wrap h6,
+.app-page-title-wrap .modal-title {
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.app-page-modal .app-page-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  background-color: #eef4fb;
+  opacity: 1;
+  box-shadow: none !important;
+  flex: 0 0 auto;
+}
+
+.app-page-modal .app-page-close:hover {
+  background-color: #e2eaf4;
+}
+
+.app-page-modal .modal-header-actions {
+  gap: 10px !important;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.app-page-modal .modal-top-action {
+  min-height: 38px;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.app-page-modal .modal-top-action:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+  background: #f8fbff;
+}
+
+.app-page-modal .modal-top-action span::after {
+  display: none;
+}
+
+.app-page-modal .app-page-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: clamp(16px, 2.2vw, 30px) max(clamp(16px, 2.2vw, 30px), var(--safe-right)) clamp(22px, 2.4vw, 34px) max(clamp(16px, 2.2vw, 30px), var(--safe-left));
+  background:
+    linear-gradient(180deg, rgba(244, 247, 251, 0.96) 0%, rgba(248, 250, 252, 1) 100%);
+}
+
+.app-page-modal .app-page-body-light {
+  background: #f8fafc;
+}
+
+.app-page-shell {
+  width: min(100%, 1480px);
+  margin: 0 auto;
+}
+
+.app-page-shell-form {
+  width: min(100%, 1500px);
+}
+
+.app-page-shell-narrow {
+  width: min(100%, 640px);
+}
+
+.app-page-dialog-wide .app-page-shell,
+#corpoResumoGeral > * {
+  width: min(100%, 1180px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.app-section-card {
+  background: #ffffff;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  border-radius: 22px;
+  padding: clamp(16px, 1.55vw, 24px);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.055);
+  margin-bottom: clamp(14px, 1.4vw, 20px);
+}
+
+.app-section-card-highlight {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+}
+
+.app-section-card-danger {
+  border-color: rgba(254, 202, 202, 0.95);
+  background: linear-gradient(180deg, #ffffff 0%, #fffafa 100%);
+}
+
+.app-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.app-section-heading h6 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #1e293b;
+  line-height: 1.15;
+}
+
+.app-section-eyebrow {
+  display: block;
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.app-section-hint {
+  color: #94a3b8;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-align: right;
+  line-height: 1.25;
+}
+
+.app-page-modal .form-label,
+.app-page-modal .sub-label {
+  letter-spacing: 0.04em;
+}
+
+.app-page-modal .form-control,
+.app-page-modal .form-select,
+.app-page-modal .input-group-text {
+  border-radius: 12px;
+}
+
+.app-page-modal .form-control-sm {
+  min-height: 40px;
+}
+
+.app-page-modal textarea.form-control {
+  min-height: 96px;
+}
+
+.app-page-modal .question-textarea {
+  min-height: 150px;
+}
+
+.app-page-modal #gradeItens {
+  align-items: stretch;
+}
+
+.app-page-modal #gradeItens > [class*="col-"] {
+  display: flex;
+}
+
+.app-page-modal #gradeItens .material-box {
+  width: 100%;
+  height: 100%;
+}
+
+.app-page-modal .app-page-footer {
+  flex: 0 0 auto;
+  padding: 14px max(24px, var(--safe-right)) max(14px, var(--safe-bottom)) max(24px, var(--safe-left));
+  border-top: 1px solid rgba(148, 163, 184, 0.24) !important;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  position: relative;
+  z-index: 3;
+  gap: 12px;
+}
+
+.app-page-modal .app-page-footer .btn {
+  min-height: 40px;
+  border-radius: 999px;
+}
+
+.app-page-modal .extract-choice-modal {
+  border-radius: 0 !important;
+}
+
+.app-page-modal .extract-choice-grid {
+  gap: 14px;
+}
+
+.app-page-modal .extract-choice-card {
+  min-height: 104px;
+}
+
+.app-page-modal .extract-choice-divider {
+  margin: 18px 0;
+}
+
+/* Sobrescreve blindagens antigas que limitavam modais a cartões flutuantes. */
+body.device-desktop-shell .app-page-modal .app-page-dialog,
+body.device-mobile-shell .app-page-modal .app-page-dialog,
+#modalObra.app-page-modal .modal-dialog,
+#modalCompraItem.app-page-modal .modal-dialog,
+#modalPendenciaItem.app-page-modal .modal-dialog,
+#modalResumoGeral.app-page-modal .modal-dialog,
+#modalExtracaoRelatorio.app-page-modal .modal-dialog {
+  width: 100vw !important;
+  max-width: none !important;
+  min-height: var(--app-vh, 100dvh) !important;
+  height: var(--app-vh, 100dvh) !important;
+  margin: 0 !important;
+}
+
+body.device-desktop-shell .app-page-modal .app-page-content,
+body.device-mobile-shell .app-page-modal .app-page-content,
+#modalObra.app-page-modal .modal-content,
+#modalCompraItem.app-page-modal .modal-content,
+#modalPendenciaItem.app-page-modal .modal-content,
+#modalResumoGeral.app-page-modal .modal-content,
+#modalExtracaoRelatorio.app-page-modal .modal-content {
+  width: 100vw !important;
+  height: var(--app-vh, 100dvh) !important;
+  max-height: var(--app-vh, 100dvh) !important;
+  border-radius: 0 !important;
+}
+
+body.device-desktop-shell .app-page-modal .modal-body,
+body.device-mobile-shell .app-page-modal .modal-body {
+  overflow-y: auto;
+}
+
+/* Experiência mobile estilo aplicativo nativo. */
+@media (max-width: 767.98px) {
+  .app-page-modal .app-page-header {
+    min-height: 64px;
+    padding: max(12px, var(--safe-top)) max(14px, var(--safe-right)) 12px max(14px, var(--safe-left));
+    align-items: flex-start;
+  }
+
+  .app-page-modal .app-page-kicker {
+    font-size: 0.62rem;
+  }
+
+  .app-page-modal .app-page-title-wrap h5,
+  .app-page-modal .app-page-title-wrap h6,
+  .app-page-modal .app-page-title-wrap .modal-title {
+    font-size: 0.98rem;
+  }
+
+  .app-page-modal .modal-header-actions {
+    gap: 8px !important;
+  }
+
+  .app-page-modal .modal-top-action {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 14px;
+  }
+
+  .app-page-modal .modal-top-action span {
+    display: none !important;
+  }
+
+  .app-page-modal .modal-top-action i {
+    font-size: 1.12rem !important;
+  }
+
+  .app-page-modal .app-page-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+  }
+
+  .app-page-modal .app-page-body {
+    padding: 14px max(12px, var(--safe-right)) calc(18px + var(--safe-bottom)) max(12px, var(--safe-left));
+  }
+
+  .app-section-card {
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.055);
+  }
+
+  .app-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+
+  .app-section-heading h6 {
+    font-size: 0.95rem;
+  }
+
+  .app-section-hint {
+    text-align: left;
+    font-size: 0.7rem;
+  }
+
+  .app-page-modal .form-control-sm {
+    min-height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .app-page-modal .question-textarea {
+    min-height: 190px;
+  }
+
+  .app-page-modal .app-page-footer {
+    padding: 10px max(12px, var(--safe-right)) max(10px, var(--safe-bottom)) max(12px, var(--safe-left));
+  }
+
+  .app-page-modal .app-page-footer .btn {
+    min-height: 46px;
+    font-size: 0.86rem;
+  }
+
+  #modalObra.app-page-modal .app-page-footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #modalCompraItem.app-page-modal .app-page-footer,
+  #modalPendenciaItem.app-page-modal .app-page-footer {
+    display: block !important;
+  }
+
+  #modalExtracaoRelatorio.app-page-modal .app-page-footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .app-page-modal .extract-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-page-modal .extract-choice-card {
+    min-height: 86px;
+  }
+}
+
+@media (min-width: 768px) {
+  #modalCompraItem.app-page-modal .app-page-body,
+  #modalPendenciaItem.app-page-modal .app-page-body,
+  #modalExtracaoRelatorio.app-page-modal .app-page-body {
+    display: flex;
+    align-items: center;
+  }
+
+  #modalCompraItem.app-page-modal .app-page-shell,
+  #modalPendenciaItem.app-page-modal .app-page-shell,
+  #modalExtracaoRelatorio.app-page-modal .app-page-shell {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  #modalObra.app-page-modal .app-page-footer {
+    justify-content: center !important;
+  }
+
+  #modalObra.app-page-modal .app-page-footer .btn {
+    min-width: 180px;
+  }
+
+  #modalExtracaoRelatorio.app-page-modal .app-page-footer {
+    justify-content: center !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .app-page-modal .app-section-card {
+    border-radius: 24px;
+  }
+
+  .app-page-modal .form-control-sm {
+    min-height: 42px;
+  }
+}
