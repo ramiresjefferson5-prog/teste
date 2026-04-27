@@ -869,7 +869,7 @@ function setFilter(status) {
 
     if (!isGeralView) {
       // CABEÇALHO DESKTOP - FIRMADAS
-      const labs = ["OBRA", "CLIENTE", "VALOR", "ITEM", "CATEGORIA", "STATUS DO PRAZO", "STATUS DE COMPRAS", ...ITENS, "OBSERVAÇÕES"];
+      const labs = ["OBRA", "VALOR", "CLIENTE", "ITEM", "CATEGORIA", "STATUS DO PRAZO", "STATUS DE COMPRAS", ...ITENS, "OBSERVAÇÕES"];
       head.innerHTML = "<tr>" + labs.map(l => {
         const chave = mapaOrdenacaoCabecalho[l];
         const ativo = chave && estadoOrdenacao.key === chave ? 'is-active' : '';
@@ -894,8 +894,8 @@ function setFilter(status) {
         // LINHA DESKTOP - FIRMADAS
         html += `<tr onclick="abrirLinhaRenderizada(${renderIdx})">`;
         html += `<td>${r[COLS.OBRA] || ""}</td>`;
-        html += `<td class="td-read-left"><div class="text-truncate" style="max-width:200px" title="${escapeHtml(r[COLS.CLIENTE])}">${escapeHtml(r[COLS.CLIENTE] || "")}</div></td>`;
         html += `<td class="fw-semibold td-read-left">${formatMoneyBR(val)}</td>`;
+        html += `<td class="td-read-left"><div class="text-truncate" style="max-width:200px" title="${escapeHtml(r[COLS.CLIENTE])}">${escapeHtml(r[COLS.CLIENTE] || "")}</div></td>`;
         html += `<td class="td-read-left"><div class="text-truncate" style="max-width:150px" title="${escapeHtml(r[COLS.ITEM_GERAL])}">${escapeHtml(r[COLS.ITEM_GERAL] || "-")}</div></td>`;
         html += `<td class="td-read-left"><div class="text-truncate" style="max-width:150px" title="${escapeHtml(r[COLS.CATEGORIA_GERAL])}">${escapeHtml(r[COLS.CATEGORIA_GERAL] || "-")}</div></td>`;
         html += `<td><span class="days-badge ${res.atraso ? "days-urgent" : "days-ok"} shadow-sm">${res.texto}</span></td>`;
@@ -977,7 +977,7 @@ function setFilter(status) {
       const isConcluida = currentStatusFilter === 'CONCLUIDAS';
       const labelPrimeiraColunaGeral = isConcluida ? "FATURAMENTO" : "ABERTURA";
       const indicePrimeiraDataGeral = isConcluida ? COLS.DATA_FATURAMENTO : COLS.DATA_ABERTURA;
-      const labs = [labelPrimeiraColunaGeral, "OBRA", "CLIENTE", "STATUS", "ITEM", "CATEG. / SEGMENTO", "RESPONSÁVEL", "COMPLEX.", "UF", "ETAPA", "PRAZO", "NF", "VALOR", "% ORÇADO"];
+      const labs = [labelPrimeiraColunaGeral, "OBRA", "VALOR", "CLIENTE", "STATUS", "ITEM", "CATEG. / SEGMENTO", "RESPONSÁVEL", "COMPLEX.", "UF", "ETAPA", "PRAZO", "NF", "% ORÇADO"];
       if (isFrustrada) labs.push("DATA FRUSTRADA");
 
       head.innerHTML = "<tr>" + labs.map(l => {
@@ -1009,6 +1009,7 @@ function setFilter(status) {
         html += `<tr onclick="abrirLinhaRenderizada(${renderIdx})">`;
         html += `<td>${formatDateDisplayBR(r[indicePrimeiraDataGeral]) || '-'}</td>`;
         html += `<td><strong>${escapeHtml(r[COLS.OBRA] || "")}</strong></td>`;
+        html += `<td class="fw-semibold td-read-left">${formatMoneyBR(val)}</td>`;
         html += `<td class="td-read-left"><div class="text-truncate" style="max-width:180px" title="${escapeHtml(r[COLS.CLIENTE])}">${escapeHtml(r[COLS.CLIENTE] || "-")}</div></td>`;
         html += `<td><span class="${statusBadgeClass}">${stProp || "-"}</span></td>`;
         html += `<td class="td-read-left"><div class="text-truncate" style="max-width:150px" title="${escapeHtml(r[COLS.ITEM_GERAL])}">${escapeHtml(r[COLS.ITEM_GERAL] || "-")}</div></td>`;
@@ -1019,7 +1020,6 @@ function setFilter(status) {
         html += `<td><div class="text-truncate" style="max-width:120px" title="${escapeHtml(r[COLS.ETAPA])}">${escapeHtml(r[COLS.ETAPA] || "-")}</div></td>`;
         html += `<td>${escapeHtml(r[COLS.DIAS_PRAZO] || "-")}</td>`;
         html += `<td>${escapeHtml(r[COLS.NF] || "-")}</td>`;
-        html += `<td class="fw-semibold td-read-left">${formatMoneyBR(val)}</td>`;
         html += `<td class="fw-bold text-primary">${pctOrcado}</td>`;
         if (isFrustrada) {
           html += `<td>${formatDateDisplayBR(r[COLS.DATA_FRUSTRADA]) || '-'}</td>`;
