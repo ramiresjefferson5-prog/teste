@@ -3226,4 +3226,742 @@ body.device-mobile-shell .app-page-modal .modal-body {
     font-size: 23px;
   }
 }
+/* =========================================================
+   FICHA GERAL DA OBRA — ERP RESPONSIVO
+   Escopo: modal "Informações Gerais da Obra".
+   Apenas apresentação visual; IDs, dados, chamadas e regras preservados.
+   ========================================================= */
 
+#modalResumoGeral .app-page-body-light {
+  background: #edf3f8 !important;
+}
+
+#modalResumoGeral #corpoResumoGeral {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 74, 153, 0.08), transparent 28%),
+    linear-gradient(180deg, #f6f9fc 0%, #edf3f8 100%) !important;
+}
+
+.erp-general-record-page {
+  padding: 22px 28px 30px !important;
+}
+
+.erp-record-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+  gap: 18px;
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+
+.erp-record-identity,
+.erp-record-value-panel,
+.erp-record-kpi,
+.erp-record-section,
+.erp-record-info-card {
+  border: 1px solid #d7e2ee;
+  background: #ffffff;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.055);
+}
+
+.erp-record-identity {
+  min-height: 190px;
+  border-radius: 22px;
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.erp-record-identity::after {
+  content: "";
+  position: absolute;
+  right: -110px;
+  top: -120px;
+  width: 320px;
+  height: 320px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(0, 74, 153, 0.13), transparent 66%);
+  pointer-events: none;
+}
+
+.erp-record-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #004a99;
+  background: #eff6ff;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.erp-record-identity h2 {
+  margin: 0;
+  color: #002d5b;
+  font-size: clamp(1.85rem, 2.5vw, 3.15rem);
+  line-height: 0.98;
+  font-weight: 950;
+  letter-spacing: -0.055em;
+  position: relative;
+  z-index: 1;
+}
+
+.erp-record-identity p {
+  margin: 12px 0 0;
+  max-width: 980px;
+  color: #475569;
+  font-size: clamp(0.96rem, 1vw, 1.08rem);
+  font-weight: 800;
+  line-height: 1.35;
+  position: relative;
+  z-index: 1;
+}
+
+.erp-record-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.erp-record-tags span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #334155;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.erp-record-tags span i {
+  color: #64748b;
+  font-size: 0.62rem;
+}
+
+.erp-record-tags span.is-ok {
+  color: #047857;
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+.erp-record-tags span.is-primary {
+  color: #004a99;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.erp-record-tags span.is-waiting {
+  color: #b45309;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.erp-record-value-panel {
+  border-radius: 22px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.35), transparent 34%),
+    linear-gradient(135deg, #002d5b 0%, #004a99 100%);
+}
+
+.erp-record-value-panel > span {
+  color: #bfdbfe;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+}
+
+.erp-record-value-panel > strong {
+  display: block;
+  margin-top: 10px;
+  color: #ffffff;
+  font-size: clamp(1.9rem, 2.4vw, 3rem);
+  line-height: 0.98;
+  font-weight: 950;
+  letter-spacing: -0.06em;
+}
+
+.erp-record-value-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.erp-record-value-grid div {
+  padding: 11px 12px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.erp-record-value-grid small {
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.erp-record-value-grid b {
+  display: block;
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 950;
+  overflow-wrap: anywhere;
+}
+
+.erp-record-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.erp-record-kpi {
+  min-height: 96px;
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.erp-record-kpi > span {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: #004a99;
+  background: #eff6ff;
+  font-size: 1.08rem;
+}
+
+.erp-record-kpi small {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.erp-record-kpi strong {
+  display: block;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.erp-record-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 16px;
+  align-items: start;
+}
+
+.erp-record-main,
+.erp-record-aside {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.erp-record-section {
+  border-radius: 20px;
+  padding: 18px;
+  overflow: hidden;
+}
+
+.erp-record-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.erp-record-section-head.compact {
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.erp-record-section-head span {
+  display: block;
+  margin-bottom: 4px;
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.erp-record-section-head h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.02rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.erp-record-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.erp-record-info-card {
+  min-height: 104px;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: none;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+}
+
+.erp-record-info-card span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+  color: #64748b;
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.065em;
+  text-transform: uppercase;
+}
+
+.erp-record-info-card span i {
+  color: #004a99;
+  font-size: 0.9rem;
+}
+
+.erp-record-info-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 0.98rem;
+  font-weight: 900;
+  line-height: 1.23;
+  overflow-wrap: anywhere;
+}
+
+.erp-record-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.erp-record-timeline-item {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.erp-record-timeline-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.erp-record-timeline-item.is-active {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.erp-record-timeline-item.is-active .erp-record-timeline-icon {
+  color: #004a99;
+  background: #ffffff;
+  border-color: #bfdbfe;
+}
+
+.erp-record-timeline-item small {
+  display: block;
+  color: #64748b;
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.erp-record-timeline-item strong {
+  display: block;
+  margin-top: 2px;
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 950;
+  overflow-wrap: anywhere;
+}
+
+.erp-record-finance-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+.erp-record-finance-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.erp-record-finance-list > div:last-child {
+  border-bottom: 0;
+}
+
+.erp-record-finance-list span {
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 820;
+}
+
+.erp-record-finance-list strong {
+  color: #0f172a;
+  font-size: 0.86rem;
+  font-weight: 950;
+  text-align: right;
+}
+
+.erp-record-finance-list strong.is-ok {
+  color: #059669;
+}
+
+.erp-record-note-panel p {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0;
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 760;
+  line-height: 1.45;
+}
+
+.erp-record-note-panel p i {
+  color: #004a99;
+  margin-top: 2px;
+}
+
+.erp-record-data-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #dbe5f0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.erp-record-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.erp-record-data-table th,
+.erp-record-data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #edf2f7;
+  vertical-align: top;
+}
+
+.erp-record-data-table tr:last-child th,
+.erp-record-data-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.erp-record-data-table th {
+  width: 260px;
+  color: #64748b;
+  background: #f8fafc;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.erp-record-data-table td {
+  color: #0f172a;
+  font-size: 0.88rem;
+  font-weight: 820;
+  overflow-wrap: anywhere;
+}
+
+.erp-record-empty-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 74px;
+  padding: 16px;
+  border-radius: 16px;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.erp-record-empty-note i {
+  color: #004a99;
+  font-size: 1.1rem;
+}
+
+@media (min-width: 1600px) {
+  .erp-general-record-page {
+    padding-left: 34px !important;
+    padding-right: 34px !important;
+  }
+
+  .erp-record-layout {
+    grid-template-columns: minmax(0, 1fr) 430px;
+  }
+
+  .erp-record-info-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1320px) {
+  .erp-record-hero,
+  .erp-record-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .erp-record-kpi-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .erp-record-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .erp-record-aside {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 767.98px) {
+  #modalResumoGeral .app-page-body-light {
+    background: #edf3f8 !important;
+  }
+
+  .erp-general-record-page {
+    padding: 12px !important;
+  }
+
+  .erp-record-hero,
+  .erp-record-layout {
+    display: block;
+  }
+
+  .erp-record-identity,
+  .erp-record-value-panel,
+  .erp-record-kpi,
+  .erp-record-section,
+  .erp-record-info-card {
+    border-radius: 18px;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.055);
+  }
+
+  .erp-record-identity {
+    min-height: unset;
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+
+  .erp-record-eyebrow {
+    font-size: 0.58rem;
+    padding: 6px 9px;
+  }
+
+  .erp-record-identity h2 {
+    font-size: 1.55rem;
+    letter-spacing: -0.04em;
+  }
+
+  .erp-record-identity p {
+    font-size: 0.88rem;
+  }
+
+  .erp-record-tags {
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .erp-record-tags span {
+    min-height: 28px;
+    padding: 6px 9px;
+    font-size: 0.58rem;
+    letter-spacing: 0.035em;
+  }
+
+  .erp-record-value-panel {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .erp-record-value-panel > strong {
+    font-size: 1.65rem;
+  }
+
+  .erp-record-value-grid {
+    grid-template-columns: 1fr;
+    margin-top: 14px;
+  }
+
+  .erp-record-kpi-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .erp-record-kpi {
+    min-height: 74px;
+    padding: 13px;
+  }
+
+  .erp-record-kpi > span {
+    width: 38px;
+    height: 38px;
+    border-radius: 13px;
+    font-size: 0.98rem;
+  }
+
+  .erp-record-kpi small {
+    font-size: 0.58rem;
+  }
+
+  .erp-record-kpi strong {
+    font-size: 0.92rem;
+  }
+
+  .erp-record-main,
+  .erp-record-aside {
+    gap: 12px;
+  }
+
+  .erp-record-section {
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .erp-record-section-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 11px;
+    margin-bottom: 12px;
+  }
+
+  .erp-record-section-head span {
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+  }
+
+  .erp-record-section-head h3 {
+    font-size: 0.98rem;
+  }
+
+  .erp-record-info-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .erp-record-info-card {
+    min-height: 82px;
+    padding: 13px;
+  }
+
+  .erp-record-info-card span {
+    font-size: 0.58rem;
+  }
+
+  .erp-record-info-card strong {
+    font-size: 0.92rem;
+  }
+
+  .erp-record-data-table-wrap {
+    margin-left: -14px;
+    margin-right: -14px;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+
+  .erp-record-data-table {
+    min-width: 520px;
+  }
+
+  .erp-record-data-table th {
+    width: 190px;
+    font-size: 0.58rem;
+  }
+
+  .erp-record-data-table td {
+    font-size: 0.8rem;
+  }
+
+  .erp-record-timeline-item {
+    grid-template-columns: 38px minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .erp-record-timeline-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 13px;
+  }
+
+  .erp-record-finance-list span,
+  .erp-record-finance-list strong,
+  .erp-record-note-panel p,
+  .erp-record-empty-note {
+    font-size: 0.8rem;
+  }
+}
