@@ -777,99 +777,145 @@ function setFilter(status) {
   }
 
   function abrirResumoPropostaConteudo(r) {
-    const obra = r[COLS.OBRA] || "";
-    const status = r[COLS.STATUS_PROPOSTA] || "-";
+    const obra = String(r[COLS.OBRA] || "").trim();
+    const status = String(r[COLS.STATUS_PROPOSTA] || "-").trim() || "-";
     const valor = parseMoneyFlexible(r[COLS.VALOR]);
-    const cliente = r[COLS.CLIENTE] || "-";
-    const categoria = r[COLS.CATEGORIA_GERAL] || "-";
-    const uf = r[COLS.UF] || "-";
-    const etapa = r[COLS.ETAPA] || "-";
-    const responsavel = r[COLS.RESPONSAVEL] || "-";
-    const itemGeral = r[COLS.ITEM_GERAL] || "-";
-    const dataAbertura = formatDateDisplayBR(r[COLS.DATA_ABERTURA]) || "-";
+    const cliente = String(r[COLS.CLIENTE] || "-").trim() || "-";
+    const item = String(r[COLS.ITEM_GERAL] || "-").trim() || "-";
+    const categoria = String(r[COLS.CATEGORIA_GERAL] || "-").trim() || "-";
+    const responsavel = String(r[COLS.RESPONSAVEL] || "-").trim() || "-";
+    const complexidade = String(r[COLS.COMPLEXIDADE] || "-").trim() || "-";
+    const uf = String(r[COLS.UF] || "").trim();
+    const etapa = String(r[COLS.ETAPA] || "-").trim() || "-";
+    const nf = String(r[COLS.NF] || "-").trim() || "-";
+    const observacoes = String(r[COLS.OBS] || "").trim();
 
-    const isPreenchido = value => value !== null && value !== undefined && String(value).trim() !== "" && String(value).trim() !== "-";
-    const exibirCampo = value => escapeHtml(String(value ?? "-").trim() || "-");
-
-    const statusClasse = status === 'CONCLUIDAS' || status === 'ENTREGUES'
-      ? "is-ok"
-      : (status === 'ENVIADAS'
-        ? "is-warning"
-        : (status === 'FRUSTRADAS' ? "is-neutral" : "is-primary"));
-
-    const camposDetalhe = [
-      { icon: "bi-box-seam", label: "Item", valor: itemGeral, destaque: true },
-      { icon: "bi-person", label: "Responsável", valor: responsavel },
-      { icon: "bi-calendar-event", label: "Abertura", valor: dataAbertura },
-      { icon: "bi-diagram-3", label: "Etapa", valor: etapa }
-    ];
-
-    if (status === 'ENVIADAS') {
-      camposDetalhe.push({ icon: "bi-send", label: "Envio", valor: formatDateDisplayBR(r[COLS.DATA_ENVIADA]) || "-" });
-    } else if (status === 'FRUSTRADAS') {
-      camposDetalhe.push({ icon: "bi-calendar-x", label: "Frustração", valor: formatDateDisplayBR(r[COLS.DATA_FRUSTRADA]) || "-" });
-    } else if (status === 'CONCLUIDAS' || status === 'ENTREGUES') {
-      camposDetalhe.push({ icon: "bi-calendar-check", label: "Faturamento", valor: formatDateDisplayBR(r[COLS.DATA_FATURAMENTO]) || "-" });
-      camposDetalhe.push({ icon: "bi-receipt", label: "NF", valor: r[COLS.NF] || "-" });
-    }
-
-    const observacao = String(r[COLS.OBS] || "").trim();
-    if (observacao) {
-      camposDetalhe.push({ icon: "bi-chat-left-text", label: "Observação", valor: observacao, destaque: true });
-    }
-
-    const montarCampos = () => {
-      const cards = camposDetalhe
-        .filter(campo => isPreenchido(campo.valor))
-        .map(campo => `
-          <article class="proposta-modal-field ${campo.destaque ? "is-wide" : ""}">
-            <span><i class="bi ${campo.icon}"></i>${exibirCampo(campo.label)}</span>
-            <strong>${exibirCampo(campo.valor)}</strong>
-          </article>
-        `)
-        .join('');
-
-      return cards || `
-        <div class="proposta-modal-empty">
-          <i class="bi bi-info-circle"></i>
-          <span>Nenhuma informação complementar disponível.</span>
-        </div>
-      `;
+    const mapaUF = {
+      AC: "Acre", AL: "Alagoas", AP: "Amapá", AM: "Amazonas", BA: "Bahia", CE: "Ceará", DF: "Distrito Federal",
+      ES: "Espírito Santo", GO: "Goiás", MA: "Maranhão", MT: "Mato Grosso", MS: "Mato Grosso do Sul", MG: "Minas Gerais",
+      PA: "Pará", PB: "Paraíba", PR: "Paraná", PE: "Pernambuco", PI: "Piauí", RJ: "Rio de Janeiro", RN: "Rio Grande do Norte",
+      RS: "Rio Grande do Sul", RO: "Rondônia", RR: "Roraima", SC: "Santa Catarina", SP: "São Paulo", SE: "Sergipe", TO: "Tocantins"
     };
 
+    const ufNormalizada = uf.toUpperCase();
+    const localizacao = ufNormalizada
+      ? (mapaUF[ufNormalizada] ? `${mapaUF[ufNormalizada]} (${ufNormalizada})` : ufNormalizada)
+      : "UF não informada";
+
+    const statusConfig = {
+      ENVIADAS: { chip: "is-info", label: "ENVIADA", icon: "bi-send-check" },
+      FRUSTRADAS: { chip: "is-danger", label: "FRUSTRADA", icon: "bi-x-octagon" },
+      CONCLUIDAS: { chip: "is-success", label: "CONCLUÍDA", icon: "bi-check-circle" },
+      ENTREGUES: { chip: "is-success", label: "ENTREGUE", icon: "bi-truck" },
+      FIRMADAS: { chip: "is-primary", label: "FIRMADA", icon: "bi-award" }
+    };
+
+    const statusMeta = statusConfig[status] || { chip: "is-neutral", label: status || "NÃO INFORMADO", icon: "bi-info-circle" };
+
+    const dataAbertura = formatDateDisplayBR(r[COLS.DATA_ABERTURA]) || "-";
+    let dataSecundariaLabel = "Atualização";
+    let dataSecundariaValor = "-";
+
+    if (status === 'ENVIADAS') {
+      dataSecundariaLabel = 'Envio';
+      dataSecundariaValor = formatDateDisplayBR(r[COLS.DATA_ENVIADA]) || '-';
+    } else if (status === 'FRUSTRADAS') {
+      dataSecundariaLabel = 'Frustração';
+      dataSecundariaValor = formatDateDisplayBR(r[COLS.DATA_FRUSTRADA]) || '-';
+    } else if (status === 'CONCLUIDAS' || status === 'ENTREGUES') {
+      dataSecundariaLabel = 'Faturamento';
+      dataSecundariaValor = formatDateDisplayBR(r[COLS.DATA_FATURAMENTO]) || '-';
+    }
+
+    const registros = [];
+    if (nf && nf !== '-') registros.push(`<p><strong>NF(s) emitidas:</strong> ${escapeHtml(nf)}</p>`);
+    if (item && item !== '-') registros.push(`<p><strong>Itens atrelados no ERP:</strong> ${escapeHtml(item)}</p>`);
+    if (etapa && etapa !== '-') registros.push(`<p><strong>Etapa registrada:</strong> ${escapeHtml(etapa)}</p>`);
+    if (observacoes) registros.push(`<p><strong>Observações:</strong> ${escapeHtml(observacoes)}</p>`);
+    if (!registros.length) {
+      registros.push(`<p><strong>Registros:</strong> Não há observações adicionais retornadas pelo ERP para esta obra.</p>`);
+    }
+
     const html = `
-      <div class="proposta-modal-page">
-        <section class="proposta-modal-top">
-          <div class="proposta-modal-summary">
-            <span class="proposta-modal-kicker"><i class="bi bi-layout-text-window-reverse"></i> Consulta da proposta</span>
-            <h2>Obra ${exibirCampo(obra)}</h2>
-            <p>${exibirCampo(cliente)}</p>
-            <div class="proposta-modal-chips">
-              <span class="proposta-modal-status ${statusClasse}"><i class="bi bi-circle-fill"></i>${exibirCampo(status)}</span>
-              ${isPreenchido(categoria) ? `<span><i class="bi bi-tags"></i>${exibirCampo(categoria)}</span>` : ""}
-              ${isPreenchido(uf) ? `<span><i class="bi bi-geo-alt"></i>${exibirCampo(uf)}</span>` : ""}
+      <div class="proposta-consulta-page">
+        <section class="proposta-consulta-hero">
+          <article class="proposta-hero-card proposta-hero-card-main">
+            <span class="proposta-obra-badge">OBRA #${escapeHtml(obra || '-')}</span>
+            <h2>${escapeHtml(cliente)}</h2>
+            <div class="proposta-hero-location"><i class="bi bi-geo-alt"></i><span>${escapeHtml(localizacao)}</span></div>
+            <div class="proposta-chip-row">
+              <span class="proposta-chip ${statusMeta.chip}"><i class="bi ${statusMeta.icon}"></i>${escapeHtml(statusMeta.label)}</span>
+              <span class="proposta-chip"><i class="bi bi-tag"></i>${escapeHtml(categoria)}</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="proposta-consulta-value-row">
+          <article class="proposta-hero-card proposta-hero-card-value">
+            <span>VALOR DA PROPOSTA</span>
+            <strong>R$ ${formatMoneyBR(valor)}</strong>
+          </article>
+        </section>
+
+        <section class="proposta-consulta-grid">
+          <article class="proposta-panel">
+            <header class="proposta-panel-head">
+              <div class="proposta-panel-title"><i class="bi bi-box-seam"></i><span>DETALHES DO EQUIPAMENTO</span></div>
+            </header>
+            <div class="proposta-panel-body proposta-panel-body-stack">
+              <div class="proposta-field-block">
+                <span>DESCRIÇÃO DO ITEM</span>
+                <div class="proposta-field-highlight">${escapeHtml(item)}</div>
+              </div>
+              <div class="proposta-info-list">
+                <div class="proposta-info-item">
+                  <span class="proposta-info-icon"><i class="bi bi-person"></i></span>
+                  <div>
+                    <small>RESPONSÁVEL TÉCNICO</small>
+                    <strong>${escapeHtml(responsavel)}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="proposta-panel">
+            <header class="proposta-panel-head">
+              <div class="proposta-panel-title"><i class="bi bi-clock-history"></i><span>PRAZOS &amp; DOCUMENTAÇÃO</span></div>
+            </header>
+            <div class="proposta-panel-body proposta-panel-body-stack">
+              <div class="proposta-mini-grid">
+                <div class="proposta-mini-card">
+                  <span><i class="bi bi-calendar-event"></i>ABERTURA</span>
+                  <strong>${escapeHtml(dataAbertura)}</strong>
+                </div>
+                <div class="proposta-mini-card">
+                  <span><i class="bi bi-calendar-check"></i>${escapeHtml(dataSecundariaLabel.toUpperCase())}</span>
+                  <strong>${escapeHtml(dataSecundariaValor)}</strong>
+                </div>
+              </div>
+              <div class="proposta-mini-card proposta-mini-card-single">
+                <span><i class="bi bi-receipt-cutoff"></i>NOTA FISCAL VINCULADA</span>
+                <strong>${escapeHtml(nf)}</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <article class="proposta-panel proposta-panel-full">
+          <header class="proposta-panel-head">
+            <div class="proposta-panel-title"><i class="bi bi-journal-text"></i><span>REGISTROS E OBSERVAÇÕES DO ERP</span></div>
+          </header>
+          <div class="proposta-panel-body">
+            <div class="proposta-note-box">
+              ${registros.join('')}
             </div>
           </div>
-
-          <aside class="proposta-modal-value">
-            <span>Valor da proposta</span>
-            <strong>R$ ${formatMoneyBR(valor)}</strong>
-          </aside>
-        </section>
-
-        <section class="proposta-modal-card">
-          <header>
-            <span>Dados essenciais</span>
-            <h3>Informações da obra</h3>
-          </header>
-          <div class="proposta-modal-grid">
-            ${montarCampos()}
-          </div>
-        </section>
+        </article>
       </div>
     `;
 
-    document.getElementById('tituloResumo').innerText = "Consulta da proposta";
+    document.getElementById('tituloResumo').innerText = "Resumo da Obra - " + obra;
     document.getElementById('corpoResumoGeral').innerHTML = html;
     modalResumoUI.show();
   }
