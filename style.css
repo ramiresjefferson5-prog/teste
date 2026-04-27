@@ -1128,3 +1128,160 @@ body.device-mobile-shell .app-page-modal .modal-body {
     min-height: 42px;
   }
 }
+
+/* =========================================================
+   REFINO DESKTOP DO MODAL PRINCIPAL COMO SUBPÁGINA
+   Escopo exclusivo PC/tablet largo: não altera IDs, funções, dados ou mobile.
+   ========================================================= */
+@media (min-width: 992px) {
+  #modalObra.app-page-modal .app-page-header {
+    min-height: 82px;
+    padding: 18px 32px;
+  }
+
+  #modalObra.app-page-modal .app-page-title-wrap {
+    max-width: 50vw;
+  }
+
+  #modalObra.app-page-modal .app-page-title-wrap h6 {
+    font-size: clamp(1.05rem, 1vw, 1.28rem);
+  }
+
+  #modalObra.app-page-modal .modal-header-actions {
+    margin-left: auto;
+    flex-wrap: nowrap;
+  }
+
+  #modalObra.app-page-modal .app-page-body {
+    padding: 22px 28px 26px;
+  }
+
+  #modalObra.app-page-modal .app-page-shell-form {
+    width: min(calc(100vw - 56px), 1840px);
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #modalObra.app-page-modal #formPrincipal {
+    display: grid;
+    grid-template-columns: minmax(0, 1.72fr) minmax(340px, 0.58fr);
+    grid-template-areas:
+      "identificacao identificacao"
+      "itens observacoes";
+    gap: 18px;
+    align-items: start;
+  }
+
+  #modalObra.app-page-modal #formPrincipal > input[type="hidden"] {
+    display: none;
+  }
+
+  #modalObra.app-page-modal #formPrincipal > .app-section-card {
+    margin-bottom: 0;
+  }
+
+  #modalObra.app-page-modal #formPrincipal > .app-section-card:nth-of-type(1) {
+    grid-area: identificacao;
+  }
+
+  #modalObra.app-page-modal #formPrincipal > .app-section-card:nth-of-type(2) {
+    grid-area: itens;
+    min-height: calc(var(--app-vh, 100dvh) - 236px);
+  }
+
+  #modalObra.app-page-modal #formPrincipal > .app-section-card:nth-of-type(3) {
+    grid-area: observacoes;
+    position: sticky;
+    top: 8px;
+  }
+
+  #modalObra.app-page-modal .app-section-card {
+    border-radius: 22px;
+    padding: 20px;
+  }
+
+  #modalObra.app-page-modal .app-section-card-highlight {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  #modalObra.app-page-modal .app-section-heading {
+    margin-bottom: 14px;
+  }
+
+  #modalObra.app-page-modal #gradeItens {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(218px, 1fr));
+    gap: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    align-items: stretch;
+  }
+
+  #modalObra.app-page-modal #gradeItens::before,
+  #modalObra.app-page-modal #gradeItens::after {
+    display: none;
+  }
+
+  #modalObra.app-page-modal #gradeItens > [class*="col-"] {
+    width: auto !important;
+    max-width: none !important;
+    flex: initial !important;
+    padding: 0 !important;
+    display: flex;
+  }
+
+  #modalObra.app-page-modal #gradeItens .material-box {
+    min-height: 118px;
+    border-radius: 16px;
+    padding: 12px;
+  }
+
+  #modalObra.app-page-modal #analise {
+    min-height: 260px;
+    resize: vertical;
+  }
+
+  #modalObra.app-page-modal .app-page-footer {
+    justify-content: flex-end !important;
+    padding: 14px 32px;
+  }
+
+  #modalObra.app-page-modal .app-page-footer .btn {
+    min-width: 190px;
+    min-height: 42px;
+  }
+}
+
+@media (min-width: 1400px) {
+  #modalObra.app-page-modal .app-page-body {
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
+  #modalObra.app-page-modal .app-page-shell-form {
+    width: min(calc(100vw - 68px), 1900px);
+  }
+
+  #modalObra.app-page-modal #formPrincipal {
+    grid-template-columns: minmax(0, 1.85fr) minmax(390px, 0.62fr);
+    gap: 22px;
+  }
+
+  #modalObra.app-page-modal #gradeItens {
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    gap: 12px;
+  }
+
+  #modalObra.app-page-modal .app-section-card {
+    padding: 22px;
+  }
+}
+
+@media (min-width: 1700px) {
+  #modalObra.app-page-modal #gradeItens {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
