@@ -14,7 +14,7 @@
     tailwind.config = { corePlugins: { preflight: false } }
   </script>
 
-  <link rel="stylesheet" href="style.css?v=50">
+  <link rel="stylesheet" href="style.css?v=51">
 </head>
 <body class="antialiased">
 
@@ -23,9 +23,9 @@
   <nav class="navbar-custom">
     <div class="header-brand">
       <img src="https&#58;//res.cloudinary.com/dbnyxxhe3/image/upload/v1772102800/02_Prancheta_1_ksm9oj.png" class="logo-img" alt="Logo">
-      <h1 class="header-title">Carteira1</h1>
+      <h1 class="header-title">Carteira</h1>
       <div class="date-group header-date-group">
-        <span id="txtSemanaAtual" class="Semana-badge">Semana-</span>
+        <span id="txtSemanaAtual" class="Semana-badge">Semana -</span>
         <span id="txtDataAtual">Carregando...</span>
       </div>
     </div> 
@@ -159,32 +159,66 @@
 
 </div>
 
-<div class="modal fade" id="modalObra" data-bs-backdrop="static" tabindex="-1">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content shadow-lg border-0">
-      <div class="modal-header bg-light">
-        <h6 class="fw-bold text-primary mb-0" id="modalObraTitle">CADASTRO DE OBRA</h6>
+<div class="modal fade app-page-modal app-page-modal-main" id="modalObra" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered app-page-dialog">
+    <div class="modal-content app-page-content shadow-lg border-0">
+      <div class="modal-header app-page-header">
+        <div class="app-page-title-wrap">
+          <span class="app-page-kicker"><i class="bi bi-layout-text-window-reverse"></i> Gestão da obra</span>
+          <h6 class="fw-bold text-primary mb-0" id="modalObraTitle">CADASTRO DE OBRA</h6>
+        </div>
         <div class="ms-auto d-flex gap-2 align-items-center modal-header-actions">
-          <button id="btnFin" class="modal-top-action modal-top-action-fin" onclick="abrirDetalheFinanceiro()"><i class="bi bi-wallet2"></i><span class="d-none d-md-inline ms-1">Detalhe Financeiro</span></button>
-          <button id="btnGeral" class="modal-top-action modal-top-action-geral" onclick="abrirResumoGeral()"><i class="bi bi-grid-1x2"></i><span class="d-none d-md-inline ms-1">Base Geral</span></button>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <button id="btnFin" type="button" class="modal-top-action modal-top-action-fin" onclick="abrirDetalheFinanceiro()"><i class="bi bi-wallet2"></i><span class="d-none d-md-inline ms-1">Detalhe Financeiro</span></button>
+          <button id="btnGeral" type="button" class="modal-top-action modal-top-action-geral" onclick="abrirResumoGeral()"><i class="bi bi-grid-1x2"></i><span class="d-none d-md-inline ms-1">Base Geral</span></button>
+          <button type="button" class="btn-close app-page-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
       </div>
-      <div class="modal-body p-4">
-        <form id="formPrincipal" onsubmit="return false;">
-          <input type="hidden" id="data_entrada_orig">
-          <input type="hidden" id="cpmv_obra_val">
-          <div class="row g-3 mb-4">
-            <div class="col-md-2"><label class="form-label fw-bold small text-muted">OBRA Nº</label><input type="text" id="obra" class="form-control form-control-sm shadow-none border-secondary-subtle" onchange="buscarInfoObra()"></div>
-            <div class="col-md-4"><label class="form-label fw-bold small text-muted">CLIENTE</label><input type="text" id="cliente" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
-            <div class="col-md-3"><label class="form-label fw-bold small text-muted">VALOR (R$)</label><input type="text" id="valor" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
-            <div class="col-md-3"><label class="form-label fw-bold small text-muted">DIAS PRAZO</label><input type="number" id="dias_prazo" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
-          </div>
-          <div class="row g-2" id="gradeItens"></div>
-          <div class="mt-4"><label class="form-label fw-bold small text-muted">OBSERVAÇÕES</label><textarea id="analise" class="form-control form-control-sm shadow-none border-secondary-subtle" rows="2"></textarea></div>
-        </form>
+      <div class="modal-body app-page-body">
+        <div class="app-page-shell app-page-shell-form">
+          <form id="formPrincipal" onsubmit="return false;">
+            <input type="hidden" id="data_entrada_orig">
+            <input type="hidden" id="cpmv_obra_val">
+
+            <section class="app-section-card app-section-card-highlight">
+              <div class="app-section-heading">
+                <div>
+                  <span class="app-section-eyebrow">Dados principais</span>
+                  <h6>Identificação da proposta</h6>
+                </div>
+                <span class="app-section-hint">Campos preservados da estrutura atual</span>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-2"><label class="form-label fw-bold small text-muted">OBRA Nº</label><input type="text" id="obra" class="form-control form-control-sm shadow-none border-secondary-subtle" onchange="buscarInfoObra()"></div>
+                <div class="col-md-4"><label class="form-label fw-bold small text-muted">CLIENTE</label><input type="text" id="cliente" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
+                <div class="col-md-3"><label class="form-label fw-bold small text-muted">VALOR (R$)</label><input type="text" id="valor" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
+                <div class="col-md-3"><label class="form-label fw-bold small text-muted">DIAS PRAZO</label><input type="number" id="dias_prazo" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
+              </div>
+            </section>
+
+            <section class="app-section-card">
+              <div class="app-section-heading">
+                <div>
+                  <span class="app-section-eyebrow">Itens de controle</span>
+                  <h6>Status, compras e acompanhamentos</h6>
+                </div>
+                <span class="app-section-hint">Toque em um item para editar detalhes</span>
+              </div>
+              <div class="row g-2" id="gradeItens"></div>
+            </section>
+
+            <section class="app-section-card">
+              <div class="app-section-heading">
+                <div>
+                  <span class="app-section-eyebrow">Observações</span>
+                  <h6>Análise e comentários</h6>
+                </div>
+              </div>
+              <textarea id="analise" class="form-control form-control-sm shadow-none border-secondary-subtle" rows="3"></textarea>
+            </section>
+          </form>
+        </div>
       </div>
-      <div class="modal-footer d-flex justify-content-between bg-light border-top-0">
+      <div class="modal-footer app-page-footer d-flex justify-content-between">
         <button class="btn btn-outline-danger btn-sm px-4 fw-bold shadow-sm" onclick="deletar()">EXCLUIR</button>
         <button class="btn btn-primary btn-sm px-4 fw-bold shadow-sm" id="btnSalvar" onclick="salvar()">GRAVAR DADOS</button>
       </div>
@@ -192,122 +226,152 @@
   </div>
 </div>
 
-<div class="modal fade" id="modalCompraItem" tabindex="-1" style="z-index: 1060;" data-bs-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable">
-    <div class="modal-content border-0 shadow-lg">
-      <div class="modal-header bg-light py-2">
-        <h6 class="modal-title fw-bold text-primary mb-0" id="tituloCompraItem">Detalhes da Compra</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+<div class="modal fade app-page-modal app-page-modal-child" id="modalCompraItem" tabindex="-1" style="z-index: 1060;" data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable app-page-dialog app-page-dialog-narrow">
+    <div class="modal-content app-page-content border-0 shadow-lg">
+      <div class="modal-header app-page-header">
+        <div class="app-page-title-wrap">
+          <span class="app-page-kicker"><i class="bi bi-box-seam"></i> Item da obra</span>
+          <h6 class="modal-title fw-bold text-primary mb-0" id="tituloCompraItem">Detalhes da Compra</h6>
+        </div>
+        <button type="button" class="btn-close app-page-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
-      <div class="modal-body p-3">
-        <input type="hidden" id="compra_current_id">
-        <input type="hidden" id="compra_current_mode" value="DATA">
-        <div id="camposCompraDetalhada">
-          <div class="mb-2 position-relative">
-            <label class="sub-label">Pedido</label>
-            <input type="date" class="form-control form-control-sm shadow-none w-100" style="cursor: pointer;" id="pop_ped" onclick="try{this.showPicker();}catch(e){}">
-          </div>
-          <div class="mb-2 position-relative">
-            <label class="sub-label">Chegada</label>
-            <input type="date" class="form-control form-control-sm shadow-none w-100" style="cursor: pointer;" id="pop_cheg" onclick="try{this.showPicker();}catch(e){}">
-          </div>
-          <div class="mb-2">
-            <label class="sub-label">Forn / O.C.</label>
-            <div class="input-group input-group-sm mb-1">
-              <input type="text" class="form-control shadow-none" id="pop_forn" placeholder="Fornecedor">
+      <div class="modal-body app-page-body">
+        <div class="app-page-shell app-page-shell-narrow">
+          <section class="app-section-card app-section-card-highlight">
+            <input type="hidden" id="compra_current_id">
+            <input type="hidden" id="compra_current_mode" value="DATA">
+            <div id="camposCompraDetalhada">
+              <div class="mb-3 position-relative">
+                <label class="sub-label">Pedido</label>
+                <input type="date" class="form-control form-control-sm shadow-none w-100" style="cursor: pointer;" id="pop_ped" onclick="try{this.showPicker();}catch(e){}">
+              </div>
+              <div class="mb-3 position-relative">
+                <label class="sub-label">Chegada</label>
+                <input type="date" class="form-control form-control-sm shadow-none w-100" style="cursor: pointer;" id="pop_cheg" onclick="try{this.showPicker();}catch(e){}">
+              </div>
+              <div class="mb-3">
+                <label class="sub-label">Forn / O.C.</label>
+                <div class="input-group input-group-sm mb-2">
+                  <input type="text" class="form-control shadow-none" id="pop_forn" placeholder="Fornecedor">
+                </div>
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control shadow-none" id="pop_oc" placeholder="O.C.">
+                </div>
+              </div>
             </div>
-            <div class="input-group input-group-sm">
-              <input type="text" class="form-control shadow-none" id="pop_oc" placeholder="O.C.">
+            <div class="mb-3">
+              <label class="sub-label">Valor (R$)</label>
+              <input type="number" step="0.01" class="form-control form-control-sm shadow-none" id="pop_valor" placeholder="0.00">
             </div>
-          </div>
-        </div>
-        <div class="mb-2">
-          <label class="sub-label">Valor (R$)</label>
-          <input type="number" step="0.01" class="form-control form-control-sm shadow-none" id="pop_valor" placeholder="0.00">
-        </div>
-        <div class="mb-1">
-          <label class="sub-label">Descrição</label>
-          <textarea class="form-control form-control-sm shadow-none question-textarea" id="pop_desc" placeholder="Descreva a compra, observação do item ou condição atual."></textarea>
+            <div class="mb-1">
+              <label class="sub-label">Descrição</label>
+              <textarea class="form-control form-control-sm shadow-none question-textarea" id="pop_desc" placeholder="Descreva a compra, observação do item ou condição atual."></textarea>
+            </div>
+          </section>
         </div>
       </div>
-      <div class="modal-footer py-2 border-0 bg-light">
+      <div class="modal-footer app-page-footer border-0">
         <button type="button" class="btn btn-sm btn-primary w-100 fw-bold shadow-sm" onclick="salvarPopUpCompra()">CONFIRMAR DADOS</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="modalPendenciaItem" tabindex="-1" style="z-index: 1065;" data-bs-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable">
-    <div class="modal-content border-0 shadow-lg">
-      <div class="modal-header bg-light py-2">
-        <h6 class="modal-title fw-bold text-danger mb-0" id="tituloPendenciaItem">Pendência do Item</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body p-3">
-        <input type="hidden" id="pend_current_id">
-        <div class="mb-2">
-          <label class="sub-label">Descrição</label>
-          <textarea class="form-control form-control-sm shadow-none question-textarea" id="pop_qdesc" placeholder="Descreva o que está acontecendo neste item."></textarea>
+
+<div class="modal fade app-page-modal app-page-modal-child" id="modalPendenciaItem" tabindex="-1" style="z-index: 1065;" data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable app-page-dialog app-page-dialog-narrow">
+    <div class="modal-content app-page-content border-0 shadow-lg">
+      <div class="modal-header app-page-header app-page-header-danger">
+        <div class="app-page-title-wrap">
+          <span class="app-page-kicker"><i class="bi bi-exclamation-triangle"></i> Atenção do item</span>
+          <h6 class="modal-title fw-bold text-danger mb-0" id="tituloPendenciaItem">Pendência do Item</h6>
         </div>
-        <div class="helper-note"><strong>Observação:</strong> esse item ficará com status de atenção até você alterar para OK, N/A ou DATA.</div>
+        <button type="button" class="btn-close app-page-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
-      <div class="modal-footer py-2 border-0 bg-light">
+      <div class="modal-body app-page-body">
+        <div class="app-page-shell app-page-shell-narrow">
+          <section class="app-section-card app-section-card-danger">
+            <input type="hidden" id="pend_current_id">
+            <div class="mb-3">
+              <label class="sub-label">Descrição</label>
+              <textarea class="form-control form-control-sm shadow-none question-textarea" id="pop_qdesc" placeholder="Descreva o que está acontecendo neste item."></textarea>
+            </div>
+            <div class="helper-note"><strong>Observação:</strong> esse item ficará com status de atenção até você alterar para OK, N/A ou DATA.</div>
+          </section>
+        </div>
+      </div>
+      <div class="modal-footer app-page-footer border-0">
         <button type="button" class="btn btn-sm btn-danger w-100 fw-bold shadow-sm" onclick="salvarPopUpPendencia()">CONFIRMAR PENDÊNCIA</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="modalResumoGeral" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg" style="border-radius:15px;">
-      <div class="modal-header bg-light"><h6 id="tituloResumo" class="fw-bold text-primary mb-0">Informações Gerais</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-      <div class="modal-body p-4 bg-light bg-opacity-50" id="corpoResumoGeral"></div>
+
+<div class="modal fade app-page-modal app-page-modal-child" id="modalResumoGeral" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered app-page-dialog app-page-dialog-wide">
+    <div class="modal-content app-page-content border-0 shadow-lg">
+      <div class="modal-header app-page-header">
+        <div class="app-page-title-wrap">
+          <span class="app-page-kicker"><i class="bi bi-grid-1x2"></i> Consulta da base</span>
+          <h6 id="tituloResumo" class="fw-bold text-primary mb-0">Informações Gerais</h6>
+        </div>
+        <button type="button" class="btn-close app-page-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body app-page-body app-page-body-light" id="corpoResumoGeral"></div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="modalExtracaoRelatorio" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content border-0 shadow-lg extract-choice-modal">
-      <div class="modal-header border-0 pt-4">
-        <div>
+
+<div class="modal fade app-page-modal app-page-modal-child" id="modalExtracaoRelatorio" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm app-page-dialog app-page-dialog-narrow">
+    <div class="modal-content app-page-content border-0 shadow-lg extract-choice-modal">
+      <div class="modal-header app-page-header border-0">
+        <div class="app-page-title-wrap">
+          <span class="app-page-kicker"><i class="bi bi-send-plus"></i> Compartilhamento</span>
           <h5 class="modal-title fw-bold text-primary mb-1" id="tituloModalExtracao">Extrair relatório</h5>
           <p class="text-muted small mb-0" id="subtituloModalExtracao">Escolha o formato e continue.</p>
         </div>
-        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        <button type="button" class="btn-close app-page-close shadow-none" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
-      <div class="modal-body">
-        <div class="extract-choice-grid" id="blocoTipoExtracao">
-          <button type="button" class="extract-choice-card" id="btnExtracaoGeral" onclick="selecionarTipoExtracao('geral')">
-            <i class="bi bi-grid-1x2"></i>
-            <span><strong>Visão atual</strong><small>Resumo baseado no filtro selecionado.</small></span>
-          </button>
-          <button type="button" class="extract-choice-card" id="btnExtracaoObra" onclick="selecionarTipoExtracao('obra')">
-            <i class="bi bi-buildings"></i>
-            <span><strong>Obra específica</strong><small>Análise focada de uma única obra.</small></span>
-          </button>
-        </div>
+      <div class="modal-body app-page-body">
+        <div class="app-page-shell app-page-shell-narrow">
+          <section class="app-section-card app-section-card-highlight">
+            <div class="extract-choice-grid" id="blocoTipoExtracao">
+              <button type="button" class="extract-choice-card" id="btnExtracaoGeral" onclick="selecionarTipoExtracao('geral')">
+                <i class="bi bi-grid-1x2"></i>
+                <span><strong>Visão atual</strong><small>Resumo baseado no filtro selecionado.</small></span>
+              </button>
+              <button type="button" class="extract-choice-card" id="btnExtracaoObra" onclick="selecionarTipoExtracao('obra')">
+                <i class="bi bi-buildings"></i>
+                <span><strong>Obra específica</strong><small>Análise focada de uma única obra.</small></span>
+              </button>
+            </div>
 
-        <div class="extract-choice-divider"></div>
+            <div class="extract-choice-divider"></div>
 
-        <div class="extract-choice-form d-none" id="blocoObraExtracao">
-          <label for="inputObraExtracao" class="form-label fw-semibold text-secondary mb-2">Número da obra</label>
-          <div class="input-group input-group-lg">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control" id="inputObraExtracao" placeholder="26.001">
-          </div>
-          <div class="extract-choice-hint">Use o número exatamente como aparece na tabela.</div>
+            <div class="extract-choice-form d-none" id="blocoObraExtracao">
+              <label for="inputObraExtracao" class="form-label fw-semibold text-secondary mb-2">Número da obra</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" id="inputObraExtracao" placeholder="26.001">
+              </div>
+              <div class="extract-choice-hint">Use o número exatamente como aparece na tabela.</div>
+            </div>
+          </section>
         </div>
       </div>
-      <div class="modal-footer border-0 pb-4">
+      <div class="modal-footer app-page-footer border-0">
         <button type="button" class="btn btn-light px-3" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary px-4" id="btnConfirmarExtracao" onclick="confirmarExtracaoRelatorio()">Continuar</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <script src="https&#58;//cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="motorbackend.js?v=40"></script>
