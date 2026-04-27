@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Carteira</title>
+  
+  <!-- Links blindados contra formatação -->
+  <link href="https&#58;//cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https&#58;//cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <script src="https&#58;//cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { corePlugins: { preflight: false } }
+  </script>
+
+  <link rel="stylesheet" href="style.css?v=50">
+</head>
+<body class="antialiased">
+
+<div id="notificationArea"></div>
+<div id="mainContent">
+  <nav class="navbar-custom">
+    <div class="header-brand">
+      <img src="https&#58;//res.cloudinary.com/dbnyxxhe3/image/upload/v1772102800/02_Prancheta_1_ksm9oj.png" class="logo-img" alt="Logo">
+      <h1 class="header-title">Carteira1</h1>
+      <div class="date-group header-date-group">
+        <span id="txtSemanaAtual" class="Semana-badge">Semana-</span>
+        <span id="txtDataAtual">Carregando...</span>
+      </div>
+    </div> 
+
+    <div class="nav-actions">
+      <!-- Menu de Extração de Relatórios -->
+      <div class="export-menu-wrap">
+        <button id="btnExtrair" type="button" class="btn-extract-modern" onclick="toggleMenuExtracao(event)" aria-label="Extrair relatórios"><i class="bi bi-send-plus"></i></button>
+        <div id="menuExtracao" class="extract-menu-panel">
+          <button type="button" class="extract-menu-btn" onclick="gerarResumoWhatsApp('geral')">
+            <i class="bi bi-whatsapp"></i>
+            <span><strong>Resumo WhatsApp geral</strong><small>Panorama da visualização atual da tabela.</small></span>
+          </button>
+          <button type="button" class="extract-menu-btn" onclick="abrirModalExtracao('whatsapp-obra')">
+            <i class="bi bi-building-check"></i>
+            <span><strong>Resumo WhatsApp por obra</strong><small>Gera um texto pronto com análise de uma obra específica para enviar rapidamente.</small></span>
+          </button>
+          <div class="extract-menu-divider"></div>
+          <button type="button" class="extract-menu-btn" onclick="abrirModalExtracao('pdf')">
+            <i class="bi bi-file-earmark-pdf"></i>
+            <span><strong>Extrair em PDF</strong><small>Abre um relatório formatado da visualização atual.</small></span>
+          </button>
+        </div>
+      </div>
+      <!-- Novo botão Analítico -->
+      <button id="btnAnalytics" type="button" class="btn-extract-modern" onclick="showAnalyticsSoon()" aria-label="Analítico">
+        <i class="bi bi-bar-chart"></i>
+      </button>
+    </div>
+  </nav>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-icon icon-obras"><i class="bi bi-buildings-fill"></i></div><div class="stat-content"><p class="stat-label">Obras Exibidas</p><h3 id="resumoObras" class="stat-val">0</h3></div></div>
+    <div class="stat-card"><div class="stat-icon icon-valor"><i class="bi bi-currency-dollar"></i></div><div class="stat-content"><p class="stat-label">Valor Exibido</p><h3 id="resumoValor" class="stat-val">0</h3></div></div>
+    <div class="stat-card"><div class="stat-icon icon-media"><i class="bi bi-graph-up-arrow"></i></div><div class="stat-content"><p class="stat-label">Valor Médio</p><h3 id="resumoCustoMedio" class="stat-val">0</h3></div></div>
+    <div class="stat-card"><div class="stat-icon icon-entrega"><i class="bi bi-truck"></i></div><div class="stat-content"><p class="stat-label">Atraso Crítico</p><h3 id="resumoProxima" class="stat-val">-</h3></div></div>
+  </div>
+
+  <div class="filter-wrapper-header">
+    
+    <!-- ESQUERDA (PC): Botões Originais -->
+    <div class="status-filters d-none d-md-flex" id="filterContainer">
+      <button class="filter-btn active" data-status="FIRMADAS" onclick="setFilter('FIRMADAS')">Firmadas</button>
+      <button class="filter-btn" data-status="TODAS" onclick="setFilter('TODAS')">Todas</button>
+      <button class="filter-btn" data-status="ENVIADAS" onclick="setFilter('ENVIADAS')">Enviadas</button>
+      <button class="filter-btn" data-status="FRUSTRADAS" onclick="setFilter('FRUSTRADAS')">Frustradas</button>
+      <button class="filter-btn" data-status="ENTREGUES" onclick="setFilter('ENTREGUES')">Entregues</button>
+      <button class="filter-btn" data-status="CONCLUIDAS" onclick="setFilter('CONCLUIDAS')">Concluídas</button>
+    </div>
+
+    <!-- MOBILE: Filtro de Status + Filtro de Ano -->
+    <div class="d-flex d-md-none gap-2 w-100">
+      <div class="status-select-wrapper shadow-sm" style="flex: 1;">
+        <i class="bi bi-funnel-fill"></i>
+        <select class="status-select" id="statusFilter" onchange="setFilter(this.value)">
+          <option value="FIRMADAS" selected>Firmadas</option>
+          <option value="TODAS">Todas</option>
+          <option value="ENVIADAS">Enviadas</option>
+          <option value="FRUSTRADAS">Frustradas</option>
+          <option value="ENTREGUES">Entregues</option>
+          <option value="CONCLUIDAS">Concluídas</option>
+        </select>
+      </div>
+
+      <div class="status-select-wrapper shadow-sm" style="flex: 0 0 110px;">
+        <i class="bi bi-calendar-event"></i>
+        <select class="status-select" id="anoFilterMobile" onchange="mudarAno(this.value)" style="padding-left: 36px; padding-right: 14px;">
+          <option value="TODOS" selected>Todos</option>
+          <option value="26">2026</option>
+          <option value="25">2025</option>
+          <option value="24">2024</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- DIREITA (PC): Filtro de Ano e Texto Arraste -->
+    <div class="d-none d-md-flex align-items-center gap-3">
+      <div class="status-select-wrapper shadow-sm" style="min-width: 120px;">
+        <i class="bi bi-calendar-event"></i>
+        <select class="status-select py-1" id="anoFilterPC" onchange="mudarAno(this.value)" style="padding-left: 34px; padding-top: 8px; padding-bottom: 8px;">
+          <option value="TODOS" selected>Histórico</option>
+          <option value="26">2026</option>
+          <option value="25">2025</option>
+          <option value="24">2024</option>
+        </select>
+      </div>
+      <div class="table-scroll-label mb-0">Arraste para ver mais →</div>
+    </div>
+
+  </div>
+
+  <div id="filtroConcluidasFaturamento" class="d-none px-3 px-md-4 mb-3">
+    <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-3">
+      <div class="status-select-wrapper shadow-sm" style="min-width: 210px; flex: 1 1 220px;">
+        <i class="bi bi-calendar-range"></i>
+        <select class="status-select" id="faturamentoMesInicio" onchange="aplicarFiltroConcluidasPorMes()" style="padding-left: 36px; padding-right: 14px;">
+          <option value="TODOS" selected>Todo período</option>
+        </select>
+      </div>
+      <div class="status-select-wrapper shadow-sm" style="min-width: 210px; flex: 1 1 220px;">
+        <i class="bi bi-calendar2-check"></i>
+        <select class="status-select" id="faturamentoMesFim" onchange="aplicarFiltroConcluidasPorMes()" style="padding-left: 36px; padding-right: 14px;">
+          <option value="TODOS" selected>Todo período</option>
+        </select>
+      </div>
+      <div class="small fw-bold text-muted px-1">Filtro aplicado somente na aba Concluídas, usando a data de faturamento.</div>
+    </div>
+  </div>
+
+  <div class="table-viewport shadow-sm transform-gpu d-none d-md-block">
+    <table class="table table-hover mb-0">
+      <thead id="tabHead"></thead>
+      <tbody id="tabBody" class="animate-fade-up">
+        <tr>
+          <td colspan="20" class="text-center py-5 text-muted">
+            <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
+            <span class="fw-bold">Sincronizando bases de dados...</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CONTAINER EXCLUSIVO MOBILE -->
+  <div id="mobileCardsContainer" class="d-md-none mobile-cards-wrapper px-3 pb-4">
+    <div class="text-center py-5 text-muted">
+      <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
+      <span class="fw-bold">Sincronizando bases de dados...</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade" id="modalObra" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0">
+      <div class="modal-header bg-light">
+        <h6 class="fw-bold text-primary mb-0" id="modalObraTitle">CADASTRO DE OBRA</h6>
+        <div class="ms-auto d-flex gap-2 align-items-center modal-header-actions">
+          <button id="btnFin" class="modal-top-action modal-top-action-fin" onclick="abrirDetalheFinanceiro()"><i class="bi bi-wallet2"></i><span class="d-none d-md-inline ms-1">Detalhe Financeiro</span></button>
+          <button id="btnGeral" class="modal-top-action modal-top-action-geral" onclick="abrirResumoGeral()"><i class="bi bi-grid-1x2"></i><span class="d-none d-md-inline ms-1">Base Geral</span></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+      </div>
+      <div class="modal-body p-4">
+        <form id="formPrincipal" onsubmit="return false;">
+          <input type="hidden" id="data_entrada_orig">
+          <input type="hidden" id="cpmv_obra_val">
+          <div class="row g-3 mb-4">
+            <div class="col-md-2"><label class="form-label fw-bold small text-muted">OBRA Nº</label><input type="text" id="obra" class="form-control form-control-sm shadow-none border-secondary-subtle" onchange="buscarInfoObra()"></div>
+            <div class="col-md-4"><label class="form-label fw-bold small text-muted">CLIENTE</label><input type="text" id="cliente" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
+            <div class="col-md-3"><label class="form-label fw-bold small text-muted">VALOR (R$)</label><input type="text" id="valor" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
+            <div class="col-md-3"><label class="form-label fw-bold small text-muted">DIAS PRAZO</label><input type="number" id="dias_prazo" class="form-control form-control-sm shadow-none border-secondary-subtle"></div>
+          </div>
+          <div class="row g-2" id="gradeItens"></div>
+          <div class="mt-4"><label class="form-label fw-bold small text-muted">OBSERVAÇÕES</label><textarea id="analise" class="form-control form-control-sm shadow-none border-secondary-subtle" rows="2"></textarea></div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-between bg-light border-top-0">
+        <button class="btn btn-outline-danger btn-sm px-4 fw-bold shadow-sm" onclick="deletar()">EXCLUIR</button>
+        <button class="btn btn-primary btn-sm px-4 fw-bold shadow-sm" id="btnSalvar" onclick="salvar()">GRAVAR DADOS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCompraItem" tabindex="-1" style="z-index: 1060;" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light py-2">
+        <h6 class="modal-title fw-bold text-primary mb-0" id="tituloCompraItem">Detalhes da Compra</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-3">
+        <input type="hidden" id="compra_current_id">
+        <input type="hidden" id="compra_current_mode" value="DATA">
+        <div id="camposCompraDetalhada">
+          <div class="mb-2 position-relative">
+            <label class="sub-label">Pedido</label>
+            <input type="date" class="form-control form-control-sm shadow-none w-100" style="cursor: pointer;" id="pop_ped" onclick="try{this.showPicker();}catch(e){}">
+          </div>
+          <div class="mb-2 position-relative">
+            <label class="sub-label">Chegada</label>
+            <input type="date" class="form-control form-control-sm shadow-none w-100" style="cursor: pointer;" id="pop_cheg" onclick="try{this.showPicker();}catch(e){}">
+          </div>
+          <div class="mb-2">
+            <label class="sub-label">Forn / O.C.</label>
+            <div class="input-group input-group-sm mb-1">
+              <input type="text" class="form-control shadow-none" id="pop_forn" placeholder="Fornecedor">
+            </div>
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control shadow-none" id="pop_oc" placeholder="O.C.">
+            </div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <label class="sub-label">Valor (R$)</label>
+          <input type="number" step="0.01" class="form-control form-control-sm shadow-none" id="pop_valor" placeholder="0.00">
+        </div>
+        <div class="mb-1">
+          <label class="sub-label">Descrição</label>
+          <textarea class="form-control form-control-sm shadow-none question-textarea" id="pop_desc" placeholder="Descreva a compra, observação do item ou condição atual."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer py-2 border-0 bg-light">
+        <button type="button" class="btn btn-sm btn-primary w-100 fw-bold shadow-sm" onclick="salvarPopUpCompra()">CONFIRMAR DADOS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalPendenciaItem" tabindex="-1" style="z-index: 1065;" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light py-2">
+        <h6 class="modal-title fw-bold text-danger mb-0" id="tituloPendenciaItem">Pendência do Item</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-3">
+        <input type="hidden" id="pend_current_id">
+        <div class="mb-2">
+          <label class="sub-label">Descrição</label>
+          <textarea class="form-control form-control-sm shadow-none question-textarea" id="pop_qdesc" placeholder="Descreva o que está acontecendo neste item."></textarea>
+        </div>
+        <div class="helper-note"><strong>Observação:</strong> esse item ficará com status de atenção até você alterar para OK, N/A ou DATA.</div>
+      </div>
+      <div class="modal-footer py-2 border-0 bg-light">
+        <button type="button" class="btn btn-sm btn-danger w-100 fw-bold shadow-sm" onclick="salvarPopUpPendencia()">CONFIRMAR PENDÊNCIA</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalResumoGeral" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius:15px;">
+      <div class="modal-header bg-light"><h6 id="tituloResumo" class="fw-bold text-primary mb-0">Informações Gerais</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body p-4 bg-light bg-opacity-50" id="corpoResumoGeral"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalExtracaoRelatorio" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content border-0 shadow-lg extract-choice-modal">
+      <div class="modal-header border-0 pt-4">
+        <div>
+          <h5 class="modal-title fw-bold text-primary mb-1" id="tituloModalExtracao">Extrair relatório</h5>
+          <p class="text-muted small mb-0" id="subtituloModalExtracao">Escolha o formato e continue.</p>
+        </div>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="extract-choice-grid" id="blocoTipoExtracao">
+          <button type="button" class="extract-choice-card" id="btnExtracaoGeral" onclick="selecionarTipoExtracao('geral')">
+            <i class="bi bi-grid-1x2"></i>
+            <span><strong>Visão atual</strong><small>Resumo baseado no filtro selecionado.</small></span>
+          </button>
+          <button type="button" class="extract-choice-card" id="btnExtracaoObra" onclick="selecionarTipoExtracao('obra')">
+            <i class="bi bi-buildings"></i>
+            <span><strong>Obra específica</strong><small>Análise focada de uma única obra.</small></span>
+          </button>
+        </div>
+
+        <div class="extract-choice-divider"></div>
+
+        <div class="extract-choice-form d-none" id="blocoObraExtracao">
+          <label for="inputObraExtracao" class="form-label fw-semibold text-secondary mb-2">Número da obra</label>
+          <div class="input-group input-group-lg">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" id="inputObraExtracao" placeholder="26.001">
+          </div>
+          <div class="extract-choice-hint">Use o número exatamente como aparece na tabela.</div>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pb-4">
+        <button type="button" class="btn btn-light px-3" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary px-4" id="btnConfirmarExtracao" onclick="confirmarExtracaoRelatorio()">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https&#58;//cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="motorbackend.js?v=40"></script>
+<script src="script.js?v=41"></script>
+
+</body>
+</html>
