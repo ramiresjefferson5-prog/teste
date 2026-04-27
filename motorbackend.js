@@ -28,10 +28,10 @@ const FATURAMENTO_FINANCEIRO_2026 = Object.freeze({
   "731": { data: "27/01/2026", valor: 70000, cliente: "HYPEMIDIA LTDA" },
 
   "734": { data: "03/02/2026", valor: 17500, cliente: "HYPEMIDIA LTDA" },
-  "735": { data: "03/02/2026", valor: 6961.45, cliente: "SAMARIA" },
+  "735": { data: "03/02/2026", valor: 6961.45, cliente: "SAMARIA", contabiliza: false },
   "736": { data: "03/02/2026", valor: 1466.15, cliente: "AQUALCULTURA FORTALE" },
   "737": { data: "03/02/2026", valor: 7572.60, cliente: "SAMARIA CAMAROES" },
-  "739": { data: "03/02/2026", valor: 520.25, cliente: "SAMARIA" },
+  "739": { data: "03/02/2026", valor: 520.25, cliente: "SAMARIA", contabiliza: false },
   "741": { data: "11/02/2026", valor: 7284.39, cliente: "AQUISA BEBERIBE" },
   "742": { data: "13/02/2026", valor: 3050.40, cliente: "AQUISA PARAIPABA" },
   "743": { data: "13/02/2026", valor: 350.33, cliente: "CONSTRUTORA SAMARIA" },
@@ -44,7 +44,7 @@ const FATURAMENTO_FINANCEIRO_2026 = Object.freeze({
   "751": { data: "27/02/2026", valor: 2583.31, cliente: "NORSAL" },
 
   "752": { data: "04/03/2026", valor: 165.20, cliente: "AQUALCULTURA FORTALE" },
-  "753": { data: "04/03/2026", valor: 176.56, cliente: "AQUALCULTURA FORTALE" },
+  "753": { data: "04/03/2026", valor: 176.56, cliente: "AQUALCULTURA FORTALE", contabiliza: false },
   "754": { data: "04/03/2026", valor: 9030.45, cliente: "AQUALCULTURA FORTALE" },
   "755": { data: "04/03/2026", valor: 4692.71, cliente: "AQUALCULTURA FORTALE" },
   "756": { data: "04/03/2026", valor: 32886.47, cliente: "AQUALCULTURA FORTALE" },
@@ -59,24 +59,31 @@ const FATURAMENTO_FINANCEIRO_2026 = Object.freeze({
   "769": { data: "18/03/2026", valor: 12256.60, cliente: "SAMARIA CAMAROES" },
   "770": { data: "20/03/2026", valor: 18443.30, cliente: "AQUISA PARAIPABA" },
   "771": { data: "26/03/2026", valor: 10421.44, cliente: "VARICRED DO NORDESTE" },
-  "774": { data: "30/03/2026", valor: 3457.26, cliente: "AGROCOURA AGROPECUÁR" },
+  "774": { data: "30/03/2026", valor: 3457.26, cliente: "AGROCOURA AGROPECUÁR", contabiliza: false },
   "775": { data: "31/03/2026", valor: 61081.87, cliente: "AQUISA PARAIPABA" },
 
   "776": { data: "01/04/2026", valor: 404421, cliente: "SAMARIA CAMAROES LTD" },
   "777": { data: "01/04/2026", valor: 17500.15, cliente: "SAMARIA CAMAROES LTD" },
-  "778": { data: "08/04/2026", valor: 2360, cliente: "SAMARIA CAMAROES LTD" },
-  "779": { data: "08/04/2026", valor: 12790, cliente: "SAMARIA CAMAROES LTD" },
+  "778": { data: "08/04/2026", valor: 2360, cliente: "SAMARIA CAMAROES LTD", contabiliza: false },
+  "779": { data: "08/04/2026", valor: 12790, cliente: "SAMARIA CAMAROES LTD", contabiliza: false },
   "780": { data: "10/04/2026", valor: 1501.05, cliente: "CAMAR RN MARICULTURA" },
   "781": { data: "10/04/2026", valor: 5240, cliente: "SAMARIA CAMAROES" },
   "785": { data: "14/04/2026", valor: 50475.33, cliente: "MUCUJO CARCINICULTUR" },
-  "786": { data: "17/04/2026", valor: 4167.90, cliente: "AFONSO FRANCA CONSTR" },
-  "787": { data: "17/04/2026", valor: 1374.30, cliente: "AFONSO FRANCA CONSTR" },
+  "786": { data: "17/04/2026", valor: 4167.90, cliente: "AFONSO FRANCA CONSTR", contabiliza: false },
+  "787": { data: "17/04/2026", valor: 1374.30, cliente: "AFONSO FRANCA CONSTR", contabiliza: false },
   "788": { data: "23/04/2026", valor: 27000, cliente: "SAMARIA CAMAROES LTD" },
   "789": { data: "23/04/2026", valor: 85730, cliente: "OESTE VERDE PREMOLDA" },
   "790": { data: "24/04/2026", valor: 4109.14, cliente: "AQUISA PARAIPABA" },
   "791": { data: "24/04/2026", valor: 3293.06, cliente: "AQUISA PARAIPABA" },
   "792": { data: "24/04/2026", valor: 4646.25, cliente: "SANTA MARIA AQUACULT" }
 });
+
+const MESES_FINANCEIRO_FECHADOS_2026 = new Set([
+  "2026-01",
+  "2026-02",
+  "2026-03",
+  "2026-04"
+]);
 
 function getSafeId(str) {
   if (!str) return "";
@@ -208,6 +215,30 @@ function getFaturamentoFinanceiroPorNF(value) {
   return FATURAMENTO_FINANCEIRO_2026[nfNormalizada] || null;
 }
 
+function isFaturamentoFinanceiroContabilizavel(faturamentoFinanceiro) {
+  return Boolean(faturamentoFinanceiro && faturamentoFinanceiro.contabiliza !== false);
+}
+
+function isMesFinanceiroFechado2026(value) {
+  const mesReferencia = getMonthKeyFromValue(value);
+  return MESES_FINANCEIRO_FECHADOS_2026.has(mesReferencia);
+}
+
+function deveIgnorarLinhaNoFechamentoFinanceiro(erp) {
+  if (!erp) return false;
+
+  const nfNormalizada = normalizeNF(erp.nf);
+  if (!nfNormalizada) return false;
+
+  const faturamentoFinanceiro = getFaturamentoFinanceiroPorNF(nfNormalizada);
+  if (faturamentoFinanceiro) {
+    return !isFaturamentoFinanceiroContabilizavel(faturamentoFinanceiro);
+  }
+
+  const dataFaturamentoOriginal = pickFirstNonEmpty(erp.data_faturam, erp.data_faturamento);
+  return isMesFinanceiroFechado2026(dataFaturamentoOriginal);
+}
+
 function extractObraPermitida(value) {
   const txt = String(value || '').trim();
   if (!txt) return null;
@@ -240,10 +271,12 @@ function isLinhaCanceladaOuFrustrada(erp) {
 function isLinhaFinanceiramenteValida(erp) {
   if (!erp || isLinhaCanceladaOuFrustrada(erp)) return false;
 
+  if (deveIgnorarLinhaNoFechamentoFinanceiro(erp)) return false;
+
   const nfNormalizada = normalizeNF(erp.nf);
   const temNF = nfNormalizada !== '';
   const faturamentoFinanceiro = getFaturamentoFinanceiroPorNF(erp.nf);
-  const temFaturamento = Boolean(faturamentoFinanceiro || erp.data_faturam || erp.data_faturamento);
+  const temFaturamento = Boolean(isFaturamentoFinanceiroContabilizavel(faturamentoFinanceiro) || erp.data_faturam || erp.data_faturamento);
 
   return temNF && temFaturamento;
 }
@@ -458,7 +491,8 @@ function consolidarGrupoObra(grupo) {
   linhasSelecionadas.forEach(item => {
     const erp = item.erp;
     const nfNormalizada = normalizeNF(erp.nf);
-    const faturamentoFinanceiro = item.faturamentoFinanceiro || getFaturamentoFinanceiroPorNF(erp.nf);
+    const faturamentoFinanceiroBruto = item.faturamentoFinanceiro || getFaturamentoFinanceiroPorNF(erp.nf);
+    const faturamentoFinanceiro = isFaturamentoFinanceiroContabilizavel(faturamentoFinanceiroBruto) ? faturamentoFinanceiroBruto : null;
     const dataFaturamentoPreferencial = faturamentoFinanceiro ? faturamentoFinanceiro.data : "";
     const valorDocumento = faturamentoFinanceiro
       ? parseMoneyFlexible(faturamentoFinanceiro.valor)
@@ -566,7 +600,10 @@ const motorBackend = {
           const obraInfo = extractObraPermitida(erp.obra);
           if (!obraInfo) return;
 
-          const faturamentoFinanceiro = getFaturamentoFinanceiroPorNF(erp.nf);
+          if (deveIgnorarLinhaNoFechamentoFinanceiro(erp)) return;
+
+          const faturamentoFinanceiroBruto = getFaturamentoFinanceiroPorNF(erp.nf);
+          const faturamentoFinanceiro = isFaturamentoFinanceiroContabilizavel(faturamentoFinanceiroBruto) ? faturamentoFinanceiroBruto : null;
           const valorObra = getValorFinanceiroObra(erp);
           const valorNF = faturamentoFinanceiro ? parseMoneyFlexible(faturamentoFinanceiro.valor) : getValorFinanceiroNF(erp);
           const valorContabil = isLinhaFinanceiramenteValida(erp) && valorNF !== null
