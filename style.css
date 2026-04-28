@@ -4718,3 +4718,70 @@ body.app-modal-open #modalExtracaoRelatorio.app-page-modal {
     display: none !important;
   }
 }
+
+
+/* --- AJUSTE FINAL: FILTRO CONCLUÍDAS COM ÍCONES NO MOBILE --- */
+@media (max-width: 576px) {
+  #filtroConcluidasFaturamento {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    margin-bottom: 10px !important;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-field {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    flex: 0 0 44px !important;
+    padding: 0 !important;
+    border-radius: 13px !important;
+    overflow: hidden !important;
+    cursor: pointer;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-field i {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    z-index: 1;
+    transform: translate(-50%, -50%) !important;
+    color: var(--primary);
+    font-size: 1.05rem !important;
+    pointer-events: none;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-field::before,
+  #filtroConcluidasFaturamento .status-select-wrapper::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-select {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    color: transparent !important;
+    background: transparent !important;
+    cursor: pointer;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-helper {
+    display: none !important;
+  }
+}
