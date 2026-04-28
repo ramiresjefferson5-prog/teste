@@ -466,6 +466,17 @@ function setFilter(status) {
     return `${dia}/${mes}/${ano}`;
   }
 
+  function formatPrazoDisplay(value) {
+    const raw = String(value ?? "").trim();
+    if (!raw) return "-";
+
+    if (value instanceof Date || isStatusDate(raw) || /^\d{4}-\d{2}-\d{2}T/.test(raw)) {
+      return formatDateDisplayBR(raw) || raw;
+    }
+
+    return raw;
+  }
+
   function sanitizeInteger(value) {
     const num = parseInt(String(value || "").trim(), 10);
     return Number.isFinite(num) && num >= 0 ? String(num) : "";
@@ -1108,7 +1119,7 @@ function setFilter(status) {
         html += `<td>${escapeHtml(r[COLS.COMPLEXIDADE] || "-")}</td>`;
         html += `<td>${escapeHtml(r[COLS.UF] || "-")}</td>`;
         html += `<td><div class="text-truncate" style="max-width:120px" title="${escapeHtml(r[COLS.ETAPA])}">${escapeHtml(r[COLS.ETAPA] || "-")}</div></td>`;
-        html += `<td>${escapeHtml(r[COLS.DIAS_PRAZO] || "-")}</td>`;
+        html += `<td>${escapeHtml(formatPrazoDisplay(r[COLS.DIAS_PRAZO]))}</td>`;
         html += `<td>${escapeHtml(r[COLS.NF] || "-")}</td>`;
         html += `<td class="fw-bold text-primary">${pctOrcado}</td>`;
         if (isFrustrada) {
