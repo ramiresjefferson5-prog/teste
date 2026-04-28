@@ -23,7 +23,7 @@
   <nav class="navbar-custom">
     <div class="header-brand">
       <img src="https&#58;//res.cloudinary.com/dbnyxxhe3/image/upload/v1772102800/02_Prancheta_1_ksm9oj.png" class="logo-img" alt="Logo">
-      <h1 class="header-title">Carteira1</h1>
+      <h1 class="header-title">Obras</h1>
       <div class="date-group header-date-group">
         <span id="txtSemanaAtual" class="Semana-badge">Semana-</span>
         <span id="txtDataAtual">Carregando...</span>
@@ -119,15 +119,15 @@
 
   <div id="filtroConcluidasFaturamento" class="d-none px-3 px-md-4 mb-3">
     <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-3 concluidas-filter-row">
-      <div class="status-select-wrapper shadow-sm concluidas-filter-field" data-label="De" style="min-width: 210px; flex: 1 1 220px;">
+      <div class="status-select-wrapper shadow-sm concluidas-filter-field" data-label="De" title="Escolher mês inicial" style="min-width: 210px; flex: 1 1 220px;">
         <i class="bi bi-calendar-range"></i>
-        <select class="status-select concluidas-filter-select" id="faturamentoMesInicio" onchange="aplicarFiltroConcluidasPorMes('inicio')" style="padding-left: 36px; padding-right: 14px;">
+        <select class="status-select concluidas-filter-select" id="faturamentoMesInicio" aria-label="Escolher mês inicial do faturamento" onchange="aplicarFiltroConcluidasPorMes('inicio')" style="padding-left: 36px; padding-right: 14px;">
           <option value="TODOS" selected>Todo período</option>
         </select>
       </div>
-      <div class="status-select-wrapper shadow-sm concluidas-filter-field" data-label="Até" style="min-width: 210px; flex: 1 1 220px;">
+      <div class="status-select-wrapper shadow-sm concluidas-filter-field" data-label="Até" title="Escolher mês final" style="min-width: 210px; flex: 1 1 220px;">
         <i class="bi bi-calendar2-check"></i>
-        <select class="status-select concluidas-filter-select" id="faturamentoMesFim" onchange="aplicarFiltroConcluidasPorMes('fim')" style="padding-left: 36px; padding-right: 14px;">
+        <select class="status-select concluidas-filter-select" id="faturamentoMesFim" aria-label="Escolher mês final do faturamento" onchange="aplicarFiltroConcluidasPorMes('fim')" style="padding-left: 36px; padding-right: 14px;">
           <option value="TODOS" selected>Todo período</option>
         </select>
       </div>
