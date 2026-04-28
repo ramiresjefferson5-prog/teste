@@ -68,7 +68,7 @@
     
     <!-- ESQUERDA (PC): Botões Originais -->
     <div class="status-filters d-none d-md-flex" id="filterContainer">
-      <button class="filter-btn active" data-status="FIRMADAS" onclick="setFilter('FIRMADAS')">Firmadas</button>
+      <button class="filter-btn active" data-status="FIRMADAS" onclick="setFilter('FIRMADAS')">Carteira</button>
       <button class="filter-btn" data-status="TODAS" onclick="setFilter('TODAS')">Todas</button>
       <button class="filter-btn" data-status="ENVIADAS" onclick="setFilter('ENVIADAS')">Enviadas</button>
       <button class="filter-btn" data-status="FRUSTRADAS" onclick="setFilter('FRUSTRADAS')">Frustradas</button>
@@ -81,7 +81,7 @@
       <div class="status-select-wrapper shadow-sm" style="flex: 1;">
         <i class="bi bi-funnel-fill"></i>
         <select class="status-select" id="statusFilter" onchange="setFilter(this.value)">
-          <option value="FIRMADAS" selected>Firmadas</option>
+          <option value="FIRMADAS" selected>Carteira</option>
           <option value="TODAS">Todas</option>
           <option value="ENVIADAS">Enviadas</option>
           <option value="FRUSTRADAS">Frustradas</option>
