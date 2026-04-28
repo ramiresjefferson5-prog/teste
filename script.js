@@ -88,9 +88,17 @@ const ITENS = ["BBA/ELET.", "MT", "FLUT.", "M FV.", "AD. FLEX", "AD. RIG.", "FIX
     row.classList.toggle('d-none', currentStatusFilter !== 'CONCLUIDAS');
   }
 
-  function aplicarFiltroConcluidasPorMes() {
+  function aplicarFiltroConcluidasPorMes(origem) {
     currentFaturamentoMesInicio = normalizarMesFiltroConcluidas(document.getElementById('faturamentoMesInicio')?.value);
     currentFaturamentoMesFim = normalizarMesFiltroConcluidas(document.getElementById('faturamentoMesFim')?.value);
+
+    if (origem === 'inicio' && currentFaturamentoMesInicio !== 'TODOS' && currentFaturamentoMesFim === 'TODOS') {
+      currentFaturamentoMesFim = currentFaturamentoMesInicio;
+    }
+
+    if (origem === 'fim' && currentFaturamentoMesFim !== 'TODOS' && currentFaturamentoMesInicio === 'TODOS') {
+      currentFaturamentoMesInicio = currentFaturamentoMesFim;
+    }
 
     if (currentFaturamentoMesInicio !== 'TODOS' && currentFaturamentoMesFim !== 'TODOS') {
       const inicioNum = parseInt(currentFaturamentoMesInicio, 10);
