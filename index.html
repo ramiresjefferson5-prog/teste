@@ -23,7 +23,7 @@
   <nav class="navbar-custom">
     <div class="header-brand">
       <img src="https&#58;//res.cloudinary.com/dbnyxxhe3/image/upload/v1772102800/02_Prancheta_1_ksm9oj.png" class="logo-img" alt="Logo">
-      <h1 class="header-title">Carteira</h1>
+      <h1 class="header-title">Carteira1</h1>
       <div class="date-group header-date-group">
         <span id="txtSemanaAtual" class="Semana-badge">Semana-</span>
         <span id="txtDataAtual">Carregando...</span>
@@ -118,20 +118,20 @@
   </div>
 
   <div id="filtroConcluidasFaturamento" class="d-none px-3 px-md-4 mb-3">
-    <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-3">
-      <div class="status-select-wrapper shadow-sm" style="min-width: 210px; flex: 1 1 220px;">
+    <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-3 concluidas-filter-row">
+      <div class="status-select-wrapper shadow-sm concluidas-filter-field" data-label="De" style="min-width: 210px; flex: 1 1 220px;">
         <i class="bi bi-calendar-range"></i>
-        <select class="status-select" id="faturamentoMesInicio" onchange="aplicarFiltroConcluidasPorMes()" style="padding-left: 36px; padding-right: 14px;">
+        <select class="status-select concluidas-filter-select" id="faturamentoMesInicio" onchange="aplicarFiltroConcluidasPorMes('inicio')" style="padding-left: 36px; padding-right: 14px;">
           <option value="TODOS" selected>Todo período</option>
         </select>
       </div>
-      <div class="status-select-wrapper shadow-sm" style="min-width: 210px; flex: 1 1 220px;">
+      <div class="status-select-wrapper shadow-sm concluidas-filter-field" data-label="Até" style="min-width: 210px; flex: 1 1 220px;">
         <i class="bi bi-calendar2-check"></i>
-        <select class="status-select" id="faturamentoMesFim" onchange="aplicarFiltroConcluidasPorMes()" style="padding-left: 36px; padding-right: 14px;">
+        <select class="status-select concluidas-filter-select" id="faturamentoMesFim" onchange="aplicarFiltroConcluidasPorMes('fim')" style="padding-left: 36px; padding-right: 14px;">
           <option value="TODOS" selected>Todo período</option>
         </select>
       </div>
-      <div class="small fw-bold text-muted px-1">Filtro aplicado somente na aba Concluídas, usando a data de faturamento.</div>
+      <div class="small fw-bold text-muted px-1 concluidas-filter-helper">Filtro aplicado somente na aba Concluídas, usando a data de faturamento.</div>
     </div>
   </div>
 
