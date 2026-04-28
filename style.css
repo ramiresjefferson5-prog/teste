@@ -4635,3 +4635,86 @@ body.app-modal-open #modalExtracaoRelatorio.app-page-modal {
   min-height: 0 !important;
   flex: 1 1 auto !important;
 }
+
+/* --- FILTRO COMPACTO DA ABA CONCLUÍDAS (Mobile) --- */
+@media (max-width: 576px) {
+  #filtroConcluidasFaturamento {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    margin-bottom: 10px !important;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-field {
+    min-width: 0 !important;
+    width: 100%;
+    height: 46px;
+    flex: unset !important;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-field i {
+    left: 12px;
+    font-size: 0.9rem;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-field::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 4px;
+    left: 36px;
+    right: 24px;
+    z-index: 1;
+    color: #64748b;
+    font-size: 0.52rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-select {
+    min-height: 44px;
+    padding: 17px 26px 5px 36px !important;
+    font-size: 0.72rem;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #filtroConcluidasFaturamento .status-select-wrapper::after {
+    right: 10px;
+    font-size: 0.72rem;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-helper {
+    grid-column: 1 / -1;
+    padding: 0 2px !important;
+    margin-top: -1px;
+    font-size: 0.64rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+}
+
+@media (max-width: 390px) {
+  #filtroConcluidasFaturamento .concluidas-filter-select {
+    font-size: 0.68rem;
+    padding-right: 22px !important;
+  }
+
+  #filtroConcluidasFaturamento .concluidas-filter-helper {
+    display: none !important;
+  }
+}
